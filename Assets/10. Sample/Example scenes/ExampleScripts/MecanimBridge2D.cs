@@ -72,7 +72,6 @@ namespace Pathfinding.Examples {
 #if MODULE_ENTITIES
 			else if (ai is FollowerEntity follower) follower.updateRotation = updateRotation;
 #endif
-
 			var desiredVelocity = naturalSpeed > 0 ? ai.desiredVelocity / naturalSpeed : ai.desiredVelocity;
 			var movementPlane = ai.movementPlane;
 			var desiredVelocity2D = (Vector2)movementPlane.ToPlane(desiredVelocity, out var _);
