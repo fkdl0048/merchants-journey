@@ -39,7 +39,7 @@ public class FollowPath : MonoBehaviour
         //Debug
         for (int i = 0; i < wayPointCount - 1; i++)
         {
-            var nextPoint = wayPoints[currentIndex + 1];
+            var nextPoint = wayPoints[i + 1];
             Draw.Line(wayPoints[i].position, nextPoint.position, Color.white);
         }
     }
