@@ -37,10 +37,10 @@ public class FollowPath : MonoBehaviour
 
 
         //Debug
-        for (int i = 09; i < wayPointCount - 1; i++)
+        for (int i = 0; i < wayPointCount - 1; i++)
         {
             var nextPoint = wayPoints[currentIndex + 1];
-            Draw.Line(wayPoints[i].position, nextPoint.position);
+            Draw.Line(wayPoints[i].position, nextPoint.position, Color.white);
         }
     }
 
@@ -65,7 +65,7 @@ public class FollowPath : MonoBehaviour
                 else
                     break;
             }
-
+            
             //waitTime 시간 동안 대기
             yield return wait;
         }

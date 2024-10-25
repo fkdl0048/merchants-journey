@@ -10,7 +10,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private GameObject enemyObj;       // 테스트 스크립트
     [SerializeField] private Transform[] spawnPoints;   // 스폰 포인트  Transform 정보
     [SerializeField] private float spawnTime = 2.5f;    // 스폰 간격
-    [SerializeField] private int spawnNumber = 5;       // 한번에 스폰되는 몬스터 수
+    [SerializeField] private int spawnNumber = 3;       // 한번에 스폰되는 몬스터 수
 
     private void Awake()
     {
@@ -45,7 +45,13 @@ public class EnemySpawner : MonoBehaviour
         {
             var obj = Instantiate(enemyObj);
             obj.transform.parent = transform;
+            obj.transform.position = nearT.position;
+
+            obj.GetComponent<EnemyMovement>().target = target;
         }
+
         yield return wait;
+
+        StartCoroutine(nameof(Spawn));
     }
 }
