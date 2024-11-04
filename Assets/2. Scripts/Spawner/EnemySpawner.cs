@@ -46,7 +46,6 @@ public class EnemySpawner : MonoBehaviour
             var obj = Instantiate(enemyObj);
             obj.transform.parent = transform;
             obj.transform.position = nearT.position;
-
             obj.GetComponent<EnemyMovement>().target = target;
         }
 
