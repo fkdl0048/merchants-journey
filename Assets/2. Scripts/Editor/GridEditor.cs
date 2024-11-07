@@ -1,5 +1,7 @@
 using UnityEditor;
+using UnityEngine;
 
+[CustomEditor(typeof(Grid))]
 public class GridEditor : Editor
 {
     // Start is called before the first frame update
