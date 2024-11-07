@@ -1,4 +1,3 @@
-using Pathfinding.Drawing;
 using System.Collections;
 using UnityEngine;
 
@@ -40,7 +39,7 @@ public class FollowPath : MonoBehaviour
         for (int i = 0; i < wayPointCount - 1; i++)
         {
             var nextPoint = wayPoints[i + 1];
-            Draw.Line(wayPoints[i].position, nextPoint.position, Color.white);
+            Debug.DrawLine(wayPoints[i].position, nextPoint.position, Color.white);
         }
     }
 
