@@ -1,13 +1,15 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System;
+using System.Threading.Tasks;
 using System.Collections;
+using Scripts.Data;
+using Scripts.Manager;
 using Scripts.Utils;
 
 public class GameManager : MonoBehaviour
 {
     private static GameManager instance;
-    
     public static GameManager Instance
     {
         get
@@ -22,11 +24,19 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    [Header("Scene Names")]
     [SerializeField] private string mainMenuSceneName = "MainMenu";
     [SerializeField] private string gameSceneName = "GameScene";
 
+    [Header("Dependencies")]
+    [SerializeField] private GameSettings gameSettings;
+
     public GameState CurrentGameState { get; private set; }
     public event Action<GameState> OnGameStateChanged;
+
+    // 게임 진행 관련
+    private bool isGameInitialized;
+    private bool isLoadingScene;
 
     private void Awake()
     {
@@ -39,14 +49,50 @@ public class GameManager : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(gameObject);
         
-        SceneManager.sceneLoaded += OnSceneLoaded;
-        
-        ChangeGameState(GameState.MainMenu);
+        InitializeGame();
     }
 
-    private void OnDestroy()
+    private void InitializeGame()
     {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
+        if (isGameInitialized) return;
+
+        // 필수 매니저들이 모두 준비되었는지 확인
+        ValidateManagers();
+        
+        // 씬 로드 이벤트 구독
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        
+        // 게임 설정 적용
+        ApplyGameSettings();
+
+        isGameInitialized = true;
+    }
+
+    private void ValidateManagers()
+    {
+        // 필수 매니저들이 없다면 생성
+        if (FindObjectOfType<UIManager>() == null)
+        {
+            GameObject uiManagerGO = new GameObject("UIManager");
+            uiManagerGO.AddComponent<UIManager>();
+            DontDestroyOnLoad(uiManagerGO);
+        }
+
+        if (FindObjectOfType<DataManager>() == null)
+        {
+            GameObject dataManagerGO = new GameObject("DataManager");
+            dataManagerGO.AddComponent<DataManager>();
+            DontDestroyOnLoad(dataManagerGO);
+        }
+    }
+
+    private void ApplyGameSettings()
+    {
+        if (gameSettings != null)
+        {
+            Application.targetFrameRate = gameSettings.targetFrameRate;
+            // 다른 게임 설정들 적용
+        }
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -60,10 +106,176 @@ public class GameManager : MonoBehaviour
             ChangeGameState(GameState.UnitPlacement);
         }
     }
-    
-    public void StartNewGame()
+
+    private void OnDestroy()
     {
-        StartCoroutine(LoadGameScene());
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    public async void ChangeGameState(GameState newState)
+    {
+        if (CurrentGameState == newState) return;
+
+        GameState previousState = CurrentGameState;
+        CurrentGameState = newState;
+
+        try
+        {
+            // 이전 상태 정리
+            await CleanupState(previousState);
+
+            // 새로운 상태 설정
+            await SetupState(newState);
+
+            // 상태 변경 이벤트 발생
+            OnGameStateChanged?.Invoke(newState);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Error changing game state: {e.Message}");
+            // 에러 복구 로직
+        }
+    }
+
+    private async Task CleanupState(GameState state)
+    {
+        switch (state)
+        {
+            case GameState.Playing:
+                // 진행 중이던 게임 로직 정리
+                await SaveGameProgress();
+                break;
+        }
+    }
+
+    private async Task SetupState(GameState state)
+    {
+        switch (state)
+        {
+            case GameState.UnitPlacement:
+                await InitializeUnitPlacement();
+                break;
+            case GameState.Playing:
+                await StartGameplay();
+                break;
+            case GameState.GameOver:
+                await HandleGameOver();
+                break;
+        }
+    }
+
+    public async void StartNewGame()
+    {
+        if (isLoadingScene) return;
+        isLoadingScene = true;
+
+        try
+        {
+            // 기존 게임 데이터 초기화
+            DataManager.Instance.ResetGameData();
+            
+            // 게임 씬 로드
+            await LoadSceneAsync(gameSceneName);
+        }
+        finally
+        {
+            isLoadingScene = false;
+        }
+    }
+
+    public async void ReturnToMainMenu()
+    {
+        if (isLoadingScene) return;
+        isLoadingScene = true;
+
+        try
+        {
+            await LoadSceneAsync(mainMenuSceneName);
+        }
+        finally
+        {
+            isLoadingScene = false;
+        }
+    }
+
+    private async Task LoadSceneAsync(string sceneName)
+    {
+        // UI 매니저에게 로딩 화면 표시 요청
+        UIManager.Instance.ShowLoadingScreen(true);
+
+        var operation = SceneManager.LoadSceneAsync(sceneName);
+        operation.allowSceneActivation = false;
+
+        while (operation.progress < 0.9f)
+        {
+            await Task.Yield();
+            // 로딩 진행률 업데이트
+            UIManager.Instance.UpdateLoadingProgress(operation.progress);
+        }
+
+        // 로딩 완료 후 잠시 대기 (너무 빨리 지나가는 것 방지)
+        await Task.Delay(500);
+        
+        operation.allowSceneActivation = true;
+        
+        // 씬 전환 완료 대기
+        while (!operation.isDone)
+        {
+            await Task.Yield();
+        }
+
+        UIManager.Instance.ShowLoadingScreen(false);
+    }
+
+    private async Task InitializeUnitPlacement()
+    {
+        // 유닛 배치 모드 초기화
+        // DataManager.Instance.Currency = gameSettings.initialCurrency;
+        await Task.CompletedTask;
+    }
+
+    private async Task StartGameplay()
+    {
+        // 실제 게임 로직 시작
+        Time.timeScale = 1f;
+        await Task.CompletedTask;
+    }
+
+    private async Task HandleGameOver()
+    {
+        Time.timeScale = 0f;
+        
+        // 최종 점수 계산 및 저장
+        int finalScore = DataManager.Instance.CurrentScore;
+        await SaveHighScore(finalScore);
+    }
+
+    private async Task SaveGameProgress()
+    {
+        // 게임 진행 상황 저장
+        await Task.CompletedTask;
+    }
+
+    private async Task SaveHighScore(int score)
+    {
+        // 최고 점수 저장
+        await Task.CompletedTask;
+    }
+
+    public void PauseGame()
+    {
+        if (CurrentGameState == GameState.Playing)
+        {
+            ChangeGameState(GameState.Paused);
+        }
+    }
+
+    public void ResumeGame()
+    {
+        if (CurrentGameState == GameState.Paused)
+        {
+            ChangeGameState(GameState.Playing);
+        }
     }
 
     public void QuitGame()
@@ -73,146 +285,6 @@ public class GameManager : MonoBehaviour
         #else
             Application.Quit();
         #endif
-    }
-
-    private IEnumerator LoadGameScene()
-    {
-        // 여기에 로딩 화면 제작 들어가야 함
-        yield return SceneManager.LoadSceneAsync(gameSceneName);
-    }
-
-    public void ReturnToMainMenu()
-    {
-        StartCoroutine(LoadMainMenuScene());
-    }
-
-    private IEnumerator LoadMainMenuScene()
-    {
-        yield return SceneManager.LoadSceneAsync(mainMenuSceneName);
-    }
-
-    public void ChangeGameState(GameState newState)
-    {
-        CurrentGameState = newState;
-        OnGameStateChanged?.Invoke(newState);
-        
-        switch (newState)
-        {
-            case GameState.MainMenu:
-                HandleMainMenuState();
-                break;
-            case GameState.UnitPlacement:
-                HandleUnitPlacementState();
-                break;
-            case GameState.Playing:
-                HandleGamePlayState();
-                break;
-            case GameState.Paused:
-                HandlePausedState();
-                break;
-            case GameState.GameOver:
-                HandleGameOverState();
-                break;
-        }
-    }
-
-    private void HandleMainMenuState()
-    {
-        Time.timeScale = 1f;
-        // 메인 메뉴 UI 초기화 등
-    }
-
-    private void HandleUnitPlacementState()
-    {
-        Time.timeScale = 1f;
-        EnableUnitPlacement(true);
-        UpdateUIForPlacement();
-    }
-
-    private void HandleGamePlayState()
-    {
-        Time.timeScale = 1f;
-        EnableUnitPlacement(false);
-        UpdateUIForGameplay();
-        StartGameLogic();
-    }
-
-    private void HandlePausedState()
-    {
-        Time.timeScale = 0f;
-        ShowPauseMenu(true);
-    }
-
-    private void HandleGameOverState()
-    {
-        Time.timeScale = 0f;
-        ShowGameOverScreen();
-        // 일정 시간 후 메인 메뉴로 돌아가기
-        StartCoroutine(GameOverSequence());
-    }
-
-    private IEnumerator GameOverSequence()
-    {
-        // 게임 오버 화면을 보여주는 시간
-        yield return new WaitForSecondsRealtime(3f);
-        ReturnToMainMenu();
-    }
-
-    private void EnableUnitPlacement(bool enable)
-    {
-        // 유닛 배치 시스템 활성화/비활성화
-        if (enable)
-        {
-            // 유닛 배치 UI 활성화
-            // 유닛 배치 가능 영역 표시
-            // 시작 버튼 활성화
-        }
-        else
-        {
-            // 유닛 배치 UI 비활성화
-            // 배치 가능 영역 숨기기
-            // 시작 버튼 비활성화
-        }
-    }
-
-    private void UpdateUIForPlacement()
-    {
-        // 유닛 배치 UI 업데이트
-        // - 배치 가능한 유닛 목록 표시
-        // - 리소스/코스트 표시
-        // - 시작 버튼 표시
-    }
-
-    private void UpdateUIForGameplay()
-    {
-        // 게임 플레이 UI 업데이트
-        // - 게임 진행 상태 표시
-        // - 스코어/시간 표시
-        // - 일시정지 버튼 표시
-    }
-
-    private void ShowPauseMenu(bool show)
-    {
-        // 일시정지 메뉴 표시/숨김
-        // - 계속하기
-        // - 메인 메뉴로 돌아가기
-        // - 다시시작
-    }
-
-    private void ShowGameOverScreen()
-    {
-        // 게임 오버 화면 표시
-        // - 최종 스코어
-        // - 게임 결과
-        // - "메인 메뉴로" 버튼
-    }
-
-    private void StartGameLogic()
-    {
-        // 게임 시작 시 초기화
-        // - 웨이브 시스템 시작
-        // - 적 스폰 시작
-        // - 게임 타이머 시작
     }
 
     // 게임 상태 확인 헬퍼 메서드

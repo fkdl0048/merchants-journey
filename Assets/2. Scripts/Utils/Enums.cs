@@ -15,4 +15,9 @@ namespace Scripts.Utils
         Paused,
         GameOver
     }
+    
+    public enum UnitType
+    {
+        Pyosa,
+    }
 }
