@@ -6,4 +6,13 @@ namespace Scripts.Utils
         Obstacle,
         Unwalkable
     }
+    
+    public enum GameState
+    {
+        MainMenu,
+        UnitPlacement,
+        Playing,
+        Paused,
+        GameOver
+    }
 }
