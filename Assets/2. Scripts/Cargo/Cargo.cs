@@ -7,17 +7,16 @@ public class Cargo : MonoBehaviour
 {
     [SerializeField]
     private List<SerializableVector3> serializedPathPoints = new List<SerializableVector3>();
-    
+
     [HideInInspector]
     public List<Vector3> pathPoints = new List<Vector3>();
-    
+
     public float moveSpeed = 2f;
     public float waitTimeAtPoint = 1f; // 각 지점에서 대기할 시간
     public bool autoStart = false;
-    
+
     private int currentPathIndex = 0;
     private bool isMoving = false;
-    private bool isWaiting = false;
     private Vector3 currentMoveTarget;
     private Coroutine moveCoroutine;
 
@@ -60,7 +59,7 @@ public class Cargo : MonoBehaviour
         serializedPathPoints.Clear();
         UpdatePathPoints();
     }
-    
+
     private void Start()
     {
         if (autoStart && pathPoints.Count > 0)
@@ -74,14 +73,13 @@ public class Cargo : MonoBehaviour
         if (pathPoints.Count > 0)
         {
             isMoving = true;
-            isWaiting = false;
             currentPathIndex = 0;
             currentMoveTarget = pathPoints[0];
             transform.position = pathPoints[0];
-            
+
             if (moveCoroutine != null)
                 StopCoroutine(moveCoroutine);
-                
+
             moveCoroutine = StartCoroutine(MoveAlongPath());
         }
     }
@@ -89,7 +87,6 @@ public class Cargo : MonoBehaviour
     public void StopMoving()
     {
         isMoving = false;
-        isWaiting = false;
         if (moveCoroutine != null)
         {
             StopCoroutine(moveCoroutine);
@@ -122,9 +119,7 @@ public class Cargo : MonoBehaviour
             // 마지막 지점이 아니라면 대기
             if (currentPathIndex < pathPoints.Count - 1 && waitTimeAtPoint > 0)
             {
-                isWaiting = true;
                 yield return new WaitForSeconds(waitTimeAtPoint);
-                isWaiting = false;
             }
 
             currentPathIndex++;
@@ -145,13 +140,13 @@ public class Cargo : MonoBehaviour
         // 시작점 표시
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(pathPoints[0], 0.3f);
-        
+
         // 경로 선 그리기
         Gizmos.color = Color.yellow;
         for (int i = 0; i < pathPoints.Count - 1; i++)
         {
             Gizmos.DrawLine(pathPoints[i], pathPoints[i + 1]);
-            
+
             // 대기 시간이 있는 포인트는 다른 색상으로 표시
             if (waitTimeAtPoint > 0 && i < pathPoints.Count - 1)
             {
@@ -159,10 +154,10 @@ public class Cargo : MonoBehaviour
                 Gizmos.DrawWireSphere(pathPoints[i], 0.2f);
                 Gizmos.color = Color.yellow;
             }
-            
+
             Gizmos.DrawWireSphere(pathPoints[i + 1], 0.1f);
         }
-        
+
         // 도착점 표시
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(pathPoints[pathPoints.Count - 1], 0.3f);
