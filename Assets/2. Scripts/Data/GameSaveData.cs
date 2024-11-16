@@ -8,6 +8,6 @@ namespace Scripts.Data
     {
         public int score;
         public int currency;
-        public List<string> placedUnitIds = new List<string>();
+        public int stageID;
     }
 }
