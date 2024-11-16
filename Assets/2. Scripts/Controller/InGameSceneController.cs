@@ -3,7 +3,7 @@ using Scripts.UI;
 using Scripts.Utils;
 using UnityEngine;
 
-namespace _2._Scripts.Controller
+namespace Scripts.Controller
 {
     public class InGameSceneController : MonoBehaviour
     {

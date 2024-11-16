@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 531048689772411704}
   - component: {fileID: 3160761445026678124}
   - component: {fileID: 2301185764105410206}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Tile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -119,9 +119,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 255cd92220b39db4e9b29781c7da157c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultColor: {r: 1, g: 1, b: 1, a: 1}
-  hoverColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  selectedColor: {r: 0, g: 1, b: 0, a: 1}
+  tileType: 0
+  isWalkable: 1
 --- !u!1 &3607586303522067547
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,9 +12,15 @@ namespace Scripts.Utils
         Boot,
         Title,
         InGame,
-        UnitPlacement,
-        Playing,
         Pause,
+        GameOver
+    }
+    
+    public enum InGameState
+    {
+        UnitPlacement,
+        Wave,
+        GameClear,
         GameOver
     }
     
