@@ -9,10 +9,12 @@ namespace Scripts.Utils
     
     public enum GameState
     {
-        MainMenu,
+        Boot,
+        Title,
+        InGame,
         UnitPlacement,
         Playing,
-        Paused,
+        Pause,
         GameOver
     }
     

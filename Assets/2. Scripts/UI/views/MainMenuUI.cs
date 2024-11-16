@@ -1,40 +1,41 @@
 using Scripts.Manager;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace Scripts.UI
 {
     public class MainMenuUI : UIBase
     {
+        [Header("Buttons")]
         [SerializeField] private Button startButton;
         [SerializeField] private Button optionsButton;
         [SerializeField] private Button quitButton;
     
-        protected override void Awake()
+        protected override void Initialize()
         {
-            base.Awake();
+            base.Initialize();
             SetupButtons();
         }
     
         private void SetupButtons()
         {
-            startButton?.onClick.AddListener(OnStartGame);
-            optionsButton?.onClick.AddListener(OnOpenOptions);
-            quitButton?.onClick.AddListener(OnQuitGame);
+            startButton?.onClick.AddListener(OnStartClick);
+            optionsButton?.onClick.AddListener(OnOptionsClick);
+            quitButton?.onClick.AddListener(OnQuitClick);
         }
     
-        private void OnStartGame()
+        private void OnStartClick()
         {
-            // 게임 시작 로직
-            Debug.Log("Game Started");
+            SceneManager.LoadScene("InGame");
         }
     
-        private void OnOpenOptions()
+        private void OnOptionsClick()
         {
             UIManager.Instance.ShowPopup<OptionsPopup>("UI/Popups/OptionsPopup");
         }
     
-        private void OnQuitGame()
+        private void OnQuitClick()
         {
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;

@@ -6,7 +6,7 @@ namespace Scripts.Data
     public class GameSettings : ScriptableObject
     {
         [Range(0f, 1f)]
-        public float musicVolume = 1f;
+        public float bgmVolume = 1f;
 
         [Range(0f, 1f)]
         public float sfxVolume = 1f;
@@ -15,7 +15,7 @@ namespace Scripts.Data
 
         public void SetMusicVolume(float volume)
         {
-            musicVolume = Mathf.Clamp(volume, 0f, 1f);
+            bgmVolume = Mathf.Clamp(volume, 0f, 1f);
         }
 
         public void SetSfxVolume(float volume)

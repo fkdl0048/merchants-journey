@@ -1,33 +1,37 @@
 using Scripts.Manager;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Scripts.UI
 {
-    public class PopupBase : UIBase
+    public abstract class PopupBase : UIBase
     {
-        protected Button closeButton;
+        [SerializeField] protected Button closeButton;
         
-        protected override void Awake()
+        protected override void Initialize()
         {
-            base.Awake();
+            base.Initialize();
             SetupCloseButton();
         }
         
         private void SetupCloseButton()
         {
-            closeButton = transform.Find("CloseButton")?.GetComponent<Button>();
+            if (closeButton == null)
+                closeButton = transform.Find("CloseButton")?.GetComponent<Button>();
+                
             if (closeButton != null)
-            {
-                closeButton.onClick.AddListener(() => UIManager.Instance.ClosePopup(this));
-            }
+                closeButton.onClick.AddListener(OnClose);
+        }
+        
+        protected virtual void OnClose()
+        {
+            UIManager.Instance.ClosePopup(this);
         }
         
         private void OnDestroy()
         {
             if (closeButton != null)
-            {
                 closeButton.onClick.RemoveAllListeners();
-            }
         }
     }
 }
