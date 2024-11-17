@@ -6,4 +6,20 @@ namespace Scripts.Utils
         Obstacle,
         Unwalkable
     }
+    
+    public enum GameState
+    {
+        Boot,
+        Title,
+        InGame,
+        UnitPlacement,
+        Playing,
+        Pause,
+        GameOver
+    }
+    
+    public enum UnitType
+    {
+        Pyosa,
+    }
 }
