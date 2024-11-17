@@ -125,7 +125,7 @@ public class GridTileEditor : EditorWindow
         Event e = Event.current;
         Ray ray = HandleUtility.GUIPointToWorldRay(e.mousePosition);
         RaycastHit hit;
-
+            
         if (Physics.Raycast(ray, out hit))
         {
             Vector3 hitPoint = hit.point;
