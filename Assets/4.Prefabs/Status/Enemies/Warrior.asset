@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Warrior
   m_EditorClassIdentifier: 
   hp: 10
-  recognizeRange: 10
+  recognizeRange: 5
   moveSpeed: 1
   damage: 10
   attackSpeed: 1

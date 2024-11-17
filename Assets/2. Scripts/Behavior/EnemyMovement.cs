@@ -7,7 +7,6 @@ public class EnemyMovement : MonoBehaviour
 {
     [Header("Target Object")]
     [SerializeField] public Transform target;
-    [SerializeField] private float speed = 2f;
     private NavMeshAgent agent;
 
     private void Start()
@@ -22,11 +21,5 @@ public class EnemyMovement : MonoBehaviour
         //transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle + 90));
 
         //transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
-    }
-
-    //Test Code
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        Destroy(gameObject);
     }
 }

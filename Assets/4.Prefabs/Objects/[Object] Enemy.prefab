@@ -10,12 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 5419455944104466771}
   - component: {fileID: 4622318002343872209}
-  - component: {fileID: 5583033946196627574}
+  - component: {fileID: 2259822770374297148}
   - component: {fileID: 2663863718643650840}
   - component: {fileID: 7119562076321656036}
   m_Layer: 0
   m_Name: '[Object] Enemy'
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -87,7 +87,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &5583033946196627574
+--- !u!114 &2259822770374297148
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -96,11 +96,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 4258276044113151969}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef92309ac314b7c4fb539cfed4e8d90e, type: 3}
+  m_Script: {fileID: 11500000, guid: 71d300ddd6d82d64baea3934928b883f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  status: {fileID: 11400000, guid: cc5be834c5b14e149898940625521f94, type: 2}
+  fsm: 0
+  debugModeEnable: 1
   target: {fileID: 0}
-  speed: 2
 --- !u!195 &2663863718643650840
 NavMeshAgent:
   m_ObjectHideFlags: 0
