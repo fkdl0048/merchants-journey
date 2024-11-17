@@ -1,20 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName ="StatusSO", menuName = "Scriptable Objects/Status")]
 public class ObjectStatus : ScriptableObject
 {
-    //Ã¼·Â
+    //hp
     public int hp = 10;
-    //ÀÎ½Ä ¹üÀ§
+    //ì¸ì‹ ë²”ìœ„
     public float recognizeRange = 10;
-    //ÀÌµ¿ ¼Óµµ
+    //ì´ë™ ì†ë„
     public float moveSpeed = 1;
-    //°ø°İ·Â
+    //ë°ë¯¸ì§€
     public float damage = 1;
-    //°ø°İ ¼Óµµ
-    public float attackSpeed = 1.0f; //¾Ö´Ï¸ŞÀÌ¼Ç Àç»ı ¼Óµµ
-    //°ø°İ »ç°Å¸®
+    //ê³µê²© ì†ë„
+    public float attackSpeed = 1.0f; //ì• ë‹ˆë©”ì´ì…˜ ì¬ìƒì†ë„
+    //ê³µê²© ë²”ìœ„
     public float attackRange = 2;
 }
