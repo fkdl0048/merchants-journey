@@ -7,9 +7,12 @@ namespace ObjectAI
         protected override void EncounterBehavior()
         {
             if (targetEnemy == null)
+            {
                 fsm = FSM.Idle;
+                return;
+            }
 
-            //적을 향해 돌진
+            //적을 향해  돌진
             agent.SetDestination(targetEnemy.position);
 
             //공격 범위 체크

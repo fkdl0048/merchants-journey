@@ -15,4 +15,5 @@ public class ObjectStatus : ScriptableObject
     public float attackSpeed = 1.0f; //애니메이션 재생속도
     //공격 범위
     public float attackRange = 2;
+    public float hitboxRange = 0.25f;
 }

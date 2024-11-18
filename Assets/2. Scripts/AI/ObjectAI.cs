@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UIElements;
 
 namespace ObjectAI
 {
@@ -15,11 +16,13 @@ namespace ObjectAI
     }
     public abstract class ObjectAI : MonoBehaviour
     {
+        protected NavMeshAgent agent;
+
         [Header("Target Object")]
         [SerializeField] protected Transform target;
-        protected NavMeshAgent agent;
         [SerializeField] protected string targetTag;
 
+        [Header("Object Status")]
         [SerializeField] protected ObjectStatus status;
         protected int currentHP;
         [SerializeField] protected FSM fsm;
@@ -27,7 +30,9 @@ namespace ObjectAI
         [Header("Debug Mode Enable")]
         [SerializeField] private bool debugModeEnable = true;
 
+        //BATTLE
         protected Transform targetEnemy;
+        protected bool isAttack = false;
 
         [Header("Test Code")]
         [SerializeField] private Vector3 pos;
@@ -35,7 +40,8 @@ namespace ObjectAI
         private void Start()
         {
             agent = GetComponent<NavMeshAgent>();
-            currentHP = status.hp;
+            //currentHP = status.hp;
+            currentHP = 10;
         }
         private void Update()
         {
@@ -48,7 +54,8 @@ namespace ObjectAI
                     EncounterBehavior();
                     break;
                 case FSM.Attack:
-                    AttackBehavior();
+                    if(isAttack == false)
+                        AttackBehavior();
                     break;
                 case FSM.Dead:
                     Destroy(gameObject);
@@ -66,9 +73,10 @@ namespace ObjectAI
         protected IEnumerator AttackStart()
         {
             //공격시간 대기
-            yield return status.attackSpeed;
+            isAttack = true;
+            yield return new WaitForSeconds(status.attackSpeed);
             //박스 생성
-            Collider[] targets = CheckAttackCollider(targetEnemy, status.attackSpeed, targetTag);
+            Collider[] targets = CheckAttackCollider(targetEnemy, status.hitboxRange, targetTag);
             if (targets != null)
             {
                 foreach (Collider target in targets)
@@ -78,6 +86,7 @@ namespace ObjectAI
                     obj.Hitted(status.damage);
                 }
             }
+            isAttack = false;
             fsm = FSM.Encounter;
         }
         public void Hitted(int damage)
@@ -121,7 +130,8 @@ namespace ObjectAI
             DrawGizmosCircle(Color.green, status.recognizeRange);
             DrawGizmosCircle(Color.red, status.attackRange);
 
-            Gizmos.DrawWireCube(transform.position + pos, new Vector3(1,1,1));
+            var range = status.hitboxRange;
+            Gizmos.DrawWireCube(transform.position + pos, new Vector3(range, range, range));
         }
         private void DrawGizmosCircle(Color color, float radius)
         {
@@ -135,9 +145,7 @@ namespace ObjectAI
                 Vector3 newPoint = new Vector3(Mathf.Cos(angle) * radius, 0, Mathf.Sin(angle) * radius);
 
                 if (i > 0)
-                {
                     Gizmos.DrawLine(transform.position + previousPoint, transform.position + newPoint);
-                }
 
                 previousPoint = newPoint;
             }

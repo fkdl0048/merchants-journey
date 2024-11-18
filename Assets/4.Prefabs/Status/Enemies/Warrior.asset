@@ -15,6 +15,7 @@ MonoBehaviour:
   hp: 10
   recognizeRange: 5
   moveSpeed: 1
-  damage: 10
+  damage: 1
   attackSpeed: 1
   attackRange: 2
+  hitboxRange: 0.25
