@@ -10,9 +10,10 @@ public class ObjectStatus : ScriptableObject
     //이동 속도
     public float moveSpeed = 1;
     //데미지
-    public float damage = 1;
+    public int damage = 1;
     //공격 속도
     public float attackSpeed = 1.0f; //애니메이션 재생속도
     //공격 범위
     public float attackRange = 2;
+    public float hitboxRange = 0.25f;
 }
