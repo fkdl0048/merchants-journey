@@ -4,7 +4,6 @@ namespace ObjectAI
 {
     public class PlayerAI : ObjectAI
     {
-        string targetTag = "Enemy";
         protected override void EncounterBehavior()
         {
             if (targetEnemy == null)
@@ -22,7 +21,6 @@ namespace ObjectAI
                 fsm = FSM.Attack;
             }
         }
-
         protected override void IdleBehavior()
         {
             agent.SetDestination(target.position);

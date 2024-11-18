@@ -1,3 +1,6 @@
+using System.Collections;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -7,7 +10,6 @@ namespace ObjectAI
     {
         Idle,       //화물을 호위하는, 또는 화물에 접근하고 있는 상태
         Encounter,  //적을 맞닥뜨린 상태
-        Fight,      //사정거리 안으로 들어온 상태, 공격을 준비한다.
         Attack,     //공격 애니메이션, 공격을 완료한 후, Idle 상태로 전이
         Dead,       //사망 상태
     }
@@ -16,19 +18,24 @@ namespace ObjectAI
         [Header("Target Object")]
         [SerializeField] protected Transform target;
         protected NavMeshAgent agent;
+        [SerializeField] protected string targetTag;
 
         [SerializeField] protected ObjectStatus status;
+        protected int currentHP;
         [SerializeField] protected FSM fsm;
 
         [Header("Debug Mode Enable")]
         [SerializeField] private bool debugModeEnable = true;
 
-        
         protected Transform targetEnemy;
+
+        [Header("Test Code")]
+        [SerializeField] private Vector3 pos;
 
         private void Start()
         {
             agent = GetComponent<NavMeshAgent>();
+            currentHP = status.hp;
         }
         private void Update()
         {
@@ -40,18 +47,59 @@ namespace ObjectAI
                 case FSM.Encounter:
                     EncounterBehavior();
                     break;
-                case FSM.Fight:
-                    break;
                 case FSM.Attack:
+                    AttackBehavior();
                     break;
                 case FSM.Dead:
                     Destroy(gameObject);
                     break;
             }
         }
-        
+
         protected abstract void IdleBehavior();
         protected abstract void EncounterBehavior();
+        protected void AttackBehavior()
+        {
+            StartCoroutine(AttackStart());
+        }
+        //테스트 코드입니다.
+        protected IEnumerator AttackStart()
+        {
+            //공격시간 대기
+            yield return status.attackSpeed;
+            //박스 생성
+            Collider[] targets = CheckAttackCollider(targetEnemy, status.attackSpeed, targetTag);
+            if (targets != null)
+            {
+                foreach (Collider target in targets)
+                {
+                    if (!target.TryGetComponent<ObjectAI>(out var obj))
+                        continue;
+                    obj.Hitted(status.damage);
+                }
+            }
+            fsm = FSM.Encounter;
+        }
+        public void Hitted(int damage)
+        {
+            currentHP -= damage;
+            if(currentHP <= 0)
+                fsm = FSM.Dead;
+        }
+        protected Collider[] CheckAttackCollider(Transform target, float range, string targetTag)
+        {
+            if (target == null)
+                return null;
+
+            Vector3 direction = target.transform.position - transform.position;
+            direction = direction.normalized * range;
+
+            Collider[] hitColliders = Physics.OverlapBox(transform.position + direction,
+                new Vector3(range, range, range));
+            hitColliders.Select(x => x.CompareTag(targetTag)).ToArray();
+
+            return hitColliders;
+        }
         protected Transform CheckRange(float range, string targetTag)
         {
             Collider[] hitColliders = Physics.OverlapSphere(transform.position, range);
@@ -72,6 +120,8 @@ namespace ObjectAI
 
             DrawGizmosCircle(Color.green, status.recognizeRange);
             DrawGizmosCircle(Color.red, status.attackRange);
+
+            Gizmos.DrawWireCube(transform.position + pos, new Vector3(1,1,1));
         }
         private void DrawGizmosCircle(Color color, float radius)
         {

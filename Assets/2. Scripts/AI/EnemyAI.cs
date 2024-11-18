@@ -4,7 +4,6 @@ namespace ObjectAI
 {
     public class EnemyAI : ObjectAI
     {
-        string targetTag = "Player";
         protected override void EncounterBehavior()
         {
             if (targetEnemy == null)
