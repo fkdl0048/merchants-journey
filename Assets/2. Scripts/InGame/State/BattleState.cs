@@ -33,6 +33,7 @@ namespace Scripts.InGame.State
             
             // 모든 Cargo 움직임 시작
             cargo = stageController.GetCargo();
+            cargo.OnDestinationReached += HandleCargoDestinationReached;
             cargo.StartMoving();
         }
 
@@ -55,6 +56,7 @@ namespace Scripts.InGame.State
             //BattleSystem.EndWave();
         
             cargo.StopMoving();
+            cargo.OnDestinationReached -= HandleCargoDestinationReached;
             
             // UI 정리
             gameUI.HideWaveUI();
@@ -76,6 +78,11 @@ namespace Scripts.InGame.State
             // }
             
             // 웨이브가 완료되면 게임 클리어 상태로 전환
+            controller.ChangeInGameState(InGameState.StageClear);
+        }
+
+        private void HandleCargoDestinationReached()
+        {
             controller.ChangeInGameState(InGameState.StageClear);
         }
 

@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using Scripts.Utils;
+using System;
 
 public class Cargo : MonoBehaviour
 {
@@ -19,6 +20,8 @@ public class Cargo : MonoBehaviour
     private bool isMoving = false;
     private Vector3 currentMoveTarget;
     private Coroutine moveCoroutine;
+
+    public event Action OnDestinationReached;
 
     private void OnValidate()
     {
@@ -128,6 +131,7 @@ public class Cargo : MonoBehaviour
             if (currentPathIndex >= pathPoints.Count)
             {
                 isMoving = false;
+                OnDestinationReached?.Invoke();
                 yield break;
             }
         }
