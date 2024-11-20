@@ -25,22 +25,17 @@ namespace Scripts.InGame.State
 
         public void Enter()
         {
-            // 스테이지 로드
-            stageController.LoadStage();
-            // if (stageData == null)
-            // {
-            //     Debug.LogError("Failed to load stage data!");
-            //     return;
-            // }
-            
-            // 배치 시스템 초기화
-            //unitSystem.EnablePlacementMode();
-            
             // UI 초기화
             gameUI.ShowUnitPlacementUI();
             
             // 이벤트 구독
             gameUI.OnUnitPlacementComplete += HandlePlacementComplete;
+            
+            // 스테이지 로드
+            stageController.LoadStage();
+            
+            // 배치 시스템 초기화
+            //unitSystem.EnablePlacementMode();
         }
 
         public void Update()

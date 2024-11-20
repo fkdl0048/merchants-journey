@@ -1,7 +1,9 @@
 using Scripts.Controller;
+using Scripts.InGame.System;
 using Scripts.Interface;
 using Scripts.UI;
 using Scripts.Utils;
+using UnityEngine; // Added using UnityEngine for GameObject
 
 namespace Scripts.InGame.State
 {
@@ -9,31 +11,29 @@ namespace Scripts.InGame.State
     {
         private readonly InGameSceneController controller;
         private readonly GameUI gameUI;
+        private readonly StageSystem stageController;
     //   private readonly BattleSystem 유닛과 적을 관리하는;
+    
+        private Cargo cargo;
 
-        public BattleState(InGameSceneController controller, GameUI gameUI)
+        public BattleState(InGameSceneController controller, GameUI gameUI, StageSystem stageController)
         {
             this.controller = controller;
             this.gameUI = gameUI;
+            this.stageController = stageController;
         }
 
         public void Enter()
         {
             // UI 초기화
-            //gameUI.ShowWaveUI();
-            //gameUI.UpdateWaveInfo(waveManager.CurrentWave, waveManager.TotalWaves);
-        
-            // 웨이브 시작
-            // BattleSystem 초기화
-        
-            // 이벤트 리스너 등록
-            //BattleSystem.OnWaveComplete += HandleWaveComplete;
-            
-            // UI 초기화
             gameUI.ShowWaveUI();
             
-            // 테스트용: 다음 상태로 전환하는 이벤트 구독
+            // 이벤트 구독
             gameUI.OnUnitPlacementComplete += HandleWaveComplete;
+            
+            // 모든 Cargo 움직임 시작
+            cargo = stageController.GetCargo();
+            cargo.StartMoving();
         }
 
         public void Update()
@@ -54,7 +54,7 @@ namespace Scripts.InGame.State
             // 전투 시스템 정리
             //BattleSystem.EndWave();
         
-            // 이벤트 리스너 제거
+            cargo.StopMoving();
             
             // UI 정리
             gameUI.HideWaveUI();
