@@ -2,6 +2,10 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
 
+/// <summary>
+/// CargoPathEditor는 Cargo 컴포넌트의 인스펙터를 커스터마이징
+/// - 화물의 경로를 기획자가 직접 설정할 수 있도록 도와줌
+/// </summary>
 [CustomEditor(typeof(Cargo))]
 public class CargoPathEditor : Editor
 {
@@ -10,6 +14,7 @@ public class CargoPathEditor : Editor
     private SerializedProperty serializedPathPointsProp;
     private SerializedProperty moveSpeedProp;
     private SerializedProperty waitTimeAtPointProp;
+    private SerializedProperty placementRangeProp;
     private SerializedProperty autoStartProp;
 
     private void OnEnable()
@@ -18,6 +23,7 @@ public class CargoPathEditor : Editor
         serializedPathPointsProp = serializedObject.FindProperty("serializedPathPoints");
         moveSpeedProp = serializedObject.FindProperty("moveSpeed");
         waitTimeAtPointProp = serializedObject.FindProperty("waitTimeAtPoint");
+        placementRangeProp = serializedObject.FindProperty("placementRange");
         autoStartProp = serializedObject.FindProperty("autoStart");
         
         SceneView.duringSceneGui += OnSceneGUI;
@@ -34,6 +40,7 @@ public class CargoPathEditor : Editor
 
         EditorGUILayout.PropertyField(moveSpeedProp);
         EditorGUILayout.PropertyField(waitTimeAtPointProp);
+        EditorGUILayout.PropertyField(placementRangeProp);
         EditorGUILayout.PropertyField(autoStartProp);
         
         EditorGUILayout.Space();

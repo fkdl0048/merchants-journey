@@ -12,14 +12,22 @@ namespace Scripts.Utils
         Boot,
         Title,
         InGame,
-        UnitPlacement,
-        Playing,
         Pause,
         GameOver
+    }
+    
+    public enum InGameState
+    {
+        UnitPlacement,
+        Wave,
+        StageClear,
+        StageOver
     }
     
     public enum UnitType
     {
         Pyosa,
+        Archer,
+        Warrior
     }
 }

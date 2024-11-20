@@ -3,6 +3,10 @@ using Scripts.Utils;
 using UnityEngine;
 using UnityEditor;
 
+/// <summary>
+/// Grid Tile Editor는 Scene 뷰에서 Grid Tile을 쉽게 배치할 수 있도록 도와주는 에디터 윈도우입니다.
+/// 기획자용 아마 지속적으로 수정 예정
+/// </summary>
 public class GridTileEditor : EditorWindow
 {
     private GameObject tilePrefab;

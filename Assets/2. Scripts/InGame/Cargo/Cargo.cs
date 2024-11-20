@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using Scripts.Utils;
+using System;
 
 public class Cargo : MonoBehaviour
 {
@@ -12,13 +13,16 @@ public class Cargo : MonoBehaviour
     public List<Vector3> pathPoints = new List<Vector3>();
 
     public float moveSpeed = 2f;
-    public float waitTimeAtPoint = 1f; // 각 지점에서 대기할 시간
+    public float waitTimeAtPoint = 1f;
+    public int placementRange = 3;
     public bool autoStart = false;
 
     private int currentPathIndex = 0;
     private bool isMoving = false;
     private Vector3 currentMoveTarget;
     private Coroutine moveCoroutine;
+
+    public event Action OnDestinationReached;
 
     private void OnValidate()
     {
@@ -99,8 +103,7 @@ public class Cargo : MonoBehaviour
         while (currentPathIndex < pathPoints.Count && isMoving)
         {
             currentMoveTarget = pathPoints[currentPathIndex];
-
-            // 목표 지점까지 이동
+            
             while (Vector3.Distance(transform.position, currentMoveTarget) > 0.01f)
             {
                 if (!isMoving) yield break;
@@ -128,6 +131,7 @@ public class Cargo : MonoBehaviour
             if (currentPathIndex >= pathPoints.Count)
             {
                 isMoving = false;
+                OnDestinationReached?.Invoke();
                 yield break;
             }
         }
@@ -136,18 +140,15 @@ public class Cargo : MonoBehaviour
     private void OnDrawGizmos()
     {
         if (pathPoints.Count < 2) return;
-
-        // 시작점 표시
+        
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(pathPoints[0], 0.3f);
-
-        // 경로 선 그리기
+        
         Gizmos.color = Color.yellow;
         for (int i = 0; i < pathPoints.Count - 1; i++)
         {
             Gizmos.DrawLine(pathPoints[i], pathPoints[i + 1]);
 
-            // 대기 시간이 있는 포인트는 다른 색상으로 표시
             if (waitTimeAtPoint > 0 && i < pathPoints.Count - 1)
             {
                 Gizmos.color = Color.cyan;
@@ -158,11 +159,9 @@ public class Cargo : MonoBehaviour
             Gizmos.DrawWireSphere(pathPoints[i + 1], 0.1f);
         }
 
-        // 도착점 표시
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(pathPoints[pathPoints.Count - 1], 0.3f);
 
-        // 현재 이동 중인 경로 강조 (플레이 모드에서)
         if (Application.isPlaying && isMoving && currentPathIndex < pathPoints.Count - 1)
         {
             Gizmos.color = Color.blue;

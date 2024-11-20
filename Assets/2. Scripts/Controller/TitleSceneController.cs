@@ -3,6 +3,10 @@ using Scripts.UI;
 using Scripts.Utils;
 using UnityEngine;
 
+/// <summary>
+/// TitleSceneController는 메인 메뉴 담당
+/// 이후에 mainMenuUI와 연결 지점 (디커플링)
+/// </summary>
 public class TitleSceneController : MonoBehaviour
 {
     [SerializeField] private AudioClip titleBGM;
