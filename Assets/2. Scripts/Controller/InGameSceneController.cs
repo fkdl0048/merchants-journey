@@ -9,6 +9,12 @@ using UnityEngine;
 
 namespace Scripts.Controller
 {
+    /// <summary>
+    /// InGameSceneController는 InGame 씬의 전반적인 게임 흐름을 관리하는 컨트롤러입니다.
+    /// GameManager의 State는 게임 전반 (로비, 메인 등)
+    /// 여기서는 IngGame의 상태만 관리 (State Pattern)
+    /// 규칙 1. ChageState는 해당 상태에서 자신이 자신의 상태를 Enter에서 호출 모든 State동일 규칙
+    /// </summary>
     public class InGameSceneController : MonoBehaviour
     {
         [Header("Scene References")]
@@ -50,7 +56,7 @@ namespace Scripts.Controller
                     InGameState.StageOver,
                     new StageOverState(this, gameUI)
                 },
-                // stage fail state
+                // stage fail state 추가..예정
             };
         }
 
@@ -82,7 +88,7 @@ namespace Scripts.Controller
 
         private void OnDestroy()
         {
-            if (this.gameObject.scene.isLoaded)  // 씬이 아직 로드되어 있을 때만 실행
+            if (this.gameObject.scene.isLoaded)
             {
                 currentState?.Exit();
             }

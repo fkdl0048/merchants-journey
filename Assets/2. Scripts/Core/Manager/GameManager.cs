@@ -15,6 +15,6 @@ public class GameManager : Singleton<GameManager>
 
     public override void Init()
     {
-        throw new NotImplementedException();
+        //throw new NotImplementedException();
     }
 }

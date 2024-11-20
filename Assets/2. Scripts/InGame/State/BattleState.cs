@@ -3,7 +3,6 @@ using Scripts.InGame.System;
 using Scripts.Interface;
 using Scripts.UI;
 using Scripts.Utils;
-using UnityEngine; // Added using UnityEngine for GameObject
 
 namespace Scripts.InGame.State
 {
@@ -12,7 +11,7 @@ namespace Scripts.InGame.State
         private readonly InGameSceneController controller;
         private readonly GameUI gameUI;
         private readonly StageSystem stageController;
-    //   private readonly BattleSystem 유닛과 적을 관리하는;
+    //  private readonly BattleSystem 유닛과 적을 관리하는 클래스 추가되어야 할듯
     
         private Cargo cargo;
 
@@ -25,13 +24,10 @@ namespace Scripts.InGame.State
 
         public void Enter()
         {
-            // UI 초기화
             gameUI.ShowWaveUI();
             
-            // 이벤트 구독
             gameUI.OnUnitPlacementComplete += HandleWaveComplete;
-            
-            // 모든 Cargo 움직임 시작
+
             cargo = stageController.GetCargo();
             cargo.OnDestinationReached += HandleCargoDestinationReached;
             cargo.StartMoving();
@@ -43,15 +39,12 @@ namespace Scripts.InGame.State
             // 유닛과 적 업데이트
             //BattleSystem.Update();
             
-        
             // UI 업데이트
             //gameUI.UpdateWaveProgress(waveManager.GetWaveProgress());
         }
 
         public void Exit()
         {
-            //gameUI.HideWaveUI();
-        
             // 전투 시스템 정리
             //BattleSystem.EndWave();
         
@@ -67,28 +60,12 @@ namespace Scripts.InGame.State
 
         private void HandleWaveComplete()
         {
-            // if (waveManager.IsLastWave())
-            // {
-            //     controller.ChangeInGameState(InGameState.GameClear);
-            // }
-            // else
-            // {
-            //     waveManager.PrepareNextWave();
-            //     controller.ChangeInGameState(InGameState.UnitPlacement);
-            // }
-            
-            // 웨이브가 완료되면 게임 클리어 상태로 전환
-            controller.ChangeInGameState(InGameState.StageClear);
+            // UI처리 때문에 빼긴 했는데 추가 기획보고 작업 예정
         }
 
         private void HandleCargoDestinationReached()
         {
             controller.ChangeInGameState(InGameState.StageClear);
-        }
-
-        private void HandleGameOver()
-        {
-            //controller.ChangeInGameState(InGameState.GameOver);
         }
     }
 }

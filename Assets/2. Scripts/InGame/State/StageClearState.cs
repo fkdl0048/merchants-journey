@@ -32,6 +32,7 @@ namespace Scripts.InGame.State
         public void Update()
         {
             // 스테이지 클리어 상태에서는 특별한 업데이트가 필요 없음
+            // 이후 작업
         }
 
         public void Exit()

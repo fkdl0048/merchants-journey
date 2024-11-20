@@ -2,6 +2,10 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
 
+/// <summary>
+/// CargoPathEditor는 Cargo 컴포넌트의 인스펙터를 커스터마이징
+/// - 화물의 경로를 기획자가 직접 설정할 수 있도록 도와줌
+/// </summary>
 [CustomEditor(typeof(Cargo))]
 public class CargoPathEditor : Editor
 {

@@ -45,7 +45,7 @@ namespace Scripts.InGame.State
 
         private void HandleRetry()
         {
-            // 다시 유닛 배치 상태로 돌아감
+            // 다시 유닛 배치 상태로 돌아감 (현재 스테이지 => 데이터 조작 x)
             controller.ChangeInGameState(InGameState.UnitPlacement);
         }
 

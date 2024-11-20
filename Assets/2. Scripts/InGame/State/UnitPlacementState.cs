@@ -19,7 +19,7 @@ namespace Scripts.InGame.State
         private List<MeshRenderer> highlightedTiles = new List<MeshRenderer>();
         private Color originalTileColor;
         private GameObject selectedUnit;
-        // 파랑색
+
         private static readonly Color highlightColor = new Color(0.2f, 0.2f, 1f, 0.6f);
 
         public UnitPlacementState(InGameSceneController controller, GameUI gameUI, UnitSystem unitSystem, StageSystem stageController)
@@ -45,6 +45,7 @@ namespace Scripts.InGame.State
             var cargo = stageController.GetCargo();
             if (cargo == null)
             {
+                Debug.LogError("Cargo not found");
                 return;
             }
             

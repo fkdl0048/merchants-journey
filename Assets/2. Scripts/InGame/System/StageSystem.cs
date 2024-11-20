@@ -5,28 +5,29 @@ using Scripts.Manager;
 
 namespace Scripts.InGame.System
 {
+    /// <summary>
+    /// 스테이지 데이터를 관리하고 스테이지를 생성하는 시스템
+    /// 각 State에 InGameSceneController를 넘겨주는 방식으로 작동 Dependency Injection
+    /// </summary>
     public class StageSystem : MonoBehaviour
     {
-        [SerializeField] private StageData[] stageDatas;  // Unity Inspector에서 설정
-        [SerializeField] private Transform stageParent;   // 스테이지 프리팹이 생성될 부모 Transform
+        [SerializeField] private StageData[] stageDatas;
+        [SerializeField] private Transform stageParent;
 
         private StageData currentStageData;
         private GameObject currentStageInstance;
 
         private void LoadCurrentStage()
         {
-            // 디버그: stageDatas 배열 체크
             if (stageDatas == null || stageDatas.Length == 0)
             {
                 Debug.LogError("No stage data assigned to StageSystem!");
                 return;
             }
-
-            // 저장된 게임 데이터에서 현재 스테이지 번호를 가져옴
+            
             var gameData = SaveManager.Instance.GetGameData();
             int currentStageNumber = gameData?.currentStage ?? 1;  // 데이터가 없으면 1스테이지부터 시작
 
-            // 현재 스테이지 데이터 찾기
             currentStageData = stageDatas.FirstOrDefault(x => x.stageNumber == currentStageNumber);
             
             if (currentStageData == null)
@@ -50,6 +51,7 @@ namespace Scripts.InGame.System
             currentStageInstance = Instantiate(currentStageData.stagePrefab, stageParent);
         }
 
+        // 뒤 데이터 나오면 사용 예정
         public StageData GetCurrentStageData()
         {
             return currentStageData;

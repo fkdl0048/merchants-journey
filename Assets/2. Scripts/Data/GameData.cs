@@ -8,5 +8,8 @@ namespace Scripts.Data
     {
         public int currentStage = 1;
         
+        // 예상
+        // 돈
+        // 사용중인 Unit
     }
 }

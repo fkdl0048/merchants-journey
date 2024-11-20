@@ -43,7 +43,7 @@ namespace Scripts.Manager
         {
             gameData = data;
 #if !UNITY_EDITOR
-            // 에디터에서는 저장하지 않음
+            // 에디터에서는 저장하지 않음 => 빌드만 테스트를 위해 사용
             SaveData(GAME_DATA_KEY, data);
 #endif
         }

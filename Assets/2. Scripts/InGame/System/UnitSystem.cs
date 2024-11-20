@@ -1,11 +1,16 @@
 using System.Collections.Generic;
-using Scripts.Data;
-using Scripts.Manager;
 using Scripts.Utils;
 using UnityEngine;
 
+
+// 11-21 현재 코드는 임시로 랜덤 위치에 유닛 생성
+// 이후에 업그레이드? 시스템으로 변경 예정
 namespace Scripts.InGame.System
 {
+    /// <summary>
+    /// 유닛을 관리하는 시스템
+    /// 각 State에 InGameSceneController를 넘겨주는 방식으로 작동 Dependency Injection
+    /// </summary>
     public class UnitSystem : MonoBehaviour
     {
         [SerializeField] private float tileSize = 1f;
@@ -31,7 +36,7 @@ namespace Scripts.InGame.System
             if (currentCargo == null || unitPrefabs == null || unitPrefabs.Length == 0)
                 return;
 
-            // 각 유닛 타입별로 최대 3번까지 시도
+            // 각 유닛 타입별로 최대 3번까지 시도 (버그 때문에 추가)
             TrySpawnUnitWithRetry(UnitType.Pyosa, 3);
             TrySpawnUnitWithRetry(UnitType.Archer, 3);
             TrySpawnUnitWithRetry(UnitType.Warrior, 3);
@@ -73,7 +78,6 @@ namespace Scripts.InGame.System
                 return null;
 
             GameObject spawnedUnit = Instantiate(unitPrefab, tileCenter, Quaternion.identity);
-            // 유닛을 cargo의 자식으로 설정
             spawnedUnit.transform.SetParent(currentCargo.transform);
             
             occupiedTiles.Add(tilePos);
@@ -102,20 +106,17 @@ namespace Scripts.InGame.System
             List<Vector2Int> availableTiles = new List<Vector2Int>();
             Vector3 cargoPosition = currentCargo.transform.position;
             Vector2Int cargoTilePos = WorldToTilePosition(cargoPosition);
-
-            // 카고 주변의 사각형 영역 내의 모든 타일 검사
+            
             for (int x = -currentCargo.placementRange; x <= currentCargo.placementRange; x++)
             {
                 for (int y = -currentCargo.placementRange; y <= currentCargo.placementRange; y++)
                 {
                     Vector2Int tilePos = new Vector2Int(cargoTilePos.x + x, cargoTilePos.y + y);
                     
-                    // 맨해튼 거리가 placementRange 이내인지 확인
                     if (Mathf.Abs(x) + Mathf.Abs(y) <= currentCargo.placementRange)
                     {
                         Vector3 worldPos = TileToWorldPosition(tilePos);
-                        
-                        // 해당 위치에 타일이 있는지 확인
+  
                         Collider[] colliders = Physics.OverlapSphere(worldPos, 0.1f, tileLayer);
                         if (colliders.Length > 0)
                         {
@@ -194,14 +195,12 @@ namespace Scripts.InGame.System
         {
             ClearUnits();
         }
-
-        // Stage 이동 시 호출될 메서드
+        
         public void OnStageChange()
         {
             ClearUnits();
         }
 
-        // 유닛 이동 메서드 추가
         public bool MoveUnit(GameObject unit, Vector3 targetPosition)
         {
             if (unit == null || currentCargo == null)
@@ -210,12 +209,10 @@ namespace Scripts.InGame.System
             Vector2Int targetTilePos = WorldToTilePosition(targetPosition);
             if (!IsPositionValid(targetTilePos))
                 return false;
-
-            // 기존 위치에서 제거
+            
             Vector2Int currentTilePos = WorldToTilePosition(unit.transform.position);
             occupiedTiles.Remove(currentTilePos);
-
-            // 새 위치로 이동
+            
             Vector3 newWorldPos = TileToWorldPosition(targetTilePos);
             unit.transform.position = newWorldPos;
             occupiedTiles.Add(targetTilePos);
