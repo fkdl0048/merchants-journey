@@ -27,5 +27,7 @@ namespace Scripts.Utils
     public enum UnitType
     {
         Pyosa,
+        Archer,
+        Warrior
     }
 }

@@ -14,6 +14,7 @@ public class Cargo : MonoBehaviour
 
     public float moveSpeed = 2f;
     public float waitTimeAtPoint = 1f; // 각 지점에서 대기할 시간
+    public int placementRange = 3; // 유닛 배치 가능 범위
     public bool autoStart = false;
 
     private int currentPathIndex = 0;

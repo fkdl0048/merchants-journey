@@ -26,9 +26,6 @@ namespace Scripts.InGame.System
             var gameData = SaveManager.Instance.GetGameData();
             int currentStageNumber = gameData?.currentStage ?? 1;  // 데이터가 없으면 1스테이지부터 시작
 
-            Debug.Log($"Loading stage number: {currentStageNumber}");
-            Debug.Log($"Available stages: {string.Join(", ", stageDatas.Select(x => x.stageNumber))}");
-
             // 현재 스테이지 데이터 찾기
             currentStageData = stageDatas.FirstOrDefault(x => x.stageNumber == currentStageNumber);
             
@@ -38,7 +35,7 @@ namespace Scripts.InGame.System
                 return;
             }
 
-            // 이전 스테이지가 있다면 제거
+            // 이전 스테이지가 있다면 제거하기 전에 UnitSystem에 알림
             if (currentStageInstance != null)
             {
                 Destroy(currentStageInstance);
@@ -47,12 +44,10 @@ namespace Scripts.InGame.System
             // 새 스테이지 생성
             if (currentStageData.stagePrefab == null)
             {
-                Debug.LogError($"Stage {currentStageNumber} prefab is missing!");
                 return;
             }
 
             currentStageInstance = Instantiate(currentStageData.stagePrefab, stageParent);
-            Debug.Log($"Stage {currentStageData.stageNumber} loaded successfully!");
         }
 
         public StageData GetCurrentStageData()

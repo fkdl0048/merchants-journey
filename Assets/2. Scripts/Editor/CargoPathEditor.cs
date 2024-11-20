@@ -10,6 +10,7 @@ public class CargoPathEditor : Editor
     private SerializedProperty serializedPathPointsProp;
     private SerializedProperty moveSpeedProp;
     private SerializedProperty waitTimeAtPointProp;
+    private SerializedProperty placementRangeProp;
     private SerializedProperty autoStartProp;
 
     private void OnEnable()
@@ -18,6 +19,7 @@ public class CargoPathEditor : Editor
         serializedPathPointsProp = serializedObject.FindProperty("serializedPathPoints");
         moveSpeedProp = serializedObject.FindProperty("moveSpeed");
         waitTimeAtPointProp = serializedObject.FindProperty("waitTimeAtPoint");
+        placementRangeProp = serializedObject.FindProperty("placementRange");
         autoStartProp = serializedObject.FindProperty("autoStart");
         
         SceneView.duringSceneGui += OnSceneGUI;
@@ -34,6 +36,7 @@ public class CargoPathEditor : Editor
 
         EditorGUILayout.PropertyField(moveSpeedProp);
         EditorGUILayout.PropertyField(waitTimeAtPointProp);
+        EditorGUILayout.PropertyField(placementRangeProp);
         EditorGUILayout.PropertyField(autoStartProp);
         
         EditorGUILayout.Space();

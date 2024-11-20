@@ -37,6 +37,7 @@ namespace Scripts.UI
         public UnityAction OnRetryClick;
         public UnityAction OnMainMenuClick;
         public UnityAction OnNextStageClick;
+        public UnityAction<UnitType> OnUnitTypeSelected; // 유닛 타입 선택 이벤트
 
         private void Awake()
         {
@@ -79,11 +80,14 @@ namespace Scripts.UI
         {
             HideAllPanels();
             unitPlacementPanel.SetActive(true);
+            // TODO: 유닛 배치 UI 표시
+            // 유닛 선택 버튼들을 활성화하고 각각에 OnUnitTypeSelected 이벤트 연결
         }
 
         public void HideUnitPlacementUI()
         {
             unitPlacementPanel.SetActive(false);
+            // TODO: 유닛 배치 UI 숨기기
         }
 
         public void ShowWaveUI()
@@ -118,5 +122,16 @@ namespace Scripts.UI
         {
             gameOverPanel.SetActive(false);
         }
+
+        // 유닛 타입 선택 버튼 클릭 핸들러
+        public void OnUnitTypeButtonClicked(int unitTypeIndex)
+        {
+            OnUnitTypeSelected?.Invoke((UnitType)unitTypeIndex);
+        }
+    }
+
+    public enum UnitType
+    {
+        // 유닛 타입을 추가하세요
     }
 }

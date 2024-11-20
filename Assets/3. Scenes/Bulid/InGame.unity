@@ -427,10 +427,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 668353da309144f99860e8abb697f3ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitsContainer: {fileID: 0}
-  tileLayerMask:
+  tileSize: 1
+  unitPrefabs:
+  - {fileID: 5105243888908584795, guid: de66388d306d15742ab8e612d773032b, type: 3}
+  - {fileID: 5105243888908584795, guid: de66388d306d15742ab8e612d773032b, type: 3}
+  - {fileID: 5105243888908584795, guid: de66388d306d15742ab8e612d773032b, type: 3}
+  tileLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
 --- !u!1 &1633481748
 GameObject:
   m_ObjectHideFlags: 0
@@ -509,19 +513,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 111558603789182041, guid: c44b5d8cc97bda04f9ff922598320301, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3155214652722460045, guid: c44b5d8cc97bda04f9ff922598320301, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4468664679142537213, guid: c44b5d8cc97bda04f9ff922598320301, type: 3}
       propertyPath: m_Name
       value: GameUI
-      objectReference: {fileID: 0}
-    - target: {fileID: 7785299332108794276, guid: c44b5d8cc97bda04f9ff922598320301, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8151263319431621775, guid: c44b5d8cc97bda04f9ff922598320301, type: 3}
       propertyPath: m_LocalPosition.x
