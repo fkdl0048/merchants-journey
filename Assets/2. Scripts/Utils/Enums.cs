@@ -20,8 +20,8 @@ namespace Scripts.Utils
     {
         UnitPlacement,
         Wave,
-        GameClear,
-        GameOver
+        StageClear,
+        StageOver
     }
     
     public enum UnitType

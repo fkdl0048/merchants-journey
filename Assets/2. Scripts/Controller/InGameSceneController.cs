@@ -43,8 +43,12 @@ namespace Scripts.Controller
                     new BattleState(this, gameUI)
                 },
                 {
-                    InGameState.GameClear,
+                    InGameState.StageClear,
                     new StageClearState(this, gameUI)
+                },
+                {
+                    InGameState.StageOver,
+                    new StageOverState(this, gameUI)
                 },
                 // stage fail state
             };

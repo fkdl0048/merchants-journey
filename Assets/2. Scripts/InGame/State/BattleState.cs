@@ -28,10 +28,17 @@ namespace Scripts.InGame.State
         
             // 이벤트 리스너 등록
             //BattleSystem.OnWaveComplete += HandleWaveComplete;
+            
+            // UI 초기화
+            gameUI.ShowWaveUI();
+            
+            // 테스트용: 다음 상태로 전환하는 이벤트 구독
+            gameUI.OnUnitPlacementComplete += HandleWaveComplete;
         }
 
         public void Update()
         {
+            // 실제 게임에서는 여기서 웨이브 진행 상황을 업데이트
             // 유닛과 적 업데이트
             //BattleSystem.Update();
             
@@ -42,13 +49,18 @@ namespace Scripts.InGame.State
 
         public void Exit()
         {
-            // UI 정리
             //gameUI.HideWaveUI();
         
             // 전투 시스템 정리
             //BattleSystem.EndWave();
         
             // 이벤트 리스너 제거
+            
+            // UI 정리
+            gameUI.HideWaveUI();
+            
+            // 이벤트 구독 해제
+            gameUI.OnUnitPlacementComplete -= HandleWaveComplete;
         }
 
         private void HandleWaveComplete()
@@ -62,6 +74,9 @@ namespace Scripts.InGame.State
             //     waveManager.PrepareNextWave();
             //     controller.ChangeInGameState(InGameState.UnitPlacement);
             // }
+            
+            // 웨이브가 완료되면 게임 클리어 상태로 전환
+            controller.ChangeInGameState(InGameState.StageClear);
         }
 
         private void HandleGameOver()

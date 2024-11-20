@@ -2,6 +2,7 @@ using Scripts.Controller;
 using Scripts.InGame;
 using Scripts.Interface;
 using Scripts.UI;
+using Scripts.Utils;
 using UnityEngine;
 
 namespace Scripts.InGame.State
@@ -21,11 +22,15 @@ namespace Scripts.InGame.State
 
         public void Enter()
         {
-            // UI 초기화
-            gameUI.ShowUnitPlacementUI();
             
             // 배치 시스템 초기화
             //unitSystem.EnablePlacementMode();
+            
+            // UI 초기화
+            gameUI.ShowUnitPlacementUI();
+            
+            // 이벤트 구독
+            gameUI.OnUnitPlacementComplete += HandlePlacementComplete;
         }
 
         public void Update()
@@ -42,11 +47,14 @@ namespace Scripts.InGame.State
 
         public void Exit()
         {
-            // UI 정리
-            gameUI.HideUnitPlacementUI();
             
             // 배치 시스템 정리
             //unitSystem.DisablePlacementMode();
+            // UI 정리
+            gameUI.HideUnitPlacementUI();
+            
+            // 이벤트 구독 해제
+            gameUI.OnUnitPlacementComplete -= HandlePlacementComplete;
         }
 
         private void HandleUnitPlacement()
@@ -62,6 +70,12 @@ namespace Scripts.InGame.State
         {
             // Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             // unitSystem.UpdatePlacementPreview(mousePosition);
+        }
+
+        private void HandlePlacementComplete()
+        {
+            // 유닛 배치가 완료되면 Wave 상태로 전환
+            controller.ChangeInGameState(InGameState.Wave);
         }
     }
 }

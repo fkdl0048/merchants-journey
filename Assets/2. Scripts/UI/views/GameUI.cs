@@ -18,7 +18,7 @@ namespace Scripts.UI
         [SerializeField] private GameObject wavePanel;
         [SerializeField] private TextMeshProUGUI waveText;
         [SerializeField] private Slider waveProgressBar;
-
+        
         [Header("Game Clear UI")]
         [SerializeField] private GameObject gameClearPanel;
         [SerializeField] private Button nextStageButton;
@@ -28,6 +28,9 @@ namespace Scripts.UI
         [SerializeField] private GameObject gameOverPanel;
         [SerializeField] private Button retryButton;
         [SerializeField] private Button gameOverMenuButton;
+
+        [Header("Next State Button (Test)")]
+        [SerializeField] private Button nextStateButton;
 
         // Events => 복잡해질 것 같아서 에디터에서 설정 가능하게 UnityAction으로 변경
         public UnityAction OnUnitPlacementComplete;
@@ -53,6 +56,12 @@ namespace Scripts.UI
             clearMenuButton.onClick.AddListener(() => OnMainMenuClick?.Invoke());
             gameOverMenuButton.onClick.AddListener(() => OnMainMenuClick?.Invoke());
 
+            // 테스트용 NextState 버튼
+            if (nextStateButton != null)
+            {
+                nextStateButton.onClick.AddListener(() => OnUnitPlacementComplete?.Invoke());
+            }
+
             // 모든 패널 비활성화
             HideAllPanels();
         }
@@ -77,6 +86,37 @@ namespace Scripts.UI
             unitPlacementPanel.SetActive(false);
         }
 
-        // 다른 UI 메서드들..
+        public void ShowWaveUI()
+        {
+            HideAllPanels();
+            wavePanel.SetActive(true);
+        }
+        
+        public void HideWaveUI()
+        {
+            wavePanel.SetActive(false);
+        }
+
+        public void ShowGameClearUI()
+        {
+            HideAllPanels();
+            gameClearPanel.SetActive(true);
+        }
+        
+        public void HideGameClearUI()
+        {
+            gameClearPanel.SetActive(false);
+        }
+
+        public void ShowGameOverUI()
+        {
+            HideAllPanels();
+            gameOverPanel.SetActive(true);
+        }
+        
+        public void HideGameOverUI()
+        {
+            gameOverPanel.SetActive(false);
+        }
     }
 }

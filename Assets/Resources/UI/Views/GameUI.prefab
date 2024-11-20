@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b08a7f7e29749c784e225f0fce24fa2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvas: {fileID: 6950391349706127016}
   unitPlacementPanel: {fileID: 5177276715148658626}
   placementCompleteButton: {fileID: 8489687681056937090}
   wavePanel: {fileID: 2319231783022335793}
@@ -56,6 +57,7 @@ MonoBehaviour:
   gameOverPanel: {fileID: 2664831766530740503}
   retryButton: {fileID: 6127026375877136015}
   gameOverMenuButton: {fileID: 6589648596877993289}
+  nextStateButton: {fileID: 8561953609863172018}
 --- !u!1 &7785299332108794276
 GameObject:
   m_ObjectHideFlags: 0
@@ -556,6 +558,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1222545265104943358, guid: 4a8a3d4ec85027f43a8fa356e1048a9e, type: 3}
   m_PrefabInstance: {fileID: 8217069825860596416}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8561953609863172018 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 349818460907568498, guid: 4a8a3d4ec85027f43a8fa356e1048a9e, type: 3}
+  m_PrefabInstance: {fileID: 8217069825860596416}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8365303701010172549
 PrefabInstance:
   m_ObjectHideFlags: 0

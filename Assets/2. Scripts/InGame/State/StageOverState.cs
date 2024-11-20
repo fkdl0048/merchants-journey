@@ -1,19 +1,17 @@
 using Scripts.Controller;
 using Scripts.Interface;
-using Scripts.Manager;
 using Scripts.UI;
 using Scripts.Utils;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Scripts.InGame.State
 {
-    public class StageClearState : IInGameState
+    public class StageOverState : IInGameState
     {
         private readonly InGameSceneController controller;
         private readonly GameUI gameUI;
 
-        public StageClearState(InGameSceneController controller, GameUI gameUI)
+        public StageOverState(InGameSceneController controller, GameUI gameUI)
         {
             this.controller = controller;
             this.gameUI = gameUI;
@@ -21,38 +19,37 @@ namespace Scripts.InGame.State
 
         public void Enter()
         {
-            // UI 표시
-            gameUI.ShowGameClearUI();
+            // UI 초기화
+            gameUI.ShowGameOverUI();
             
-            // 이벤트 리스너 등록
-            gameUI.OnNextStageClick += HandleNextStage;
+            // 이벤트 구독
+            gameUI.OnRetryClick += HandleRetry;
             gameUI.OnMainMenuClick += HandleMainMenu;
         }
 
         public void Update()
         {
-            // 스테이지 클리어 상태에서는 특별한 업데이트가 필요 없음
+            // 게임오버 상태에서는 특별한 업데이트가 필요 없음
         }
 
         public void Exit()
         {
             // UI 정리
-            gameUI.HideGameClearUI();
-        
-            // 이벤트 리스너 제거
-            gameUI.OnNextStageClick -= HandleNextStage;
+            gameUI.HideGameOverUI();
+            
+            // 이벤트 구독 해제
+            gameUI.OnRetryClick -= HandleRetry;
             gameUI.OnMainMenuClick -= HandleMainMenu;
         }
 
-        private void HandleNextStage()
+        private void HandleRetry()
         {
-            // 다음 스테이지를 위해 다시 유닛 배치 상태로
+            // 다시 유닛 배치 상태로 돌아감
             controller.ChangeInGameState(InGameState.UnitPlacement);
         }
 
         private void HandleMainMenu()
         {
-            // 메인 메뉴로 돌아가기
             SceneManager.LoadScene("Title");
         }
     }
