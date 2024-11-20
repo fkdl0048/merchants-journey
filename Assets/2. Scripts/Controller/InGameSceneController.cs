@@ -1,7 +1,6 @@
-using System;
 using System.Collections.Generic;
-using Scripts.InGame;
 using Scripts.InGame.State;
+using Scripts.InGame.System;
 using Scripts.Interface;
 using Scripts.Manager;
 using Scripts.UI;
@@ -14,8 +13,9 @@ namespace Scripts.Controller
     {
         [Header("Scene References")]
         [SerializeField] private GameUI gameUI;
-        [SerializeField] private AudioClip gameBGM;
         [SerializeField] private UnitSystem unitSystem;
+        [SerializeField] private StageSystem stageController;
+        [SerializeField] private AudioClip gameBGM;
         
         private Dictionary<InGameState, IInGameState> states;
         private IInGameState currentState;
@@ -36,7 +36,7 @@ namespace Scripts.Controller
             {
                 {
                     InGameState.UnitPlacement,
-                    new UnitPlacementState(this, gameUI, unitSystem)
+                    new UnitPlacementState(this, gameUI, unitSystem, stageController)
                 },
                 {
                     InGameState.Wave,

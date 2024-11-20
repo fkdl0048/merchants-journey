@@ -1,5 +1,6 @@
 using Scripts.Controller;
 using Scripts.InGame;
+using Scripts.InGame.System;
 using Scripts.Interface;
 using Scripts.UI;
 using Scripts.Utils;
@@ -12,16 +13,25 @@ namespace Scripts.InGame.State
         private readonly InGameSceneController controller;
         private readonly GameUI gameUI;
         private readonly UnitSystem unitSystem;
+        private readonly StageSystem stageController;
 
-        public UnitPlacementState(InGameSceneController controller, GameUI gameUI, UnitSystem unitSystem)
+        public UnitPlacementState(InGameSceneController controller, GameUI gameUI, UnitSystem unitSystem, StageSystem stageController)
         {
             this.controller = controller;
             this.gameUI = gameUI;
             this.unitSystem = unitSystem;
+            this.stageController = stageController;
         }
 
         public void Enter()
         {
+            // 스테이지 로드
+            stageController.LoadStage();
+            // if (stageData == null)
+            // {
+            //     Debug.LogError("Failed to load stage data!");
+            //     return;
+            // }
             
             // 배치 시스템 초기화
             //unitSystem.EnablePlacementMode();

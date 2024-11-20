@@ -3,7 +3,7 @@ using Scripts.Data;
 using Scripts.Manager;
 using UnityEngine;
 
-namespace Scripts.InGame
+namespace Scripts.InGame.System
 {
     public class UnitSystem : MonoBehaviour
     {

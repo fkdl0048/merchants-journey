@@ -47,6 +47,10 @@ namespace Scripts.InGame.State
         private void HandleNextStage()
         {
             // 다음 스테이지를 위해 다시 유닛 배치 상태로
+            var gameData = SaveManager.Instance.GetGameData();
+            gameData.currentStage++;
+            SaveManager.Instance.SaveGameData(gameData);
+            
             controller.ChangeInGameState(InGameState.UnitPlacement);
         }
 

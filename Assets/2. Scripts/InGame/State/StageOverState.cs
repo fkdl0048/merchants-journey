@@ -1,5 +1,6 @@
 using Scripts.Controller;
 using Scripts.Interface;
+using Scripts.Manager;
 using Scripts.UI;
 using Scripts.Utils;
 using UnityEngine.SceneManagement;
