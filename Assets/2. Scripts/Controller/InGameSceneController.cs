@@ -82,7 +82,10 @@ namespace Scripts.Controller
 
         private void OnDestroy()
         {
-            currentState?.Exit();
+            if (this.gameObject.scene.isLoaded)  // 씬이 아직 로드되어 있을 때만 실행
+            {
+                currentState?.Exit();
+            }
         }
         
     }
