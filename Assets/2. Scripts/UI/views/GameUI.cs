@@ -7,6 +7,9 @@ namespace Scripts.UI
 {
     public class GameUI : UIBase
     {
+        [Header("Canvas")]
+        [SerializeField] private Canvas canvas;
+        
         [Header("Unit Placement UI")]
         [SerializeField] private GameObject unitPlacementPanel;
         [SerializeField] private Button placementCompleteButton;
@@ -34,6 +37,11 @@ namespace Scripts.UI
 
         private void Awake()
         {
+            if (canvas.gameObject.activeSelf == false)
+            {
+                canvas.gameObject.SetActive(true);
+            }
+
             InitializeUI();
         }
 
