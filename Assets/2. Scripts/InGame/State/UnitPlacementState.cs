@@ -18,6 +18,7 @@ namespace Scripts.InGame.State
         
         private List<MeshRenderer> highlightedTiles = new List<MeshRenderer>();
         private Color originalTileColor;
+        private GameObject selectedUnit;
         // 파랑색
         private static readonly Color highlightColor = new Color(0.2f, 0.2f, 1f, 0.6f);
 
@@ -50,6 +51,74 @@ namespace Scripts.InGame.State
             unitSystem.Initialize(cargo);
             HighlightPlacementArea(cargo);
             unitSystem.SpawnInitialUnits();
+        }
+
+        public void Exit()
+        {
+            gameUI.OnUnitPlacementComplete -= HandlePlacementComplete;
+            ResetTileColors();
+            selectedUnit = null;
+        }
+
+        public void Update()
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                HandleMouseClick();
+            }
+        }
+
+        private void HandleMouseClick()
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            // 디버그 레이 그리기 (씬 뷰에서만 보임)
+            Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red, 1f);
+            Debug.Log($"Mouse Position: {Input.mousePosition}, Ray Origin: {ray.origin}, Ray Direction: {ray.direction}");
+
+            if (Physics.Raycast(ray, out hit))
+            {
+                Debug.Log($"Hit object: {hit.collider.gameObject.name}, Tag: {hit.collider.tag}, Position: {hit.point}");
+                
+                if (selectedUnit == null)
+                {
+                    // 유닛 선택
+                    if (hit.collider.CompareTag("Unit"))
+                    {
+                        Debug.Log("Unit selected");
+                        selectedUnit = hit.collider.gameObject;
+                    }
+                }
+                else
+                {
+                    // 타일 선택하여 유닛 이동
+                    var tile = hit.collider.GetComponent<Tile>();
+                    if (tile != null && tile.isWalkable)
+                    {
+                        if (unitSystem.MoveUnit(selectedUnit, hit.point))
+                        {
+                            Debug.Log($"Unit moved to: {hit.point}");
+                            selectedUnit = null; // 선택 해제
+                        }
+                    }
+                    else
+                    {
+                        // 타일이 아닌 곳을 클릭하면 선택 해제
+                        Debug.Log("Unit deselected");
+                        selectedUnit = null;
+                    }
+                }
+            }
+            else
+            {
+                Debug.Log("No hit detected");
+            }
+        }
+
+        private void HandlePlacementComplete()
+        {
+            controller.ChangeInGameState(InGameState.Wave);
         }
 
         private void HighlightPlacementArea(Cargo cargo)
@@ -104,31 +173,6 @@ namespace Scripts.InGame.State
                 }
             }
             highlightedTiles.Clear();
-        }
-
-        public void Update()
-        {
-            // 필요한 경우 업데이트 로직 구현
-        }
-
-        public void Exit()
-        {
-            Debug.Log("[UnitPlacementState] Exit");
-            
-            ResetTileColors();
-            // UI 정리
-            gameUI.HideUnitPlacementUI();
-            
-            // 이벤트 구독 해제
-            gameUI.OnUnitPlacementComplete -= HandlePlacementComplete;
-            
-            Debug.Log("[UnitPlacementState] Exit completed");
-        }
-
-        private void HandlePlacementComplete()
-        {
-            Debug.Log("[UnitPlacementState] Placement complete - Changing to Wave state");
-            controller.ChangeInGameState(InGameState.Wave);
         }
     }
 }

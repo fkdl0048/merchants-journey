@@ -200,5 +200,27 @@ namespace Scripts.InGame.System
         {
             ClearUnits();
         }
+
+        // 유닛 이동 메서드 추가
+        public bool MoveUnit(GameObject unit, Vector3 targetPosition)
+        {
+            if (unit == null || currentCargo == null)
+                return false;
+
+            Vector2Int targetTilePos = WorldToTilePosition(targetPosition);
+            if (!IsPositionValid(targetTilePos))
+                return false;
+
+            // 기존 위치에서 제거
+            Vector2Int currentTilePos = WorldToTilePosition(unit.transform.position);
+            occupiedTiles.Remove(currentTilePos);
+
+            // 새 위치로 이동
+            Vector3 newWorldPos = TileToWorldPosition(targetTilePos);
+            unit.transform.position = newWorldPos;
+            occupiedTiles.Add(targetTilePos);
+
+            return true;
+        }
     }
 }
