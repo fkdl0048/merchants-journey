@@ -12,17 +12,14 @@ namespace ObjectAI
                 return;
             }
 
-            //적을 향해  돌진
-            agent.SetDestination(targetEnemy.position);
+            agent.SetDestination(targetEnemy.position); //적을 향해 돌진
 
             //공격 범위 체크
             Transform obj = CheckRange(status.attackRange, targetTag);
             if (obj == null)
                 return;
             else
-            {
                 fsm = FSM.Attack;
-            }
         }
         protected override void IdleBehavior()
         {

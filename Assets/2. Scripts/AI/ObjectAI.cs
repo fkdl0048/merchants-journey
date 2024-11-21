@@ -24,14 +24,15 @@ namespace ObjectAI
 
         [Header("Object Status")]
         [SerializeField] protected ObjectStatus status;
-        protected int currentHP;
+        [SerializeField] protected int currentHP;
         [SerializeField] protected FSM fsm;
 
         [Header("Debug Mode Enable")]
         [SerializeField] private bool debugModeEnable = true;
 
         //BATTLE
-        protected Transform targetEnemy;
+        [Header("Debug")]
+        [SerializeField] protected Transform targetEnemy;
         protected bool isAttack = false;
 
         [Header("Test Code")]
@@ -40,8 +41,7 @@ namespace ObjectAI
         private void Start()
         {
             agent = GetComponent<NavMeshAgent>();
-            //currentHP = status.hp;
-            currentHP = 10;
+            currentHP = status.hp;
         }
         private void Update()
         {
@@ -76,7 +76,7 @@ namespace ObjectAI
             isAttack = true;
             yield return new WaitForSeconds(status.attackSpeed);
             //박스 생성
-            Collider[] targets = CheckAttackCollider(targetEnemy, status.hitboxRange, targetTag);
+            Collider[] targets = CheckAttackCollider(status.hitboxRange, targetTag);
             if (targets != null)
             {
                 foreach (Collider target in targets)
@@ -95,19 +95,19 @@ namespace ObjectAI
             if(currentHP <= 0)
                 fsm = FSM.Dead;
         }
-        protected Collider[] CheckAttackCollider(Transform target, float range, string targetTag)
+        protected Collider[] CheckAttackCollider(float range, string targetTag)
         {
-            if (target == null)
+            if (targetEnemy == null)
                 return null;
 
-            Vector3 direction = target.transform.position - transform.position;
+            Vector3 direction = targetEnemy.transform.position - transform.position;
             direction = direction.normalized * range;
 
             Collider[] hitColliders = Physics.OverlapBox(transform.position + direction,
                 new Vector3(range, range, range));
-            hitColliders.Select(x => x.CompareTag(targetTag)).ToArray();
+            Collider[] results = hitColliders.Where(x => x.CompareTag(targetTag)).Select(x => x).ToArray();
 
-            return hitColliders;
+            return results;
         }
         protected Transform CheckRange(float range, string targetTag)
         {
@@ -121,6 +121,7 @@ namespace ObjectAI
             }
             return null;
         }
+
         //Debug Code
         private void OnDrawGizmos()
         {
@@ -130,8 +131,10 @@ namespace ObjectAI
             DrawGizmosCircle(Color.green, status.recognizeRange);
             DrawGizmosCircle(Color.red, status.attackRange);
 
-            var range = status.hitboxRange;
-            Gizmos.DrawWireCube(transform.position + pos, new Vector3(range, range, range));
+        }
+        private void OnDrawGizmosSelected()
+        {
+            DrawGizmosHitboxRange(Color.gray, status.hitboxRange);
         }
         private void DrawGizmosCircle(Color color, float radius)
         {
@@ -142,13 +145,22 @@ namespace ObjectAI
             for (int i = 0; i <= segments; i++)
             {
                 float angle = i * Mathf.PI * 2 / segments;
-                Vector3 newPoint = new Vector3(Mathf.Cos(angle) * radius, 0, Mathf.Sin(angle) * radius);
+                Vector3 newPoint = new (Mathf.Cos(angle) * radius, 0, Mathf.Sin(angle) * radius);
 
                 if (i > 0)
                     Gizmos.DrawLine(transform.position + previousPoint, transform.position + newPoint);
 
                 previousPoint = newPoint;
             }
+        }
+        private void DrawGizmosHitboxRange(Color color, float radius)
+        {
+           if(targetEnemy == null) return;
+
+            Vector3 direction = targetEnemy.transform.position - transform.position;
+            direction = direction.normalized * radius;
+
+            Gizmos.DrawWireCube(transform.position + direction, new Vector3(radius, radius, radius));
         }
     }
 }
