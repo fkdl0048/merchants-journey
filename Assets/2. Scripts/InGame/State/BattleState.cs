@@ -3,6 +3,7 @@ using Scripts.InGame.System;
 using Scripts.Interface;
 using Scripts.UI;
 using Scripts.Utils;
+using UnityEngine;
 
 namespace Scripts.InGame.State
 {
@@ -38,6 +39,15 @@ namespace Scripts.InGame.State
             // 실제 게임에서는 여기서 웨이브 진행 상황을 업데이트
             // 유닛과 적 업데이트
             //BattleSystem.Update();
+            
+            // 카메라가 화물을 따라가도록 업데이트
+            if (Camera.main != null && cargo != null)
+            {
+                Vector3 cargoPosition = cargo.transform.position;
+                Vector3 cameraOffset = new Vector3(-30f, 30f, -30f);
+                Camera.main.transform.position = cargoPosition + cameraOffset;
+                Camera.main.transform.rotation = Quaternion.Euler(35f, 45f, 0f);
+            }
             
             // UI 업데이트
             //gameUI.UpdateWaveProgress(waveManager.GetWaveProgress());
