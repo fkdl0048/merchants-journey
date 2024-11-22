@@ -1,3 +1,5 @@
+using Scripts.InGame.Stage;
+using Scripts.Manager;
 using System.Collections;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -16,6 +18,7 @@ namespace ObjectAI
     public abstract class ObjectAI : MonoBehaviour
     {
         protected NavMeshAgent agent;
+        protected Stage currentStage;
 
         [Header("Target Object")]
         [SerializeField] protected Transform target;
@@ -25,7 +28,7 @@ namespace ObjectAI
         [SerializeField] protected ObjectStatus status;
         [SerializeField] protected int currentHP;
         [SerializeField] protected FSM fsm;
-        protected SpriteRenderer renderer;
+        protected SpriteRenderer spriteRenderer;
 
         [Header("Debug Mode Enable")]
         [SerializeField] private bool debugModeEnable = true;
@@ -38,19 +41,23 @@ namespace ObjectAI
         [Header("Test Code")]
         [SerializeField] private Vector3 pos;
 
-        public void Setup(Transform cargo)
+        public void Setup(Stage currentStage, Transform cargo)
         {
             target = cargo;
+            this.currentStage = currentStage;
         }
+        
         private void Start()
         {
             agent = GetComponent<NavMeshAgent>();
-            renderer = GetComponent<SpriteRenderer>();
+            spriteRenderer = GetComponent<SpriteRenderer>();
 
             currentHP = status.hp;
         }
         private void Update()
         {
+            if (currentStage.aiEnable == false)
+                return;
             switch (fsm)
             {
                 case FSM.Idle:
@@ -114,7 +121,7 @@ namespace ObjectAI
                 rig.isKinematic = false;
                 rig.AddForce(dir * force, ForceMode.Impulse);
                 //번쩍이는 효과 적용
-                EnableFlashEffect();
+                StartCoroutine(EnableFlashEffect());
                 yield return new WaitForSeconds(0.25f);
                 //복원
                 rig.isKinematic = true;
@@ -122,13 +129,13 @@ namespace ObjectAI
         }
         private IEnumerator EnableFlashEffect()
         {
-            var material = renderer.material;
+            var material = spriteRenderer.material;
             if (material == null)
                 yield return null;
 
             material.SetFloat("_FlashAmount", 1.0f);
 
-            yield return new WaitForSeconds(0.25f);
+            yield return new WaitForSeconds(0.5f);
 
             material.SetFloat("_FlashAmount", 0.0f);
         }

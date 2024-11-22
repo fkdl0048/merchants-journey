@@ -1,4 +1,6 @@
+using Scripts.Manager;
 using Unity.AI.Navigation;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Scripts.InGame.Stage
@@ -9,10 +11,16 @@ namespace Scripts.InGame.Stage
         [SerializeField] private Cargo cargoPrefab;
         [SerializeField] private NavMeshSurface surface;
 
+        [SerializeField] public bool aiEnable = false;
         private void Awake()
         {
             if(surface != null)
                 surface.BuildNavMesh();
         }
+        private void Start()
+        {
+            EventManager.Instance.AddListener("AIEnableTrigger", OnAIEnable);
+        }
+        private void OnAIEnable(object[] datas) => aiEnable = true;
     }
 }

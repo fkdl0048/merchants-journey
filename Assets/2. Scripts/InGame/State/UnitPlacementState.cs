@@ -6,6 +6,7 @@ using Scripts.UI;
 using Scripts.Utils;
 using UnityEngine;
 using System.Collections.Generic;
+using Scripts.Manager;
 
 namespace Scripts.InGame.State
 {
@@ -129,6 +130,7 @@ namespace Scripts.InGame.State
         private void HandlePlacementComplete()
         {
             controller.ChangeInGameState(InGameState.Wave);
+            EventManager.Instance.TriggerEvent("AIEnableTrigger", null);
         }
 
         private void HighlightPlacementArea(Cargo cargo)

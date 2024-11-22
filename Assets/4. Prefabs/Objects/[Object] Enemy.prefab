@@ -101,7 +101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  targetTag: Player
+  targetTag: Unit
   status: {fileID: 11400000, guid: cc5be834c5b14e149898940625521f94, type: 2}
   currentHP: 0
   fsm: 0
