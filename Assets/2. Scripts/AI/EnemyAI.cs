@@ -16,8 +16,8 @@ namespace ObjectAI
             Transform obj = CheckRange(status.attackRange, targetTag);
             if (obj == null)
             {
-                agent.SetDestination(targetEnemy.position); //적을 향해 돌진
                 agent.isStopped = false;
+                agent.SetDestination(targetEnemy.position); // 적을 향해 돌진
             }
             else
             {
@@ -27,10 +27,8 @@ namespace ObjectAI
         }
         protected override void IdleBehavior()
         {
-            //화물로 이동
             agent.isStopped = false;
             agent.SetDestination(target.position);
-
             //탐지 범위 내에 적군 오브젝트가 잡혔다면?
             Transform obj = CheckRange(status.recognizeRange, targetTag);
             if (obj == null)

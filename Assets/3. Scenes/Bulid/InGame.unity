@@ -429,9 +429,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileSize: 1
   unitPrefabs:
-  - {fileID: 5105243888908584795, guid: de66388d306d15742ab8e612d773032b, type: 3}
-  - {fileID: 5105243888908584795, guid: de66388d306d15742ab8e612d773032b, type: 3}
-  - {fileID: 5105243888908584795, guid: de66388d306d15742ab8e612d773032b, type: 3}
+  - {fileID: 4258276044113151969, guid: 7ce58e31a557c4e4f8aff816d3a2d542, type: 3}
+  - {fileID: 4258276044113151969, guid: 7ce58e31a557c4e4f8aff816d3a2d542, type: 3}
+  - {fileID: 4258276044113151969, guid: 7ce58e31a557c4e4f8aff816d3a2d542, type: 3}
   tileLayer:
     serializedVersion: 2
     m_Bits: 64

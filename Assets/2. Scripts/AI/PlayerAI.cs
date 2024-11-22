@@ -16,8 +16,8 @@ namespace ObjectAI
             Transform obj = CheckRange(status.attackRange, targetTag);
             if (obj == null)
             {
-                agent.SetDestination(targetEnemy.position); //적을 향해 돌진
                 agent.isStopped = false;
+                agent.SetDestination(targetEnemy.position); //적을 향해 돌진
             }
             else
             {

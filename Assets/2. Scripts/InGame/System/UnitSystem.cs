@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using ObjectAI;
 using Scripts.Utils;
 using UnityEngine;
+using UnityEngine.AI;
 
 // 11-21 현재 코드는 임시로 랜덤 위치에 유닛 생성
 // 이후에 업그레이드? 시스템으로 변경 예정
@@ -75,9 +77,23 @@ namespace Scripts.InGame.System
             if (unitPrefab == null)
                 return null;
 
+            // 11-23 by 우성
+            // 만든 AI 아군 프리팹 생성
             GameObject spawnedUnit = Instantiate(unitPrefab, tileCenter, Quaternion.identity);
             spawnedUnit.transform.SetParent(currentCargo.transform);
-            
+            spawnedUnit.transform.eulerAngles = new Vector3(35, 45, 0);
+            spawnedUnit.GetComponent<PlayerAI>().Setup(currentCargo.gameObject.transform.parent.GetComponent<Stage.Stage>(),
+                currentCargo.transform);
+            if (spawnedUnit.TryGetComponent<NavMeshAgent>(out var agent))
+            {
+                if (NavMesh.SamplePosition(spawnedUnit.transform.position, out NavMeshHit hit, 1.0f, NavMesh.AllAreas))
+                {
+                    agent.Warp(hit.position); // 위치를 NavMesh 위로 조정
+                }
+                else
+                    Debug.LogError("NavMesh 위에서 에이전트를 생성할 수 없습니다.");
+            }
+
             occupiedTiles.Add(tilePos);
             spawnedUnits.Add(spawnedUnit);
             return spawnedUnit;
