@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Warrior
   m_EditorClassIdentifier: 
   hp: 2
-  recognizeRange: 5
+  recognizeRange: 3
   moveSpeed: 1
   damage: 1
   attackSpeed: 1
-  attackRange: 2
-  hitboxRange: 1
+  attackRange: 1
+  hitboxRange: 0.5

@@ -30,6 +30,10 @@ namespace ObjectAI
         [SerializeField] protected FSM fsm;
         protected SpriteRenderer spriteRenderer;
 
+        [Header("Sound Clip")]
+        [SerializeField] private AudioClip hitSoundClip;
+        [SerializeField] private AudioClip hittedSoundClip;
+
         [Header("Debug Mode Enable")]
         [SerializeField] private bool debugModeEnable = true;
 
@@ -88,6 +92,8 @@ namespace ObjectAI
             //공격시간 대기
             isAttack = true;
             yield return new WaitForSeconds(status.attackSpeed);
+            //공격 사운드 재생
+            AudioManager.Instance.PlaySFX(hitSoundClip);
             //박스 생성
             Collider[] targets = CheckAttackCollider(status.hitboxRange, targetTag);
             if (targets != null)
@@ -104,6 +110,8 @@ namespace ObjectAI
         }
         public void Hitted(int damage, Vector3 hitterPos)
         {
+            AudioManager.Instance.PlaySFX(hittedSoundClip);
+
             currentHP -= damage;
             if(currentHP <= 0)
                 fsm = FSM.Dead;

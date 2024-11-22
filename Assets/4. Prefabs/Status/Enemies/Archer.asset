@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 682ef7f988fae2d44b590f24a259f278, type: 3}
   m_Name: Archer
   m_EditorClassIdentifier: 
-  hp: 5
-  recognizeRange: 20
+  hp: 2
+  recognizeRange: 3
   moveSpeed: 1
-  damage: 5
+  damage: 1
   attackSpeed: 1
-  attackRange: 5
+  attackRange: 1
+  hitboxRange: 0.5
