@@ -1,4 +1,5 @@
 using System;
+using Scripts.Manager;
 using Scripts.Utils;
 
 public class GameManager : Singleton<GameManager>
@@ -11,10 +12,5 @@ public class GameManager : Singleton<GameManager>
     {
         CurrentGameState = newState;
         OnGameStateChanged?.Invoke(newState);
-    }
-
-    public override void Init()
-    {
-        //throw new NotImplementedException();
     }
 }
