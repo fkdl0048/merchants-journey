@@ -72,13 +72,17 @@ namespace Scripts.InGame.State
 
         public void Update()
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0)) // Left click
             {
-                HandleMouseClick();
+                HandleLeftClick();
+            }
+            else if (Input.GetMouseButtonDown(1)) // Right click
+            {
+                HandleRightClick();
             }
         }
 
-        private void HandleMouseClick()
+        private void HandleLeftClick()
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -91,38 +95,44 @@ namespace Scripts.InGame.State
             {
                 Debug.Log($"Hit object: {hit.collider.gameObject.name}, Tag: {hit.collider.tag}, Position: {hit.point}");
                 
-                if (selectedUnit == null)
+                // 유닛 선택
+                if (hit.collider.CompareTag("Unit"))
                 {
-                    // 유닛 선택
-                    if (hit.collider.CompareTag("Unit"))
-                    {
-                        Debug.Log("Unit selected");
-                        selectedUnit = hit.collider.gameObject;
-                    }
-                }
-                else
-                {
-                    // 타일 선택하여 유닛 이동
-                    var tile = hit.collider.GetComponent<Tile>();
-                    if (tile != null && tile.isWalkable)
-                    {
-                        if (unitSystem.MoveUnit(selectedUnit, hit.point))
-                        {
-                            Debug.Log($"Unit moved to: {hit.point}");
-                            selectedUnit = null; // 선택 해제
-                        }
-                    }
-                    else
-                    {
-                        // 타일이 아닌 곳을 클릭하면 선택 해제
-                        Debug.Log("Unit deselected");
-                        selectedUnit = null;
-                    }
+                    Debug.Log("Unit selected");
+                    selectedUnit = hit.collider.gameObject;
                 }
             }
             else
             {
                 Debug.Log("No hit detected");
+            }
+        }
+
+        private void HandleRightClick()
+        {
+            if (selectedUnit == null) return;
+
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit))
+            {
+                // 타일 선택하여 유닛 이동
+                var tile = hit.collider.GetComponent<Tile>();
+                if (tile != null && tile.isWalkable)
+                {
+                    if (unitSystem.MoveUnit(selectedUnit, hit.point))
+                    {
+                        Debug.Log($"Unit moved to: {hit.point}");
+                        selectedUnit = null; // 선택 해제
+                    }
+                }
+                else
+                {
+                    // 타일이 아닌 곳을 클릭하면 선택 해제
+                    Debug.Log("Unit deselected");
+                    selectedUnit = null;
+                }
             }
         }
 
