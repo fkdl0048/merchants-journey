@@ -14,7 +14,8 @@ public class Cargo : MonoBehaviour
 
     public float moveSpeed = 2f;
     public float waitTimeAtPoint = 1f;
-    public int placementRange = 3;
+    public int width = 6;  // N tiles
+    public int height = 6; // M tiles
     public bool autoStart = false;
 
     private int currentPathIndex = 0;

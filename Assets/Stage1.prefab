@@ -7329,6 +7329,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5209087303297791877, guid: 517c20db6202f10459ea1d7bc8118beb, type: 3}
+      propertyPath: width
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5209087303297791877, guid: 517c20db6202f10459ea1d7bc8118beb, type: 3}
+      propertyPath: height
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5209087303297791877, guid: 517c20db6202f10459ea1d7bc8118beb, type: 3}
       propertyPath: placementRange
       value: 3
       objectReference: {fileID: 0}
