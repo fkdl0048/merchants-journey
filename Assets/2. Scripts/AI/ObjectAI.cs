@@ -38,6 +38,10 @@ namespace ObjectAI
         [Header("Test Code")]
         [SerializeField] private Vector3 pos;
 
+        public void Setup(Transform cargo)
+        {
+            target = cargo;
+        }
         private void Start()
         {
             agent = GetComponent<NavMeshAgent>();

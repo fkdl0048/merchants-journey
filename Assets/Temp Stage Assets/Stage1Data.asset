@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Stage1Data
   m_EditorClassIdentifier: 
   stageNumber: 1
-  stagePrefab: {fileID: 8054178234325071792, guid: 9e20a80d17a80cc4bb5ae2736405e683, type: 3}
+  stagePrefab: {fileID: 8054178234325071792, guid: 9b37972f72b917e48aca3e305ed33a5f, type: 3}

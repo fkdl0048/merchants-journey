@@ -1,3 +1,4 @@
+using Unity.AI.Navigation;
 using UnityEngine;
 
 namespace Scripts.InGame.Stage
@@ -6,5 +7,12 @@ namespace Scripts.InGame.Stage
     public class Stage : MonoBehaviour
     {
         [SerializeField] private Cargo cargoPrefab;
+        [SerializeField] private NavMeshSurface surface;
+
+        private void Awake()
+        {
+            if(surface != null)
+                surface.BuildNavMesh();
+        }
     }
 }
