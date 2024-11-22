@@ -11,7 +11,11 @@ namespace Scripts.UI
         [SerializeField] private Button startButton;
         [SerializeField] private Button optionsButton;
         [SerializeField] private Button quitButton;
-    
+        
+        [Header("Sound")]
+        [SerializeField] private AudioClip startButtonSound;
+        [SerializeField] private AudioClip ButtonSound;
+        
         protected override void Initialize()
         {
             base.Initialize();
@@ -23,6 +27,9 @@ namespace Scripts.UI
             startButton?.onClick.AddListener(OnStartClick);
             optionsButton?.onClick.AddListener(OnOptionsClick);
             quitButton?.onClick.AddListener(OnQuitClick);
+            
+            startButton?.onClick.AddListener(() => AudioManager.Instance.PlaySFX(startButtonSound));
+            optionsButton?.onClick.AddListener(() => AudioManager.Instance.PlaySFX(ButtonSound));
         }
     
         private void OnStartClick()
