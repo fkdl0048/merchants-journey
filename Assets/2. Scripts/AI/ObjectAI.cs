@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -24,6 +25,7 @@ namespace ObjectAI
         [SerializeField] protected ObjectStatus status;
         [SerializeField] protected int currentHP;
         [SerializeField] protected FSM fsm;
+        protected SpriteRenderer renderer;
 
         [Header("Debug Mode Enable")]
         [SerializeField] private bool debugModeEnable = true;
@@ -39,6 +41,8 @@ namespace ObjectAI
         private void Start()
         {
             agent = GetComponent<NavMeshAgent>();
+            renderer = GetComponent<SpriteRenderer>();
+
             currentHP = status.hp;
         }
         private void Update()
@@ -105,10 +109,24 @@ namespace ObjectAI
                 Vector3 dir = -1 * ((transform.position - hitterPos).normalized);
                 rig.isKinematic = false;
                 rig.AddForce(dir * force, ForceMode.Impulse);
+                //번쩍이는 효과 적용
+                EnableFlashEffect();
                 yield return new WaitForSeconds(0.25f);
+                //복원
                 rig.isKinematic = true;
             }
+        }
+        private IEnumerator EnableFlashEffect()
+        {
+            var material = renderer.material;
+            if (material == null)
+                yield return null;
 
+            material.SetFloat("_FlashAmount", 1.0f);
+
+            yield return new WaitForSeconds(0.25f);
+
+            material.SetFloat("_FlashAmount", 0.0f);
         }
         protected Collider[] CheckAttackCollider(float range, string targetTag)
         {
