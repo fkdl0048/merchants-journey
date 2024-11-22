@@ -58,6 +58,7 @@ MonoBehaviour:
   retryButton: {fileID: 6127026375877136015}
   gameOverMenuButton: {fileID: 6589648596877993289}
   nextStateButton: {fileID: 8561953609863172018}
+  buttonSound: {fileID: 8300000, guid: df50c0bd08b2b8a44a37054f5f477746, type: 3}
 --- !u!1 &7785299332108794276
 GameObject:
   m_ObjectHideFlags: 0

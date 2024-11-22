@@ -1,3 +1,4 @@
+using Scripts.Manager;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -31,13 +32,15 @@ namespace Scripts.UI
 
         [Header("Next State Button (Test)")]
         [SerializeField] private Button nextStateButton;
+        
+        [Header("Sound")]
+        [SerializeField] private AudioClip buttonSound;
 
         // Events => 복잡해질 것 같아서 에디터에서 설정 가능하게 UnityAction으로 변경
         public UnityAction OnUnitPlacementComplete;
         public UnityAction OnRetryClick;
         public UnityAction OnMainMenuClick;
         public UnityAction OnNextStageClick;
-        public UnityAction<UnitType> OnUnitTypeSelected; // 유닛 타입 선택 이벤트
 
         private void Awake()
         {
@@ -51,6 +54,7 @@ namespace Scripts.UI
 
         private void InitializeUI()
         {
+            // delegate 초기화
             placementCompleteButton.onClick.AddListener(() => OnUnitPlacementComplete?.Invoke());
             retryButton.onClick.AddListener(() => OnRetryClick?.Invoke());
             nextStageButton.onClick.AddListener(() => OnNextStageClick?.Invoke());
@@ -62,6 +66,13 @@ namespace Scripts.UI
             {
                 nextStateButton.onClick.AddListener(() => OnUnitPlacementComplete?.Invoke());
             }
+            
+            // sound
+            placementCompleteButton.onClick.AddListener(() => AudioManager.Instance.PlaySFX(buttonSound));
+            retryButton.onClick.AddListener(() => AudioManager.Instance.PlaySFX(buttonSound));
+            nextStageButton.onClick.AddListener(() => AudioManager.Instance.PlaySFX(buttonSound));
+            clearMenuButton.onClick.AddListener(() => AudioManager.Instance.PlaySFX(buttonSound));
+            gameOverMenuButton.onClick.AddListener(() => AudioManager.Instance.PlaySFX(buttonSound));
 
             // 모든 패널 비활성화
             HideAllPanels();
@@ -122,16 +133,14 @@ namespace Scripts.UI
         {
             gameOverPanel.SetActive(false);
         }
-
-        // 유닛 타입 선택 버튼 클릭 핸들러
-        public void OnUnitTypeButtonClicked(int unitTypeIndex)
+        
+        private void OnDestroy()
         {
-            OnUnitTypeSelected?.Invoke((UnitType)unitTypeIndex);
+            placementCompleteButton.onClick.RemoveAllListeners();
+            retryButton.onClick.RemoveAllListeners();
+            nextStageButton.onClick.RemoveAllListeners();
+            clearMenuButton.onClick.RemoveAllListeners();
+            gameOverMenuButton.onClick.RemoveAllListeners();
         }
-    }
-
-    public enum UnitType
-    {
-        // 유닛 타입을 추가하세요
     }
 }
