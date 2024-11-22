@@ -49,6 +49,15 @@ namespace Scripts.InGame.State
                 return;
             }
             
+            // 카메라를 화물 기준 쿼터뷰 위치로 설정
+            if (Camera.main != null)
+            {
+                Vector3 cargoPosition = cargo.transform.position;
+                Vector3 cameraOffset = new Vector3(-30f, 30f, -30f);
+                Camera.main.transform.position = cargoPosition + cameraOffset;
+                Camera.main.transform.rotation = Quaternion.Euler(35f, 45f, 0);
+            }
+            
             unitSystem.Initialize(cargo);
             HighlightPlacementArea(cargo);
             unitSystem.SpawnInitialUnits();
