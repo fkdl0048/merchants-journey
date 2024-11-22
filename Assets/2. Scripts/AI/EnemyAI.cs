@@ -25,7 +25,6 @@ namespace ObjectAI
                 agent.isStopped = true;
             }
         }
-
         protected override void IdleBehavior()
         {
             //화물로 이동
