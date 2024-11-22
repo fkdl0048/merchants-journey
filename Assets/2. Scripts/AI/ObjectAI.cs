@@ -1,9 +1,7 @@
 using System.Collections;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UIElements;
 
 namespace ObjectAI
 {
@@ -83,17 +81,34 @@ namespace ObjectAI
                 {
                     if (!target.TryGetComponent<ObjectAI>(out var obj))
                         continue;
-                    obj.Hitted(status.damage);
+                    obj.Hitted(status.damage, transform.position);
                 }
             }
             isAttack = false;
             fsm = FSM.Encounter;
         }
-        public void Hitted(int damage)
+        public void Hitted(int damage, Vector3 hitterPos)
         {
             currentHP -= damage;
             if(currentHP <= 0)
                 fsm = FSM.Dead;
+
+            StartCoroutine(KnockBack(hitterPos, damage));
+        }
+        private IEnumerator KnockBack(Vector3 hitterPos, float force)
+        {
+            TryGetComponent<Rigidbody>(out var rig);
+            if (rig == null)
+                yield return null;
+            else
+            {
+                Vector3 dir = -1 * ((transform.position - hitterPos).normalized);
+                rig.isKinematic = false;
+                rig.AddForce(dir * force, ForceMode.Impulse);
+                yield return new WaitForSeconds(0.25f);
+                rig.isKinematic = true;
+            }
+
         }
         protected Collider[] CheckAttackCollider(float range, string targetTag)
         {

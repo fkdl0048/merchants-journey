@@ -11,20 +11,25 @@ namespace ObjectAI
                 fsm = FSM.Idle;
                 return;
             }
-            
-            agent.SetDestination(targetEnemy.position); //적을 향해 돌진
 
             //공격 범위 체크
             Transform obj = CheckRange(status.attackRange, targetTag);
             if (obj == null)
-                return;
+            {
+                agent.SetDestination(targetEnemy.position); //적을 향해 돌진
+                agent.isStopped = false;
+            }
             else
+            {
                 fsm = FSM.Attack;
+                agent.isStopped = true;
+            }
         }
 
         protected override void IdleBehavior()
         {
             //화물로 이동
+            agent.isStopped = false;
             agent.SetDestination(target.position);
 
             //탐지 범위 내에 적군 오브젝트가 잡혔다면?
