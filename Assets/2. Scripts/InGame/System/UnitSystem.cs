@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Scripts.Utils;
 using UnityEngine;
 
-
 // 11-21 현재 코드는 임시로 랜덤 위치에 유닛 생성
 // 이후에 업그레이드? 시스템으로 변경 예정
 namespace Scripts.InGame.System
@@ -22,7 +21,6 @@ namespace Scripts.InGame.System
         private HashSet<Vector2Int> occupiedTiles = new HashSet<Vector2Int>();
 
         public float TileSize => tileSize;
-        public int PlacementRange => currentCargo != null ? currentCargo.placementRange : 0;
 
         public void Initialize(Cargo cargo)
         {
@@ -103,56 +101,42 @@ namespace Scripts.InGame.System
             if (currentCargo == null)
                 return Vector2Int.zero;
 
-            List<Vector2Int> availableTiles = new List<Vector2Int>();
-            Vector3 cargoPosition = currentCargo.transform.position;
-            Vector2Int cargoTilePos = WorldToTilePosition(cargoPosition);
+            Vector2Int cargoTilePos = WorldToTilePosition(currentCargo.transform.position);
+            int maxAttempts = 100;  // 무한 루프 방지
             
-            for (int x = -currentCargo.placementRange; x <= currentCargo.placementRange; x++)
+            // Calculate grid boundaries
+            int startX = cargoTilePos.x - (currentCargo.width / 2);
+            int startY = cargoTilePos.y - (currentCargo.height / 2);
+            
+            for (int attempt = 0; attempt < maxAttempts; attempt++)
             {
-                for (int y = -currentCargo.placementRange; y <= currentCargo.placementRange; y++)
-                {
-                    Vector2Int tilePos = new Vector2Int(cargoTilePos.x + x, cargoTilePos.y + y);
-                    
-                    if (Mathf.Abs(x) + Mathf.Abs(y) <= currentCargo.placementRange)
-                    {
-                        Vector3 worldPos = TileToWorldPosition(tilePos);
-  
-                        Collider[] colliders = Physics.OverlapSphere(worldPos, 0.1f, tileLayer);
-                        if (colliders.Length > 0)
-                        {
-                            var tile = colliders[0].GetComponent<Tile>();
-                            if (tile != null && tile.isWalkable && !occupiedTiles.Contains(tilePos))
-                            {
-                                availableTiles.Add(tilePos);
-                            }
-                        }
-                    }
-                }
+                int x = startX + Random.Range(0, currentCargo.width);
+                int y = startY + Random.Range(0, currentCargo.height);
+                Vector2Int tilePos = new Vector2Int(x, y);
+                
+                if (IsPositionValid(tilePos) && !occupiedTiles.Contains(tilePos))
+                    return tilePos;
             }
-
-            if (availableTiles.Count == 0)
-            {
-                Debug.LogWarning($"[UnitSystem] No available tiles found around cargo at {cargoPosition}");
-                return Vector2Int.zero;
-            }
-
-            return availableTiles[Random.Range(0, availableTiles.Count)];
+            
+            return Vector2Int.zero;
         }
 
-        public Vector2Int WorldToTilePosition(Vector3 worldPos)
+        private const float TILE_SIZE = 1f;  // 타일의 실제 크기
+
+        public Vector2Int WorldToTilePosition(Vector3 worldPosition)
         {
             return new Vector2Int(
-                Mathf.RoundToInt(worldPos.x / tileSize),
-                Mathf.RoundToInt(worldPos.z / tileSize)
+                Mathf.RoundToInt(worldPosition.x / TILE_SIZE),
+                Mathf.RoundToInt(worldPosition.z / TILE_SIZE)
             );
         }
 
-        private Vector3 TileToWorldPosition(Vector2Int tilePos)
+        public Vector3 TileToWorldPosition(Vector2Int tilePosition)
         {
             return new Vector3(
-                tilePos.x * tileSize,
+                tilePosition.x * TILE_SIZE,
                 0,
-                tilePos.y * tileSize
+                tilePosition.y * TILE_SIZE
             );
         }
 
@@ -161,14 +145,15 @@ namespace Scripts.InGame.System
             if (currentCargo == null)
                 return false;
 
-            if (occupiedTiles.Contains(tilePos))
-                return false;
-
             Vector2Int cargoTilePos = WorldToTilePosition(currentCargo.transform.position);
-            int dx = Mathf.Abs(tilePos.x - cargoTilePos.x);
-            int dy = Mathf.Abs(tilePos.y - cargoTilePos.y);
             
-            if (dx + dy > currentCargo.placementRange)
+            // Calculate grid boundaries
+            int startX = cargoTilePos.x - (currentCargo.width / 2);
+            int startY = cargoTilePos.y - (currentCargo.height / 2);
+            
+            // Check if the position is within the N*M grid
+            if (tilePos.x < startX || tilePos.x >= startX + currentCargo.width || 
+                tilePos.y < startY || tilePos.y >= startY + currentCargo.height)
                 return false;
 
             Vector3 worldPos = TileToWorldPosition(tilePos);
@@ -177,7 +162,7 @@ namespace Scripts.InGame.System
                 return false;
 
             var tile = colliders[0].GetComponent<Tile>();
-            return tile != null && tile.isWalkable;
+            return tile != null && tile.isWalkable && !occupiedTiles.Contains(tilePos);
         }
 
         public void ClearUnits()

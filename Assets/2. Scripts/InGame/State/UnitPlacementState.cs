@@ -128,36 +128,38 @@ namespace Scripts.InGame.State
             ResetTileColors();
             
             Vector3 cargoPosition = cargo.transform.position;
-            float searchRadius = unitSystem.PlacementRange * unitSystem.TileSize;
+            Vector2Int cargoTilePos = unitSystem.WorldToTilePosition(cargoPosition);
             
-            // 카고 주변의 원형 영역 내 타일 검사
-            Collider[] colliders = Physics.OverlapSphere(cargoPosition, searchRadius, LayerMask.GetMask("Tile"));
+            // 그리드 시작점 계산
+            int startX = cargoTilePos.x - (cargo.width / 2);
+            int startY = cargoTilePos.y - (cargo.height / 2);
             
-            foreach (var collider in colliders)
+            // N*M 그리드 영역 내의 타일 검사
+            for (int x = 0; x < cargo.width; x++)
             {
-                var tile = collider.GetComponent<Tile>();
-                if (tile != null && tile.isWalkable)
+                for (int y = 0; y < cargo.height; y++)
                 {
-                    Vector2Int tilePos = unitSystem.WorldToTilePosition(collider.transform.position);
-                    Vector2Int cargoTilePos = unitSystem.WorldToTilePosition(cargoPosition);
+                    Vector2Int tilePos = new Vector2Int(startX + x, startY + y);
+                    Vector3 worldPos = unitSystem.TileToWorldPosition(tilePos);
                     
-                    // 맨해튼 거리 계산
-                    int dx = Mathf.Abs(tilePos.x - cargoTilePos.x);
-                    int dy = Mathf.Abs(tilePos.y - cargoTilePos.y);
-                    
-                    // placementRange 이내의 타일만 하이라이트
-                    if (dx + dy <= unitSystem.PlacementRange)
+                    // 타일 검사
+                    Collider[] colliders = Physics.OverlapSphere(worldPos, 0.1f, LayerMask.GetMask("Tile"));
+                    foreach (var collider in colliders)
                     {
-                        var meshRenderer = collider.GetComponent<MeshRenderer>();
-                        if (meshRenderer != null)
+                        var tile = collider.GetComponent<Tile>();
+                        if (tile != null && tile.isWalkable)
                         {
-                            if (highlightedTiles.Count == 0)
+                            var meshRenderer = collider.GetComponent<MeshRenderer>();
+                            if (meshRenderer != null)
                             {
-                                // 첫 번째 타일의 원래 색상 저장
-                                originalTileColor = meshRenderer.material.color;
+                                if (highlightedTiles.Count == 0)
+                                {
+                                    // 첫 번째 타일의 원래 색상 저장
+                                    originalTileColor = meshRenderer.material.color;
+                                }
+                                meshRenderer.material.color = highlightColor;
+                                highlightedTiles.Add(meshRenderer);
                             }
-                            meshRenderer.material.color = highlightColor;
-                            highlightedTiles.Add(meshRenderer);
                         }
                     }
                 }

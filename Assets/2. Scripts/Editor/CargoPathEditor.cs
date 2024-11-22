@@ -14,7 +14,8 @@ public class CargoPathEditor : Editor
     private SerializedProperty serializedPathPointsProp;
     private SerializedProperty moveSpeedProp;
     private SerializedProperty waitTimeAtPointProp;
-    private SerializedProperty placementRangeProp;
+    private SerializedProperty widthProp;
+    private SerializedProperty heightProp;
     private SerializedProperty autoStartProp;
 
     private void OnEnable()
@@ -23,7 +24,8 @@ public class CargoPathEditor : Editor
         serializedPathPointsProp = serializedObject.FindProperty("serializedPathPoints");
         moveSpeedProp = serializedObject.FindProperty("moveSpeed");
         waitTimeAtPointProp = serializedObject.FindProperty("waitTimeAtPoint");
-        placementRangeProp = serializedObject.FindProperty("placementRange");
+        widthProp = serializedObject.FindProperty("width");
+        heightProp = serializedObject.FindProperty("height");
         autoStartProp = serializedObject.FindProperty("autoStart");
         
         SceneView.duringSceneGui += OnSceneGUI;
@@ -40,8 +42,10 @@ public class CargoPathEditor : Editor
 
         EditorGUILayout.PropertyField(moveSpeedProp);
         EditorGUILayout.PropertyField(waitTimeAtPointProp);
-        EditorGUILayout.PropertyField(placementRangeProp);
-        EditorGUILayout.PropertyField(autoStartProp);
+        
+        EditorGUILayout.LabelField("Placement Grid Settings", EditorStyles.boldLabel);
+        EditorGUILayout.PropertyField(widthProp, new GUIContent("Grid Width (N)"));
+        EditorGUILayout.PropertyField(heightProp, new GUIContent("Grid Height (M)"));
         
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("Path Settings", EditorStyles.boldLabel);
@@ -96,6 +100,8 @@ public class CargoPathEditor : Editor
                 cargo.StopMoving();
             }
         }
+
+        EditorGUILayout.PropertyField(autoStartProp);
 
         serializedObject.ApplyModifiedProperties();
     }
