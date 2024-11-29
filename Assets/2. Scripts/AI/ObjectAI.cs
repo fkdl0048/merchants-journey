@@ -60,8 +60,6 @@ namespace ObjectAI
         }
         private void Update()
         {
-            if (currentStage.aiEnable == false)
-                return;
             switch (fsm)
             {
                 case FSM.Idle:

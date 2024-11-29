@@ -10,9 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 9111076865383412170}
   - component: {fileID: 6104395320388610704}
+  - component: {fileID: 6464838629299659362}
+  - component: {fileID: 2886291965401777345}
   m_Layer: 0
   m_Name: Cargo 1
-  m_TagString: Untagged
+  m_TagString: Cargo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -45,13 +47,189 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 480a0bdb03f7cf2448f02243a83728aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializedPathPoints: []
-  pathPoints: []
-  moveSpeed: 1
-  waitTimeAtPoint: 0.1
-  width: 4
-  height: 4
-  autoStart: 1
+  serializedPathPoints:
+  - x: -1
+    y: 0
+    z: 0
+  - x: -2
+    y: 0
+    z: 0
+  - x: -3
+    y: 0
+    z: 0
+  - x: -4
+    y: 0
+    z: 0
+  - x: -5
+    y: 0
+    z: 0
+  - x: -6
+    y: 0
+    z: 0
+  - x: -7
+    y: 0
+    z: 0
+  - x: -8
+    y: 0
+    z: 0
+  - x: -9
+    y: 0
+    z: 0
+  - x: -10
+    y: 0
+    z: 0
+  - x: -11
+    y: 0
+    z: 0
+  - x: -12
+    y: 0
+    z: 0
+  - x: -13
+    y: 0
+    z: 0
+  - x: -14
+    y: 0
+    z: 0
+  - x: -15
+    y: 0
+    z: 0
+  - x: -16
+    y: 0
+    z: 0
+  - x: -17
+    y: 0
+    z: 0
+  - x: -18
+    y: 0
+    z: 0
+  - x: -19
+    y: 0
+    z: 0
+  - x: -20
+    y: 0
+    z: 0
+  - x: -21
+    y: 0
+    z: 0
+  - x: -22
+    y: 0
+    z: 0
+  - x: -23
+    y: 0
+    z: 0
+  - x: -24
+    y: 0
+    z: 0
+  - x: -25
+    y: 0
+    z: 0
+  - x: -26
+    y: 0
+    z: 0
+  - x: -27
+    y: 0
+    z: 0
+  - x: -28
+    y: 0
+    z: 0
+  - x: -29
+    y: 0
+    z: 0
+  - x: -30
+    y: 0
+    z: 0
+  - x: -31
+    y: 0
+    z: 0
+  - x: -32
+    y: 0
+    z: 0
+  pathPoints:
+  - {x: -1, y: 0, z: 0}
+  - {x: -2, y: 0, z: 0}
+  - {x: -3, y: 0, z: 0}
+  - {x: -4, y: 0, z: 0}
+  - {x: -5, y: 0, z: 0}
+  - {x: -6, y: 0, z: 0}
+  - {x: -7, y: 0, z: 0}
+  - {x: -8, y: 0, z: 0}
+  - {x: -9, y: 0, z: 0}
+  - {x: -10, y: 0, z: 0}
+  - {x: -11, y: 0, z: 0}
+  - {x: -12, y: 0, z: 0}
+  - {x: -13, y: 0, z: 0}
+  - {x: -14, y: 0, z: 0}
+  - {x: -15, y: 0, z: 0}
+  - {x: -16, y: 0, z: 0}
+  - {x: -17, y: 0, z: 0}
+  - {x: -18, y: 0, z: 0}
+  - {x: -19, y: 0, z: 0}
+  - {x: -20, y: 0, z: 0}
+  - {x: -21, y: 0, z: 0}
+  - {x: -22, y: 0, z: 0}
+  - {x: -23, y: 0, z: 0}
+  - {x: -24, y: 0, z: 0}
+  - {x: -25, y: 0, z: 0}
+  - {x: -26, y: 0, z: 0}
+  - {x: -27, y: 0, z: 0}
+  - {x: -28, y: 0, z: 0}
+  - {x: -29, y: 0, z: 0}
+  - {x: -30, y: 0, z: 0}
+  - {x: -31, y: 0, z: 0}
+  - {x: -32, y: 0, z: 0}
+  moveSpeed: 0.3
+  waitTimeAtPoint: 0
+  width: 8
+  height: 5
+  autoStart: 0
+--- !u!65 &6464838629299659362
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5316081193370305362}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: -0.8, y: 0, z: 0}
+--- !u!54 &2886291965401777345
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5316081193370305362}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!1 &7458452742394584985
 GameObject:
   m_ObjectHideFlags: 0
@@ -77,13 +255,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7458452742394584985}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.27781588, y: 0.36497167, z: -0.1150751, w: 0.8811196}
+  m_LocalPosition: {x: -0.831, y: 0.46, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 9111076865383412170}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 35, y: 45, z: 0}
 --- !u!212 &5078485472932545022
 SpriteRenderer:
   m_ObjectHideFlags: 0
