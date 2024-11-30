@@ -46,7 +46,7 @@ namespace Scripts.Controller
                 },
                 {
                     InGameState.Wave,
-                    new BattleState(this, gameUI, stageController)
+                    new BattleState(this, gameUI, unitSystem, stageController)
                 },
                 {
                     InGameState.StageClear,

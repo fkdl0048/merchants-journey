@@ -17,10 +17,5 @@ namespace Scripts.InGame.Stage
             if(surface != null)
                 surface.BuildNavMesh();
         }
-        private void Start()
-        {
-            EventManager.Instance.AddListener("AIEnableTrigger", OnAIEnable);
-        }
-        private void OnAIEnable(object[] datas) => aiEnable = true;
     }
 }

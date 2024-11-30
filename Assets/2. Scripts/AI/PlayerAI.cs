@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ObjectAI
+namespace AI
 {
     public class PlayerAI : ObjectAI
     {
@@ -28,7 +28,8 @@ namespace ObjectAI
         protected override void IdleBehavior()
         {
             agent.isStopped = false;
-            agent.SetDestination(target.position);
+            agent.SetDestination(cargo.transform.position + targetPosition);
+    
             //탐지 범위 내에 적군 오브젝트가 잡혔다면?
             Transform obj = CheckRange(status.recognizeRange, targetTag);
             if (obj == null)

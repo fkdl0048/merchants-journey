@@ -33547,7 +33547,7 @@ PrefabInstance:
     - target: {fileID: 6137997655356853849, guid: 0953a1293ced16e44ad79ae1b88fe97c, type: 3}
       propertyPath: cargo
       value: 
-      objectReference: {fileID: 6063558981759638548}
+      objectReference: {fileID: 9142362038424389454}
     - target: {fileID: 6137997655356853849, guid: 0953a1293ced16e44ad79ae1b88fe97c, type: 3}
       propertyPath: spawnTimeRange.y
       value: 5

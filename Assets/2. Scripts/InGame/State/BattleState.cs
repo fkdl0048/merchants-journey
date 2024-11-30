@@ -1,3 +1,4 @@
+using AI;
 using Scripts.Controller;
 using Scripts.InGame.System;
 using Scripts.Interface;
@@ -11,15 +12,17 @@ namespace Scripts.InGame.State
     {
         private readonly InGameSceneController controller;
         private readonly GameUI gameUI;
+        private readonly UnitSystem unitSystem;
         private readonly StageSystem stageController;
     //  private readonly BattleSystem 유닛과 적을 관리하는 클래스 추가되어야 할듯
     
         private Cargo cargo;
 
-        public BattleState(InGameSceneController controller, GameUI gameUI, StageSystem stageController)
+        public BattleState(InGameSceneController controller, GameUI gameUI, UnitSystem unitSystem, StageSystem stageController)
         {
             this.controller = controller;
             this.gameUI = gameUI;
+            this.unitSystem = unitSystem;
             this.stageController = stageController;
         }
 
@@ -32,8 +35,11 @@ namespace Scripts.InGame.State
             cargo = stageController.GetCargo();
             cargo.OnDestinationReached += HandleCargoDestinationReached;
             cargo.StartMoving();
-        }
 
+            //유닛 AI 작동 (우성)
+            UnitAIEnable(unitSystem.GetSpawnUnits().ToArray());
+        }
+        
         public void Update()
         {
             // 실제 게임에서는 여기서 웨이브 진행 상황을 업데이트
@@ -76,6 +82,12 @@ namespace Scripts.InGame.State
         private void HandleCargoDestinationReached()
         {
             controller.ChangeInGameState(InGameState.StageClear);
+        }
+
+        private void UnitAIEnable(GameObject[] obj)
+        {
+            foreach (GameObject ai in obj)
+                ai.GetComponent<ObjectAI>().aiEnable = true;
         }
     }
 }
