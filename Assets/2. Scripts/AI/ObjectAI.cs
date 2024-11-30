@@ -2,11 +2,10 @@ using Scripts.InGame.Stage;
 using Scripts.Manager;
 using System.Collections;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace ObjectAI
+namespace AI
 {
     public enum FSM
     {
@@ -18,10 +17,11 @@ namespace ObjectAI
     public abstract class ObjectAI : MonoBehaviour
     {
         protected NavMeshAgent agent;
-        protected Stage currentStage;
+        protected Cargo cargo;
+        public bool aiEnable;
 
         [Header("Target Object")]
-        [SerializeField] protected Transform target;
+        [SerializeField] protected Vector3 targetPosition; //navMesh가 추적하는 기존 포지션
         [SerializeField] protected string targetTag;
 
         [Header("Object Status")]
@@ -39,18 +39,22 @@ namespace ObjectAI
 
         //BATTLE
         [Header("Debug")]
-        [SerializeField] protected Transform targetEnemy;
+        [SerializeField] protected Transform targetEnemy;   //navMesh가 추적하는 적군 포지션
         protected bool isAttack = false;
 
         [Header("Test Code")]
         [SerializeField] private Vector3 pos;
 
-        public void Setup(Stage currentStage, Transform cargo)
+        public void Setup(Cargo cargo, Vector3 targetPosition, bool aiEnable)
         {
-            target = cargo;
-            this.currentStage = currentStage;
+            this.cargo = cargo;
+            ChangeTargetPostion(targetPosition);
+            this.aiEnable = aiEnable;
         }
-        
+        public void ChangeTargetPostion(Vector3 targetPosition)
+        {
+            this.targetPosition = targetPosition;
+        }
         private void Start()
         {
             agent = GetComponent<NavMeshAgent>();
@@ -60,6 +64,9 @@ namespace ObjectAI
         }
         private void Update()
         {
+            if (aiEnable == false)
+                return;
+
             switch (fsm)
             {
                 case FSM.Idle:

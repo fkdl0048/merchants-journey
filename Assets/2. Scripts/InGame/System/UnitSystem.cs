@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using ObjectAI;
+using AI;
 using Scripts.Utils;
 using UnityEngine;
 using UnityEngine.AI;
@@ -82,8 +82,7 @@ namespace Scripts.InGame.System
             GameObject spawnedUnit = Instantiate(unitPrefab, tileCenter, Quaternion.identity);
             spawnedUnit.transform.SetParent(currentCargo.transform);
             spawnedUnit.transform.eulerAngles = new Vector3(35, 45, 0);
-            spawnedUnit.GetComponent<PlayerAI>().Setup(currentCargo.gameObject.transform.parent.GetComponent<Stage.Stage>(),
-                currentCargo.transform);
+            spawnedUnit.GetComponent<PlayerAI>().Setup(currentCargo, tileCenter, false);
             if (spawnedUnit.TryGetComponent<NavMeshAgent>(out var agent))
             {
                 if (NavMesh.SamplePosition(spawnedUnit.transform.position, out NavMeshHit hit, 1.0f, NavMesh.AllAreas))
@@ -191,7 +190,7 @@ namespace Scripts.InGame.System
             spawnedUnits.Clear();
             occupiedTiles.Clear();
         }
-
+        public List<GameObject> GetSpawnUnits() => spawnedUnits;
         private void OnDestroy()
         {
             ClearUnits();
@@ -216,6 +215,8 @@ namespace Scripts.InGame.System
             
             Vector3 newWorldPos = TileToWorldPosition(targetTilePos);
             unit.transform.position = newWorldPos;
+            //unit 추적 위치 변경
+            unit.GetComponent<ObjectAI>().ChangeTargetPostion(newWorldPos);
             occupiedTiles.Add(targetTilePos);
 
             return true;

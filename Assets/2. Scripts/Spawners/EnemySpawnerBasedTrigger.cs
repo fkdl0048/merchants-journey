@@ -1,4 +1,4 @@
-using ObjectAI;
+using AI;
 using Scripts.InGame.Stage;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +7,7 @@ using UnityEngine.AI;
 public class EnemySpawnerBasedTrigger : EnemySpawner
 {
     [Header("Cargo")]
-    [SerializeField] private Transform cargo;
+    [SerializeField] private Cargo cargo;
 
     [Header("Spawn Value")]
     [SerializeField] private List<Scripts.Utils.KeyValuePair<GameObject, int>> spawninfos;
@@ -25,16 +25,16 @@ public class EnemySpawnerBasedTrigger : EnemySpawner
             int count = item.value2;
 
             for (int i = 0; i < count; i++)
-                SpawnEnemy(obj);
+                SpawnEnemy(obj, cargo.transform.position);
         }
     }
-    public void SpawnEnemy(GameObject enemyObj)
+    public void SpawnEnemy(GameObject enemyObj, Vector3 targetPostion)
     {
         var obj = Instantiate(enemyObj);
         obj.transform.parent = transform;
         obj.transform.localPosition = new Vector3(0, 0, 0);
         obj.transform.eulerAngles = new Vector3(35, 45, 0);
-        obj.GetComponent<EnemyAI>().Setup(transform.parent.GetComponent<Stage>(), cargo);
+        obj.GetComponent<EnemyAI>().Setup(cargo, targetPostion, true);
         if (obj.TryGetComponent<NavMeshAgent>(out var agent))
         {
             if (NavMesh.SamplePosition(obj.transform.position, out NavMeshHit hit, 1.0f, NavMesh.AllAreas))
