@@ -216,7 +216,7 @@ namespace Scripts.InGame.System
             Vector3 newWorldPos = TileToWorldPosition(targetTilePos);
             unit.transform.position = newWorldPos;
             //unit 추적 위치 변경
-            unit.GetComponent<ObjectAI>().ChangeTargetPostion(targetPosition);
+            unit.GetComponent<ObjectAI>().ChangeTargetPostion(newWorldPos);
             occupiedTiles.Add(targetTilePos);
 
             return true;
