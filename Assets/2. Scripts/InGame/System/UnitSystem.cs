@@ -201,7 +201,7 @@ namespace Scripts.InGame.System
             ClearUnits();
         }
 
-        public bool MoveUnit(GameObject unit, Vector3 targetPosition)
+        public bool MoveUnit(GameObject unit, Vector3 targetPosition, bool immediately)
         {
             if (unit == null || currentCargo == null)
                 return false;
@@ -215,8 +215,11 @@ namespace Scripts.InGame.System
             
             Vector3 newWorldPos = TileToWorldPosition(targetTilePos);
 
+            if (immediately)
+                unit.transform.position = newWorldPos;
             //unit 추적 위치 변경
             unit.GetComponent<ObjectAI>().ChangeTargetPostion(newWorldPos);
+            unit.GetComponent<PlayerAI>().ChangeForce(true);
             occupiedTiles.Add(targetTilePos);
 
             return true;

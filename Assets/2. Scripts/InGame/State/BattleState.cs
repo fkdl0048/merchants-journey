@@ -118,7 +118,7 @@ namespace Scripts.InGame.State
             if (obj == null)
                 return;
 
-            unitSystem.MoveUnit(selectedUnit, obj.transform.position);
+            unitSystem.MoveUnit(selectedUnit, obj.transform.position, false);
 
             selectedUnit = null;
         }
