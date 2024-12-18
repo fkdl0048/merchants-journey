@@ -11,6 +11,6 @@ public class GameManager : Singleton<GameManager>
     public void ChangeGameState(GameState newState)
     {
         CurrentGameState = newState;
-        OnGameStateChanged?.Invoke(newState);
+        OnGameStateChanged?.Invoke(newState);   
     }
 }

@@ -6,4 +6,16 @@ public class Tile : MonoBehaviour
 {
     public TileType tileType = TileType.Normal;
     public bool isWalkable = true;
+
+    [SerializeField] SpriteRenderer spriteRenderer;
+
+    private void OnMouseEnter()
+    {
+        Debug.Log("Enter");
+        spriteRenderer.enabled = true;
+    }
+    private void OnMouseExit()
+    {
+        spriteRenderer.enabled = false;
+    }
 }

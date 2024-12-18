@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace AI
 {
@@ -39,6 +40,15 @@ namespace AI
                 targetEnemy = obj;
                 fsm = FSM.Encounter;
             }
+        }
+
+        private void OnMouseEnter()
+        {
+            
+        }
+        private void OnMouseExit()
+        {
+            
         }
     }
 }

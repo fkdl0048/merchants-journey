@@ -50,11 +50,7 @@ namespace Scripts.InGame.State
         }
         
         public void Update()
-        {
-            // 실제 게임에서는 여기서 웨이브 진행 상황을 업데이트
-            // 유닛과 적 업데이트
-            //BattleSystem.Update();
-            
+        {   
             // 카메라가 화물을 따라가도록 업데이트
             if (Camera.main != null && cargo != null)
             {
@@ -64,6 +60,7 @@ namespace Scripts.InGame.State
                 Camera.main.transform.rotation = Quaternion.Euler(35f, 45f, 0f);
             }
 
+            // 유닛 이동 로직
             if (Input.GetMouseButtonDown(0)) // Left click
             {
                 var obj = clickSystem.GetMouseDownGameobject("Unit");
@@ -71,6 +68,13 @@ namespace Scripts.InGame.State
             }
             else if(Input.GetMouseButtonDown(1))
                 HandleRightClick();
+            
+
+            // 색적 로직
+            if (selectedUnit != null)
+                HighlightPlacementArea(cargo);
+            else
+                ResetTileColors();
         }
 
         public void Exit()
@@ -154,7 +158,7 @@ namespace Scripts.InGame.State
                                     // 첫 번째 타일의 원래 색상 저장
                                     originalTileColor = meshRenderer.material.color;
                                 }
-                                meshRenderer.material.color = highlightColor;
+                                meshRenderer.material.color = highlightColor / 2;
                                 highlightedTiles.Add(meshRenderer);
                             }
                         }
