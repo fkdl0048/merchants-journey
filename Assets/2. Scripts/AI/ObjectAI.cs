@@ -53,7 +53,7 @@ namespace AI
         }
         public void ChangeTargetPostion(Vector3 targetPosition)
         {
-            this.targetPosition = targetPosition;
+            this.targetPosition = targetPosition - cargo.transform.position;
         }
         private void Start()
         {
@@ -121,7 +121,7 @@ namespace AI
             if(currentHP <= 0)
                 fsm = FSM.Dead;
 
-            StartCoroutine(KnockBack(hitterPos, damage));
+            //StartCoroutine(KnockBack(hitterPos, damage));
         }
         private IEnumerator KnockBack(Vector3 hitterPos, float force)
         {

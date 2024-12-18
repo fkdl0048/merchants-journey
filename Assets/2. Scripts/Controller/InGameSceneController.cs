@@ -21,6 +21,7 @@ namespace Scripts.Controller
         [SerializeField] private GameUI gameUI;
         [SerializeField] private UnitSystem unitSystem;
         [SerializeField] private StageSystem stageController;
+        [SerializeField] private ClickSystem clickSystem;
         [SerializeField] private AudioClip gameBGM;
         
         private Dictionary<InGameState, IInGameState> states;
@@ -46,7 +47,7 @@ namespace Scripts.Controller
                 },
                 {
                     InGameState.Wave,
-                    new BattleState(this, gameUI, unitSystem, stageController)
+                    new BattleState(this, gameUI, unitSystem, stageController, clickSystem)
                 },
                 {
                     InGameState.StageClear,

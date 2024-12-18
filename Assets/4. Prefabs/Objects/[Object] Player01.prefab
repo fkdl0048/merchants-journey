@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 4622318002343872209}
   - component: {fileID: 2663863718643650840}
   - component: {fileID: 7119562076321656036}
-  - component: {fileID: 8954736894974980536}
   - component: {fileID: 6111043866690240847}
+  - component: {fileID: 8954736894974980536}
   m_Layer: 0
   m_Name: '[Object] Player01'
   m_TagString: Unit
@@ -131,28 +131,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.64, y: 0.64, z: 0.2}
   m_Center: {x: 0, y: -0.17, z: 0}
---- !u!114 &8954736894974980536
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4258276044113151969}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32faabe1655546f4fad43dc875358424, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  targetTag: Enemy
-  status: {fileID: 11400000, guid: 1e14969e2e421e8448f09f096a7b76bf, type: 2}
-  currentHP: 0
-  fsm: 0
-  hitSoundClip: {fileID: 8300000, guid: c2fed035958ccdd48a5b8df47035b21e, type: 3}
-  hittedSoundClip: {fileID: 8300000, guid: 4500443c0072dba42be5a457b2d07aed, type: 3}
-  debugModeEnable: 1
-  targetEnemy: {fileID: 0}
-  pos: {x: 0, y: 0, z: 0}
 --- !u!54 &6111043866690240847
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -180,3 +158,26 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
+--- !u!114 &8954736894974980536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4258276044113151969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32faabe1655546f4fad43dc875358424, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aiEnable: 0
+  targetPosition: {x: 0, y: 0, z: 0}
+  targetTag: Enemy
+  status: {fileID: 11400000, guid: 1e14969e2e421e8448f09f096a7b76bf, type: 2}
+  currentHP: 0
+  fsm: 0
+  hitSoundClip: {fileID: 8300000, guid: c2fed035958ccdd48a5b8df47035b21e, type: 3}
+  hittedSoundClip: {fileID: 8300000, guid: 4500443c0072dba42be5a457b2d07aed, type: 3}
+  debugModeEnable: 1
+  targetEnemy: {fileID: 0}
+  pos: {x: 0, y: 0, z: 0}

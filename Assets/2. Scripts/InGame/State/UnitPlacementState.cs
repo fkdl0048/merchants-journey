@@ -1,5 +1,4 @@
 using Scripts.Controller;
-using Scripts.InGame;
 using Scripts.InGame.System;
 using Scripts.Interface;
 using Scripts.UI;
@@ -122,7 +121,7 @@ namespace Scripts.InGame.State
                 var tile = hit.collider.GetComponent<Tile>();
                 if (tile != null && tile.isWalkable)
                 {
-                    if (unitSystem.MoveUnit(selectedUnit, hit.point))
+                    if (unitSystem.MoveUnit(selectedUnit, hit.point, true))
                     {
                         Debug.Log($"Unit moved to: {hit.point}");
                         selectedUnit = null; // 선택 해제
