@@ -28,7 +28,7 @@ namespace AI
         protected override void IdleBehavior()
         {
             agent.isStopped = false;
-            agent.SetDestination(cargo.transform.position + targetPosition);
+            agent.SetDestination(targetPosition + cargo.transform.position);
     
             //탐지 범위 내에 적군 오브젝트가 잡혔다면?
             Transform obj = CheckRange(status.recognizeRange, targetTag);

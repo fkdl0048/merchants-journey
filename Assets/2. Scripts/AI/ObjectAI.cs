@@ -53,7 +53,7 @@ namespace AI
         }
         public void ChangeTargetPostion(Vector3 targetPosition)
         {
-            this.targetPosition = targetPosition;
+            this.targetPosition = targetPosition - cargo.transform.position;
         }
         private void Start()
         {
