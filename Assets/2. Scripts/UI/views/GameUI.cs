@@ -138,6 +138,19 @@ namespace Scripts.UI
             gameOverPanel.SetActive(false);
         }
         
+        public void ShowWorldMapUI()
+        {
+            HideAllPanels();
+            worldMapPanel.gameObject.SetActive(true);
+        }
+        
+        public void HideWorldMapUI()
+        {
+            worldMapPanel.gameObject.SetActive(false);
+        }
+        
+        public WorldMapUI GetWorldMapUI() => worldMapPanel;
+        
         private void OnDestroy()
         {
             placementCompleteButton.onClick.RemoveAllListeners();

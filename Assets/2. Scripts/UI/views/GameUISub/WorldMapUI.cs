@@ -10,17 +10,22 @@ public class WorldMapUI : MonoBehaviour
     [Header("World Map UI References")]
     [SerializeField] private Button UpgradesButton;
     [SerializeField] private Button NextStageButton;
+    
+    public UnityAction OnNextStageButtonClicked;
 
     private void Awake()
     {
         UpgradesButton.onClick.AddListener(() =>
         {
             Debug.Log("Upgrade Button Clicked");
+            // Upgrade UI
         });
 
         NextStageButton.onClick.AddListener(() =>
         {
             Debug.Log("Next Stage Button Clicked");
+            OnNextStageButtonClicked?.Invoke();
+            // Next Stage
         });
     }
 }

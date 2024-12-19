@@ -42,6 +42,10 @@ namespace Scripts.Controller
             states = new Dictionary<InGameState, IInGameState>
             {
                 {
+                    InGameState.WorldMap,
+                    new WorldMapState(this, gameUI)
+                },
+                {
                     InGameState.UnitPlacement,
                     new UnitPlacementState(this, gameUI, unitSystem, stageController)
                 },
@@ -69,7 +73,7 @@ namespace Scripts.Controller
             AudioManager.Instance.PlayBGM(gameBGM);
         
             // 초기 상태 설정
-            ChangeInGameState(InGameState.UnitPlacement);
+            ChangeInGameState(InGameState.WorldMap);
         }
         
         public void ChangeInGameState(InGameState newState)

@@ -212,6 +212,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19389e65e3993ee4e84645719649aa64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UpgradesButton: {fileID: 4982934655852673083}
+  NextStageButton: {fileID: 1741559017100075456}
 --- !u!1 &2980569943094538403
 GameObject:
   m_ObjectHideFlags: 0

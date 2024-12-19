@@ -18,6 +18,7 @@ namespace Scripts.Utils
     
     public enum InGameState
     {
+        WorldMap,
         UnitPlacement,
         Wave,
         StageClear,
