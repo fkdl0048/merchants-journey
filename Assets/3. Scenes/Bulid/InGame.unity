@@ -431,8 +431,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileSize: 1
   unitPrefabs:
-  - {fileID: 4258276044113151969, guid: fc2a59454118116458c8945a7c0f73ef, type: 3}
   - {fileID: 4258276044113151969, guid: 7ce58e31a557c4e4f8aff816d3a2d542, type: 3}
+  - {fileID: 4258276044113151969, guid: fc2a59454118116458c8945a7c0f73ef, type: 3}
   tileLayer:
     serializedVersion: 2
     m_Bits: 64
