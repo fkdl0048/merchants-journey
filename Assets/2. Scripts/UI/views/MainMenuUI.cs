@@ -10,6 +10,7 @@ namespace Scripts.UI
         [Header("Buttons")]
         [SerializeField] private Button startButton;
         [SerializeField] private Button optionsButton;
+        [SerializeField] private Button creditsButton;
         [SerializeField] private Button quitButton;
         
         [Header("Sound")]
@@ -26,6 +27,7 @@ namespace Scripts.UI
         {
             startButton?.onClick.AddListener(OnStartClick);
             optionsButton?.onClick.AddListener(OnOptionsClick);
+            creditsButton?.onClick.AddListener(OnCreditsClick);
             quitButton?.onClick.AddListener(OnQuitClick);
             
             startButton?.onClick.AddListener(() => AudioManager.Instance.PlaySFX(startButtonSound));
@@ -41,6 +43,11 @@ namespace Scripts.UI
         {
             UIManager.Instance.ShowPopup<OptionsPopup>("UI/Popups/OptionsPopup");
         }
+
+        private void OnCreditsClick()
+        { 
+            // credits UI
+        }        
     
         private void OnQuitClick()
         {
