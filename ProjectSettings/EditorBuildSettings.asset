@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/3. Scenes/Bulid/Boot.unity
     guid: 8a8f08605f9d8b2439d9b911ff8232f5
   - enabled: 1
-    path: Assets/3. Scenes/Bulid/Loding.unity
+    path: Assets/3. Scenes/Bulid/Loading.unity
     guid: da2216667c5e2ef4ea117a078d06b0d6
   - enabled: 1
     path: Assets/3. Scenes/Bulid/Title.unity

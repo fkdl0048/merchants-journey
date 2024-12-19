@@ -1,7 +1,7 @@
+using Scripts.Controller;
 using Scripts.Manager;
 using Scripts.Utils;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace Scripts.UI

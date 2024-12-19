@@ -4,34 +4,33 @@ using TMPro;
 using System.Collections;
 using Scripts.Utils;
 using UnityEngine.SceneManagement;
+using Scripts.Data;
 
-namespace Scripts.Manager
+namespace Scripts.Controller
 {
     public class LoadingSceneController : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI loadingText;
         [SerializeField] private TextMeshProUGUI tipText;
         [SerializeField] private float DotAnimationInterval = 0.3f;
-        
-        // 나중에 엑셀로 교체
-        private string[] tips = new string[]
-        {
-            "상인이 되어 여행을 떠나보세요!",
-            "아이템을 사고팔아 이윤을 남겨보세요.",
-            "각 마을마다 특산품이 다르답니다.",
-            "여행 중에 만나는 NPC들과 대화해보세요.",
-            "인벤토리 관리가 중요합니다!"
-        };
+        [SerializeField] private LoadingTipData tipData;
 
         private string nextSceneName;
         private float minimumLoadingTime = 1f;
 
         private void Start()
         {
-            // 랜덤 팁 선택
-            tipText.text = tips[Random.Range(0, tips.Length)];
+            SetRandomTip();
             StartCoroutine(LoadingTextAnimation());
             StartCoroutine(LoadSceneAsync());
+        }
+
+        private void SetRandomTip()
+        {
+            if (tipData != null && tipData.tips.Count > 0)
+            {
+                tipText.text = tipData.tips[Random.Range(0, tipData.tips.Count)];
+            }
         }
 
         private IEnumerator LoadingTextAnimation()
