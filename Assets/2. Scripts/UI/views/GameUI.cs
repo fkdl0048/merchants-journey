@@ -33,6 +33,9 @@ namespace Scripts.UI
         [Header("Next State Button (Test)")]
         [SerializeField] private Button nextStateButton;
         
+        [Header("World Map UI")]
+        [SerializeField] private WorldMapUI worldMapPanel;
+        
         [Header("Sound")]
         [SerializeField] private AudioClip buttonSound;
 
@@ -84,6 +87,7 @@ namespace Scripts.UI
             wavePanel.SetActive(false);
             gameClearPanel.SetActive(false);
             gameOverPanel.SetActive(false);
+            worldMapPanel.gameObject.SetActive(false);
         }
 
         // Unit Placement UI Methods
