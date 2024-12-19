@@ -1,4 +1,5 @@
 using Scripts.Manager;
+using Scripts.Utils;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -36,7 +37,8 @@ namespace Scripts.UI
     
         private void OnStartClick()
         {
-            SceneManager.LoadScene("InGame");
+            AudioManager.Instance.PlaySFX(startButtonSound);
+            LoadingSceneController.LoadScene(Consts.InGameSceneName);
         }
     
         private void OnOptionsClick()
