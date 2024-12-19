@@ -29,6 +29,7 @@ namespace Scripts.InGame.State
             worldMapUI.Initialized();
 
             worldMapUI.OnNextStageButtonClicked += HandleNextStageButtonClicked;
+            worldMapUI.OnUpgradeButtonClicked += HandleUpgradeButtonClicked;
         }
 
         public void Update()
@@ -39,12 +40,18 @@ namespace Scripts.InGame.State
         public void Exit()
         {
             worldMapUI.OnNextStageButtonClicked -= HandleNextStageButtonClicked;
+            worldMapUI.OnUpgradeButtonClicked -= HandleUpgradeButtonClicked;
         }
         
         private void HandleNextStageButtonClicked(int index)
         {
             stageSystem.CurrentStageNumber = index + 1;
             controller.ChangeInGameState(InGameState.PreCombat);
+        }
+        
+        private void HandleUpgradeButtonClicked()
+        {
+            controller.ChangeInGameState(InGameState.Upgrade);
         }
     }
 }

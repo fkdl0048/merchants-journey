@@ -50,6 +50,10 @@ namespace Scripts.Controller
                     new PreCombatState(this, stageSystem, gameUI)
                 },
                 {
+                    InGameState.Upgrade,
+                    new UpgradeState(this, gameUI, unitSystem)
+                },
+                {
                     InGameState.UnitPlacement,
                     new UnitPlacementState(this, gameUI, unitSystem, stageSystem)
                 },

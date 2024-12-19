@@ -3,6 +3,7 @@ using Scripts.InGame.System;
 using Scripts.Interface;
 using Scripts.UI;
 using Scripts.UI.GameUISub;
+using Scripts.Utils;
 
 namespace Scripts.InGame.State
 {
@@ -24,6 +25,10 @@ namespace Scripts.InGame.State
         public void Enter()
         {
             gameUI.ShowUpgradeUI();
+            
+            upgradeUI.Initialized();
+            
+            upgradeUI.OnBackClicked += HandleBackClicked;
         }
 
         public void Update()
@@ -33,7 +38,12 @@ namespace Scripts.InGame.State
 
         public void Exit()
         {
-            
+            upgradeUI.OnBackClicked -= HandleBackClicked;
+        }
+        
+        private void HandleBackClicked()
+        {
+            controller.ChangeInGameState(InGameState.WorldMap);
         }
     }
 }

@@ -20,6 +20,7 @@ namespace Scripts.Utils
     {
         WorldMap,
         PreCombat,
+        Upgrade,
         UnitPlacement,
         Wave,
         StageClear,

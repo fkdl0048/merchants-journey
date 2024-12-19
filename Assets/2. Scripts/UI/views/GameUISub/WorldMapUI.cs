@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Scripts.Manager;
 using UnityEngine;
 using UnityEngine.Events;
@@ -20,6 +17,7 @@ public class WorldMapUI : MonoBehaviour
 
     public UnityAction<int> OnIslandSelected;  // 섬이 선택되었을 때 이벤트
     public UnityAction<int> OnNextStageButtonClicked;
+    public UnityAction OnUpgradeButtonClicked;
 
     private int currentSelectedIsland = -1;  // 현재 선택된 섬의 인덱스 (-1은 선택되지 않음)
 
@@ -67,11 +65,7 @@ public class WorldMapUI : MonoBehaviour
     private void InitializeButtons()
     {
         // 업그레이드 버튼 초기화
-        UpgradesButton.onClick.AddListener(() =>
-        {
-            Debug.Log("Upgrade Button Clicked");
-            // Upgrade UI
-        });
+        UpgradesButton.onClick.AddListener(() => { OnUpgradeButtonClicked?.Invoke(); });
 
         // Next Stage 버튼 초기화
         NextStageButton.onClick.AddListener(() =>
