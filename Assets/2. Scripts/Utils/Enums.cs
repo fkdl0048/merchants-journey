@@ -28,8 +28,25 @@ namespace Scripts.Utils
     
     public enum UnitType
     {
+        Pyodu,
         Pyosa,
-        Archer,
-        Warrior
+    }
+    
+    public enum UnitClass
+    {
+        None,
+        Sword,
+        Lance,
+        Bow,
+        MartialArts,
+    }
+    
+    public enum SkillType
+    {
+        None,
+        MountainMountainSwordStrike,
+        TripleSpearCombo,
+        SingleShotTechnique,
+        SixHarmonyFist
     }
 }

@@ -40,6 +40,9 @@ namespace Scripts.UI
         [Header("PreCombat UI")]
         [SerializeField] private PreCombatUI preCombatPanel;
         
+        [Header("Upgrade UI")]
+        [SerializeField] private UpgradeUI upgradePanel;
+        
         [Header("Sound")]
         [SerializeField] private AudioClip buttonSound;
 
@@ -93,6 +96,7 @@ namespace Scripts.UI
             gameOverPanel.SetActive(false);
             worldMapPanel.gameObject.SetActive(false);
             preCombatPanel.gameObject.SetActive(false);
+            upgradePanel.gameObject.SetActive(false);
         }
 
         // Unit Placement UI Methods
@@ -168,6 +172,19 @@ namespace Scripts.UI
         }
         
         public PreCombatUI GetPreCombatUI() => preCombatPanel;
+        
+        public void ShowUpgradeUI()
+        {
+            HideAllPanels();
+            upgradePanel.gameObject.SetActive(true);
+        }
+        
+        public void HideUpgradeUI()
+        {
+            upgradePanel.gameObject.SetActive(false);
+        }
+        
+        public UpgradeUI GetUpgradeUI() => upgradePanel;
         
         private void OnDestroy()
         {

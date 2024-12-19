@@ -1,3 +1,4 @@
+using _2._Scripts.Unit;
 using UnityEngine;
 using Scripts.Data;
 using Scripts.Utils;
@@ -22,12 +23,20 @@ namespace Scripts.Manager
 #if UNITY_EDITOR
             // 에디터에서는 매번 새로운 데이터 생성
             gameData = new GameData();
+            // 초기 유닛 생성
+            gameData.ownedUnits.Add(new UnitData("unit_bowman_1", "표사", UnitType.Pyosa, UnitClass.None));
+            gameData.ownedUnits.Add(new UnitData("unit_bowman_2", "표사", UnitType.Pyosa, UnitClass.None));
+            gameData.ownedUnits.Add(new UnitData("unit_captain_1", "표두", UnitType.Pyodu, UnitClass.None));
 #else
             // 빌드에서는 저장된 데이터 로드
             gameData = LoadData<GameData>(GAME_DATA_KEY);
             if (gameData == null)
             {
                 gameData = new GameData();
+                // 초기 유닛 생성
+                gameData.ownedUnits.Add(new UnitData("unit_bowman_1", "표사", UnitType.Bowman, UnitClass.Common));
+                gameData.ownedUnits.Add(new UnitData("unit_bowman_2", "표사", UnitType.Bowman, UnitClass.Common));
+                gameData.ownedUnits.Add(new UnitData("unit_captain_1", "표두", UnitType.Captain, UnitClass.Common));
                 SaveGameData(gameData);
             }
 #endif

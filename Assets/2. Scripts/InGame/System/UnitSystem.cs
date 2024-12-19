@@ -38,8 +38,8 @@ namespace Scripts.InGame.System
 
             // 각 유닛 타입별로 최대 3번까지 시도 (버그 때문에 추가)
             TrySpawnUnitWithRetry(UnitType.Pyosa, 3);
-            TrySpawnUnitWithRetry(UnitType.Archer, 3);
-            TrySpawnUnitWithRetry(UnitType.Warrior, 3);
+            TrySpawnUnitWithRetry(UnitType.Pyosa, 3);
+            TrySpawnUnitWithRetry(UnitType.Pyodu, 3);
 
             // 만약 생성된 유닛이 3개 미만이면 경고
             if (spawnedUnits.Count < 3)
