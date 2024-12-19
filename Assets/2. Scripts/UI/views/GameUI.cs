@@ -1,4 +1,5 @@
 using Scripts.Manager;
+using Scripts.UI.GameUISub;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -35,6 +36,9 @@ namespace Scripts.UI
         
         [Header("World Map UI")]
         [SerializeField] private WorldMapUI worldMapPanel;
+        
+        [Header("PreCombat UI")]
+        [SerializeField] private PreCombatUI preCombatPanel;
         
         [Header("Sound")]
         [SerializeField] private AudioClip buttonSound;
@@ -88,6 +92,7 @@ namespace Scripts.UI
             gameClearPanel.SetActive(false);
             gameOverPanel.SetActive(false);
             worldMapPanel.gameObject.SetActive(false);
+            preCombatPanel.gameObject.SetActive(false);
         }
 
         // Unit Placement UI Methods
@@ -150,6 +155,19 @@ namespace Scripts.UI
         }
         
         public WorldMapUI GetWorldMapUI() => worldMapPanel;
+        
+        public void ShowPreCombatUI()
+        {
+            HideAllPanels();
+            preCombatPanel.gameObject.SetActive(true);
+        }
+        
+        public void HidePreCombatUI()
+        {
+            preCombatPanel.gameObject.SetActive(false);
+        }
+        
+        public PreCombatUI GetPreCombatUI() => preCombatPanel;
         
         private void OnDestroy()
         {

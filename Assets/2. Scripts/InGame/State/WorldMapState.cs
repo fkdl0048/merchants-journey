@@ -38,13 +38,13 @@ namespace Scripts.InGame.State
 
         public void Exit()
         {
-            
+            worldMapUI.OnNextStageButtonClicked -= HandleNextStageButtonClicked;
         }
         
         private void HandleNextStageButtonClicked(int index)
         {
             stageSystem.CurrentStageNumber = index + 1;
-            controller.ChangeInGameState(InGameState.UnitPlacement);
+            controller.ChangeInGameState(InGameState.PreCombat);
         }
     }
 }

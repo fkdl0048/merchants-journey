@@ -39,7 +39,7 @@ namespace Scripts.InGame.State
             gameUI.OnUnitPlacementComplete += HandlePlacementComplete;
             
             // 스테이지 로드
-            stageSystem.LoadStage();
+            //stageSystem.LoadStage();
             
             // 배치 시스템 초기화 및 유닛 배치
             var cargo = stageSystem.GetCargo();

@@ -46,6 +46,10 @@ namespace Scripts.Controller
                     new WorldMapState(this, gameUI, stageSystem)
                 },
                 {
+                    InGameState.PreCombat,
+                    new PreCombatState(this, stageSystem, gameUI)
+                },
+                {
                     InGameState.UnitPlacement,
                     new UnitPlacementState(this, gameUI, unitSystem, stageSystem)
                 },
