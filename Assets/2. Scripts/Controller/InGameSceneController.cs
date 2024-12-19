@@ -20,7 +20,7 @@ namespace Scripts.Controller
         [Header("Scene References")]
         [SerializeField] private GameUI gameUI;
         [SerializeField] private UnitSystem unitSystem;
-        [SerializeField] private StageSystem stageController;
+        [SerializeField] private StageSystem stageSystem;
         [SerializeField] private ClickSystem clickSystem;
         [SerializeField] private AudioClip gameBGM;
         
@@ -43,19 +43,19 @@ namespace Scripts.Controller
             {
                 {
                     InGameState.WorldMap,
-                    new WorldMapState(this, gameUI)
+                    new WorldMapState(this, gameUI, stageSystem)
                 },
                 {
                     InGameState.UnitPlacement,
-                    new UnitPlacementState(this, gameUI, unitSystem, stageController)
+                    new UnitPlacementState(this, gameUI, unitSystem, stageSystem)
                 },
                 {
                     InGameState.Wave,
-                    new BattleState(this, gameUI, unitSystem, stageController, clickSystem)
+                    new BattleState(this, gameUI, unitSystem, stageSystem, clickSystem)
                 },
                 {
                     InGameState.StageClear,
-                    new StageClearState(this, gameUI)
+                    new StageClearState(this, gameUI, stageSystem)
                 },
                 {
                     InGameState.StageOver,

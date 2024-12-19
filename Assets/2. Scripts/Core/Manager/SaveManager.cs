@@ -8,6 +8,9 @@ namespace Scripts.Manager
     {
         private const string GAME_DATA_KEY = "GameData";
         private GameData gameData;
+        
+        // stage 정보를 가져오기 위한 프로퍼티
+        public int CurrentStage => gameData.currentStage;
 
         protected override void Awake()
         {

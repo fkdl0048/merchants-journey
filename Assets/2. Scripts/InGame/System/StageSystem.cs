@@ -14,6 +14,7 @@ namespace Scripts.InGame.System
         [SerializeField] private StageData[] stageDatas;
         [SerializeField] private Transform stageParent;
 
+        public int CurrentStageNumber { get; set; }
         private StageData currentStageData;
         private GameObject currentStageInstance;
 
@@ -24,15 +25,12 @@ namespace Scripts.InGame.System
                 Debug.LogError("No stage data assigned to StageSystem!");
                 return;
             }
-            
-            var gameData = SaveManager.Instance.GetGameData();
-            int currentStageNumber = gameData?.currentStage ?? 1;  // 데이터가 없으면 1스테이지부터 시작
 
-            currentStageData = stageDatas.FirstOrDefault(x => x.stageNumber == currentStageNumber);
+            currentStageData = stageDatas.FirstOrDefault(x => x.stageNumber == CurrentStageNumber);
             
             if (currentStageData == null)
             {
-                Debug.LogError($"Stage {currentStageNumber} data not found!");
+                Debug.LogError($"Stage {CurrentStageNumber} data not found!");
                 return;
             }
 
@@ -65,6 +63,11 @@ namespace Scripts.InGame.System
         public void LoadStage()
         {
             LoadCurrentStage();
+        }
+        
+        public void ClearStage()
+        {
+            Destroy(currentStageInstance);
         }
     }
 }

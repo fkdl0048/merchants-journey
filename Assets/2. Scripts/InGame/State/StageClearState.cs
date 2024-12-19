@@ -1,9 +1,9 @@
 using Scripts.Controller;
+using Scripts.InGame.System;
 using Scripts.Interface;
 using Scripts.Manager;
 using Scripts.UI;
 using Scripts.Utils;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Scripts.InGame.State
@@ -12,11 +12,13 @@ namespace Scripts.InGame.State
     {
         private readonly InGameSceneController controller;
         private readonly GameUI gameUI;
+        private readonly StageSystem stageSystem;
 
-        public StageClearState(InGameSceneController controller, GameUI gameUI)
+        public StageClearState(InGameSceneController controller, GameUI gameUI, StageSystem stageSystem)
         {
             this.controller = controller;
             this.gameUI = gameUI;
+            this.stageSystem = stageSystem;
         }
 
         public void Enter()
@@ -43,16 +45,23 @@ namespace Scripts.InGame.State
             // 이벤트 리스너 제거
             gameUI.OnNextStageClick -= HandleNextStage;
             gameUI.OnMainMenuClick -= HandleMainMenu;
+            
+            stageSystem.ClearStage();
         }
 
         private void HandleNextStage()
         {
             // 다음 스테이지를 위해 다시 유닛 배치 상태로
             var gameData = SaveManager.Instance.GetGameData();
-            gameData.currentStage++;
+
+            if (gameData.currentStage <= stageSystem.CurrentStageNumber)
+            {
+                gameData.currentStage++;
+            }
+            
             SaveManager.Instance.SaveGameData(gameData);
             
-            controller.ChangeInGameState(InGameState.UnitPlacement);
+            controller.ChangeInGameState(InGameState.WorldMap);
         }
 
         private void HandleMainMenu()

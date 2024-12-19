@@ -307,7 +307,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameUI: {fileID: 1496464511}
   unitSystem: {fileID: 1546983709}
-  stageController: {fileID: 1546983707}
+  stageSystem: {fileID: 1546983707}
   clickSystem: {fileID: 1546983710}
   gameBGM: {fileID: 0}
 --- !u!4 &957183265
@@ -380,7 +380,7 @@ GameObject:
   - component: {fileID: 1546983709}
   - component: {fileID: 1546983710}
   m_Layer: 0
-  m_Name: StageController
+  m_Name: StageSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -777,9 +777,9 @@ SceneRoots:
   - {fileID: 155421017}
   - {fileID: 431644051}
   - {fileID: 957183265}
-  - {fileID: 1546983708}
   - {fileID: 1527158715}
   - {fileID: 5923623101753942930}
   - {fileID: 313460825}
+  - {fileID: 1546983708}
   - {fileID: 1633481751}
   - {fileID: 2072021015}
