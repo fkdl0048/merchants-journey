@@ -5,7 +5,7 @@ namespace AI
 {
     public class PlayerAI : ObjectAI
     {
-        private bool isForce = false; //이동 명령이 우선시 됨.
+        [SerializeField] private bool isForce = false; //이동 명령이 우선시 됨.
         public void ChangeForce(bool isForce) => this.isForce = isForce;
         protected override void EncounterBehavior()
         {
@@ -37,10 +37,7 @@ namespace AI
             //탐지 범위 내에 적군 오브젝트가 잡혔다면?
             Transform obj = CheckRange(status.recognizeRange, targetTag);
             if (IsArrive())
-            {
-                Debug.Log("!!");
                 isForce = false;
-            }
             if (obj == null || isForce)
                 return;
             else
@@ -54,7 +51,6 @@ namespace AI
             var target = cargo.transform.position + targetPosition;
             Vector2 a = CMath.RoundVector2Data(new(gameObject.transform.position.x, gameObject.transform.position.z));
             Vector2 t = CMath.RoundVector2Data(new(target.x, target.z)); 
-            Debug.Log(a + " " + t + "  " + (a==t));
             return a == t;
         }
     }
