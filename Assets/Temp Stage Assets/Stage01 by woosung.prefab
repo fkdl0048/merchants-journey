@@ -23877,11 +23877,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4707654760133640633, guid: ccb3a033ad004ea408e78087cbeda138, type: 3}
       propertyPath: boxSize.x
-      value: 1
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4707654760133640633, guid: ccb3a033ad004ea408e78087cbeda138, type: 3}
       propertyPath: boxSize.z
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5316081193370305362, guid: ccb3a033ad004ea408e78087cbeda138, type: 3}
       propertyPath: m_Name
