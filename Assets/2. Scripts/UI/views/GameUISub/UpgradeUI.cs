@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using _2._Scripts.Unit;
 using Scripts.UI.GameUISub.Controllers;
 using System.Collections.Generic;
+using Scripts.Data;
 using Scripts.Utils;
 
 namespace Scripts.UI.GameUISub
@@ -25,6 +26,11 @@ namespace Scripts.UI.GameUISub
         [SerializeField] private Button BowButton;
         [SerializeField] private Button MartialArtsButton;
         
+        [Header("Stat Upgrade List")]
+        [SerializeField] private GameObject StatUpgradeContainer;
+        [SerializeField] private GameObject upgradeElementPrefab;
+        [SerializeField] private StatUpgradeData statUpgradeData;
+        
         [Header("Utility")]
         [SerializeField] private Button backButton;
         
@@ -36,6 +42,8 @@ namespace Scripts.UI.GameUISub
         private UnitPanelController panelController;
         private ClassSelectionController classController;
         private TabController tabController;
+
+        private List<UpgradeElementUI> upgradeElements = new List<UpgradeElementUI>();
 
         private void Awake()
         {
@@ -74,6 +82,46 @@ namespace Scripts.UI.GameUISub
             Debug.Log("Initializing UpgradeUI");
             panelController.InitializePanels(this);
             tabController.SwitchTab(UnitType.Pyodu);
+        }
+
+        public void InitializeStatUpgrades(UnitType unitType)
+        {
+            ClearStatUpgrades();
+            
+            var upgrades = statUpgradeData.statUpgrades.FindAll(x => x.UnitType == unitType);
+            foreach (var upgrade in upgrades)
+            {
+                GameObject go = Instantiate(upgradeElementPrefab, StatUpgradeContainer.transform);
+                var element = go.GetComponent<UpgradeElementUI>();
+                
+                element.Initialize(
+                    upgrade.StatType.ToString(), 
+                    upgrade.Description,
+                    upgrade.InitialValue,
+                    upgrade.MaxValue,
+                    upgrade.UpgradeCost
+                );
+                upgradeElements.Add(element);
+            }
+        }
+
+        private void ClearStatUpgrades()
+        {
+            foreach (var element in upgradeElements)
+            {
+                if (element != null)
+                    Destroy(element.gameObject);
+            }
+            upgradeElements.Clear();
+        }
+
+        public void ToggleStatUpgrades(bool show)
+        {
+            foreach (var element in upgradeElements)
+            {
+                if (element != null)
+                    element.SetVisible(show);
+            }
         }
 
         public void ShowClassButtons(UnitData unitData, Button upgradeButton)

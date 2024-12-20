@@ -1,0 +1,92 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d57b5238ad9e40e4d8ed7fe2001178e4, type: 3}
+  m_Name: StatUpgradeData
+  m_EditorClassIdentifier: 
+  statUpgrades:
+  - UnitType: 0
+    StatType: 0
+    MinValue: 1
+    MaxValue: 5
+    InitialValue: 1
+    UpgradeCost: 100
+    Description: Description
+  - UnitType: 0
+    StatType: 1
+    MinValue: 1
+    MaxValue: 5
+    InitialValue: 1
+    UpgradeCost: 150
+    Description: Description
+  - UnitType: 0
+    StatType: 2
+    MinValue: 1
+    MaxValue: 5
+    InitialValue: 1
+    UpgradeCost: 120
+    Description: Description
+  - UnitType: 0
+    StatType: 3
+    MinValue: 1
+    MaxValue: 5
+    InitialValue: 1
+    UpgradeCost: 200
+    Description: Description
+  - UnitType: 1
+    StatType: 0
+    MinValue: 1
+    MaxValue: 5
+    InitialValue: 1
+    UpgradeCost: 100
+    Description: Description
+  - UnitType: 1
+    StatType: 1
+    MinValue: 1
+    MaxValue: 5
+    InitialValue: 1
+    UpgradeCost: 150
+    Description: Description
+  - UnitType: 1
+    StatType: 2
+    MinValue: 1
+    MaxValue: 5
+    InitialValue: 1
+    UpgradeCost: 120
+    Description: Description
+  - UnitType: 1
+    StatType: 3
+    MinValue: 1
+    MaxValue: 5
+    InitialValue: 1
+    UpgradeCost: 200
+    Description: Description
+  - UnitType: 2
+    StatType: 0
+    MinValue: 1
+    MaxValue: 5
+    InitialValue: 1
+    UpgradeCost: 100
+    Description: Description
+  - UnitType: 2
+    StatType: 2
+    MinValue: 1
+    MaxValue: 5
+    InitialValue: 1
+    UpgradeCost: 120
+    Description: Description
+  - UnitType: 2
+    StatType: 3
+    MinValue: 1
+    MaxValue: 5
+    InitialValue: 1
+    UpgradeCost: 200
+    Description: Description
