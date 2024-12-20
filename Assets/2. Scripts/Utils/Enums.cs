@@ -51,4 +51,12 @@ namespace Scripts.Utils
         SingleShotTechnique,
         SixHarmonyFist
     }
+    
+    public enum StatType
+    {
+        MoveSpeed,
+        AttackDamage,
+        Defense,
+        UnitCount
+    }
 }
