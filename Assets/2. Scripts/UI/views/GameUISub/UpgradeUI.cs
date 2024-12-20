@@ -158,7 +158,7 @@ namespace Scripts.UI.GameUISub
                             currentValue,
                             upgrade.MaxValue,
                             upgrade.UpgradeCost,
-                            () => UpdateGoldText()
+                            () => OnStatUpgraded(unitData, upgrade.StatType)
                         );
                         upgradeElements.Add(element);
                     }
@@ -228,6 +228,40 @@ namespace Scripts.UI.GameUISub
         private void OnBackButtonClicked()
         {
             OnBackClicked?.Invoke();
+        }
+
+        private void OnStatUpgraded(UnitData unitData, StatType statType)
+        {
+            // 스탯 업그레이드
+            switch (statType)
+            {
+                case StatType.MoveSpeed:
+                    unitData.moveSpeedCount++;
+                    break;
+                case StatType.AttackDamage:
+                    unitData.attackDamageCount++;
+                    break;
+                case StatType.Defense:
+                    unitData.defenseCount++;
+                    break;
+            }
+
+            // 게임 데이터 저장
+            var gameData = SaveManager.Instance.GetGameData();
+            var unit = gameData.ownedUnits.Find(u => u.unitId == unitData.unitId);
+            if (unit != null)
+            {
+                unit.moveSpeedCount = unitData.moveSpeedCount;
+                unit.attackDamageCount = unitData.attackDamageCount;
+                unit.defenseCount = unitData.defenseCount;
+                SaveManager.Instance.SaveGameData(gameData);
+            }
+
+            // 골드 업데이트
+            UpdateGoldText();
+
+            // UI 업데이트
+            panelController.UpdatePanelForUnit(unitData, this);
         }
     }
 }

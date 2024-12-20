@@ -92,6 +92,17 @@ namespace Scripts.UI.GameUISub.Controllers
             }
         }
 
+        public IEnumerable<UpgradeUnitPanelUI> GetAllPanels()
+        {
+            foreach (var panels in activePanels.Values)
+            {
+                foreach (var panel in panels)
+                {
+                    yield return panel;
+                }
+            }
+        }
+
         private void ClearAllPanels()
         {
             foreach (var container in panelContainers.Values)
