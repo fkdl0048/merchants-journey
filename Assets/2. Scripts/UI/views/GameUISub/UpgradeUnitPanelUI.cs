@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Scripts.Utils;
+using TMPro;
 
 namespace Scripts.UI.GameUISub
 {
@@ -9,6 +10,7 @@ namespace Scripts.UI.GameUISub
         [Header("Select")]
         [SerializeField] private Button selectButton;
         [SerializeField] private GameObject selectBackground;
+        [SerializeField] private TextMeshProUGUI unitNameText;
         
         [Header("Container")]
         [SerializeField] private Transform upgradeContainer;
@@ -26,9 +28,13 @@ namespace Scripts.UI.GameUISub
             selectBackground.SetActive(false);
         }
 
-        public void Initialize(UnitType type)
+        public void Initialize(UnitType type, string unitName)
         {
             unitType = type;
+            if (unitNameText != null)
+            {
+                unitNameText.text = unitName;
+            }
             CreateButtons();
         }
         
@@ -54,10 +60,30 @@ namespace Scripts.UI.GameUISub
             // 같은 부모 아래의 모든 UpgradeUnitPanelUI 컴포넌트를 가져옴
             var allPanels = transform.parent.GetComponentsInChildren<UpgradeUnitPanelUI>();
             
-            // 다른 모든 패널의 선택 상태를 해제
-            foreach (var panel in allPanels)
+            // 현재 선택된 패널의 인덱스 찾기
+            int selectedIndex = System.Array.IndexOf(allPanels, this);
+            
+            if (selectedIndex >= 0)
             {
-                panel.selectBackground.SetActive(panel == this);
+                // 선택된 패널을 맨 앞으로 이동
+                transform.SetSiblingIndex(0);
+                
+                // 나머지 패널들의 선택 상태 해제
+                foreach (var panel in allPanels)
+                {
+                    if (panel.selectBackground != null)
+                    {
+                        panel.selectBackground.SetActive(panel == this);
+                    }
+                }
+            }
+        }
+
+        public void SetSelected(bool selected)
+        {
+            if (selectBackground != null)
+            {
+                selectBackground.SetActive(selected);
             }
         }
     }

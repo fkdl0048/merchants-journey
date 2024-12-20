@@ -61,7 +61,7 @@ namespace Scripts.UI.GameUISub
             {
                 var panel = Instantiate(upgradeUnitPanelPrefab, PyoduUpgradePanel.transform);
                 var panelUI = panel.GetComponent<UpgradeUnitPanelUI>();
-                panelUI.Initialize(UnitType.Pyodu);
+                panelUI.Initialize(UnitType.Pyodu, $"{unitData.unitName}");
                 
                 if (firstPyoduPanel == null)
                 {
@@ -75,7 +75,7 @@ namespace Scripts.UI.GameUISub
             {
                 var panel = Instantiate(upgradeUnitPanelPrefab, PyosaUpgradePanel.transform);
                 var panelUI = panel.GetComponent<UpgradeUnitPanelUI>();
-                panelUI.Initialize(UnitType.Pyosa);
+                panelUI.Initialize(UnitType.Pyosa, $"{unitData.unitName}");
                 
                 if (firstPyosaPanel == null)
                 {
@@ -97,47 +97,67 @@ namespace Scripts.UI.GameUISub
         {
             yield return null; // 다음 프레임까지 대기
             
+            // 각 패널의 두 번째 항목(인덱스 1) 선택
             if (firstPyoduPanel != null)
             {
-                Debug.Log("Selecting first Pyodu panel");
-                firstPyoduPanel.SelectButton();
+                var pyoduPanels = PyoduUpgradePanel.GetComponentsInChildren<UpgradeUnitPanelUI>();
+                if (pyoduPanels.Length >= 1)
+                {
+                    pyoduPanels[0].SelectButton();
+                }
             }
             
             if (firstPyosaPanel != null)
             {
-                Debug.Log("Selecting first Pyosa panel");
-                firstPyosaPanel.SelectButton();
+                var pyosaPanels = PyosaUpgradePanel.GetComponentsInChildren<UpgradeUnitPanelUI>();
+                if (pyosaPanels.Length >= 1)
+                {
+                    pyosaPanels[0].SelectButton();
+                }
             }
             
             if (firstCargoPanel != null)
             {
-                Debug.Log("Selecting first Cargo panel");
-                firstCargoPanel.SelectButton();
+                var cargoPanels = CargoUpgradePanel.GetComponentsInChildren<UpgradeUnitPanelUI>();
+                if (cargoPanels.Length >= 1)
+                {
+                    cargoPanels[0].SelectButton();
+                }
             }
         }
         
         // Pyodu 버튼 클릭
         private void OnPyoduButtonClicked()
         {
-            PyoduUpgradePanel.SetActive(true);
-            PyosaUpgradePanel.SetActive(false);
-            CargoUpgradePanel.SetActive(false);
+            SetActivePanels(true, false, false);
+            PyoduButton.interactable = false;
+            PyosaButton.interactable = true;
+            CargoButton.interactable = true;
         }
         
         // Pyosa 버튼 클릭
         private void OnPyosaButtonClicked()
         {
-            PyoduUpgradePanel.SetActive(false);
-            PyosaUpgradePanel.SetActive(true);
-            CargoUpgradePanel.SetActive(false);
+            SetActivePanels(false, true, false);
+            PyoduButton.interactable = true;
+            PyosaButton.interactable = false;
+            CargoButton.interactable = true;
         }
         
         // Cargo 버튼 클릭
         private void OnCargoButtonClicked()
         {
-            PyoduUpgradePanel.SetActive(false);
-            PyosaUpgradePanel.SetActive(false);
-            CargoUpgradePanel.SetActive(true);
+            SetActivePanels(false, false, true);
+            PyoduButton.interactable = true;
+            PyosaButton.interactable = true;
+            CargoButton.interactable = false;
+        }
+        
+        private void SetActivePanels(bool pyodu, bool pyosa, bool cargo)
+        {
+            PyoduUpgradePanel.SetActive(pyodu);
+            PyosaUpgradePanel.SetActive(pyosa);
+            CargoUpgradePanel.SetActive(cargo);
         }
         
         // 뒤로 가기 버튼 클릭
