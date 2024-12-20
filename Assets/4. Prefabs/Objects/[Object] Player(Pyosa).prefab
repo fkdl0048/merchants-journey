@@ -173,7 +173,7 @@ MonoBehaviour:
   aiEnable: 0
   targetPosition: {x: 0, y: 0, z: 0}
   targetTag: Enemy
-  status: {fileID: 11400000, guid: 1e14969e2e421e8448f09f096a7b76bf, type: 2}
+  status: {fileID: 11400000, guid: 75a1f8dd7c1023c47b43e355ec6a128f, type: 2}
   currentHP: 0
   fsm: 0
   hitSoundClip: {fileID: 8300000, guid: c2fed035958ccdd48a5b8df47035b21e, type: 3}
@@ -181,3 +181,4 @@ MonoBehaviour:
   debugModeEnable: 1
   targetEnemy: {fileID: 0}
   pos: {x: 0, y: 0, z: 0}
+  isForce: 0

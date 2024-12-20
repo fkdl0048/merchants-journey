@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 682ef7f988fae2d44b590f24a259f278, type: 3}
   m_Name: Warrior2
   m_EditorClassIdentifier: 
-  hp: 2
+  hp: 1
   recognizeRange: 3
   moveSpeed: 1
   damage: 1

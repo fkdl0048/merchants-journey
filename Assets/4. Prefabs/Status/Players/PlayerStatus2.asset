@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: PlayerStatus2
   m_EditorClassIdentifier: 
   hp: 10
-  recognizeRange: 10
+  recognizeRange: 3
   moveSpeed: 1
   damage: 1
   attackSpeed: 1
-  attackRange: 2
+  attackRange: 1
+  hitboxRange: 0.5
