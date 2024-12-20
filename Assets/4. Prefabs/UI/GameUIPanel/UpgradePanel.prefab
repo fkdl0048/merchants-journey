@@ -228,7 +228,11 @@ MonoBehaviour:
   LanceButton: {fileID: 9018779208910662470}
   BowButton: {fileID: 4340682489563858264}
   MartialArtsButton: {fileID: 2125072128592386106}
+  StatUpgradeContainer: {fileID: 2784308608007210836}
+  upgradeElementPrefab: {fileID: 1322117511525846719, guid: 2d41791ce21ebfe419dd76673657c41a, type: 3}
+  statUpgradeData: {fileID: 11400000, guid: 3e52a9321a9077049978a1e677af7145, type: 2}
   backButton: {fileID: 5806444251594025009}
+  goldText: {fileID: 1018400932536850508}
   upgradeUnitPanelPrefab: {fileID: 9072118685576238683, guid: 1aceb9e5faa0722488563a09941badcf, type: 3}
 --- !u!1 &480135883069350539
 GameObject:
@@ -2874,6 +2878,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a52c28479d101241bab9f194a413cbe, type: 3}
+--- !u!1 &2784308608007210836 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3794722489733542188, guid: 9a52c28479d101241bab9f194a413cbe, type: 3}
+  m_PrefabInstance: {fileID: 1299946080184956536}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &7305788522222468597 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8604419449059527565, guid: 9a52c28479d101241bab9f194a413cbe, type: 3}

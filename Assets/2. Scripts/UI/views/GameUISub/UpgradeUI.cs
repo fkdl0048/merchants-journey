@@ -4,7 +4,10 @@ using UnityEngine.UI;
 using _2._Scripts.Unit;
 using Scripts.UI.GameUISub.Controllers;
 using System.Collections.Generic;
+using Scripts.Data;
+using Scripts.Manager;
 using Scripts.Utils;
+using TMPro;
 
 namespace Scripts.UI.GameUISub
 {
@@ -25,8 +28,14 @@ namespace Scripts.UI.GameUISub
         [SerializeField] private Button BowButton;
         [SerializeField] private Button MartialArtsButton;
         
+        [Header("Stat Upgrade List")]
+        [SerializeField] private GameObject StatUpgradeContainer;
+        [SerializeField] private GameObject upgradeElementPrefab;
+        [SerializeField] private StatUpgradeData statUpgradeData;
+        
         [Header("Utility")]
         [SerializeField] private Button backButton;
+        [SerializeField] private TextMeshProUGUI goldText;
         
         [Header("Upgrade Unit Panel (Prefab)")]
         [SerializeField] private GameObject upgradeUnitPanelPrefab;
@@ -37,11 +46,19 @@ namespace Scripts.UI.GameUISub
         private ClassSelectionController classController;
         private TabController tabController;
 
+        private List<UpgradeElementUI> upgradeElements = new List<UpgradeElementUI>();
+
         private void Awake()
         {
             InitializeControllers();
             SetupClassButtons();
             backButton.onClick.AddListener(OnBackButtonClicked);
+            
+            // 초기에 스탯 업그레이드 컨테이너 숨기기
+            if (StatUpgradeContainer != null)
+            {
+                StatUpgradeContainer.SetActive(false);
+            }
         }
 
         private void InitializeControllers()
@@ -74,6 +91,133 @@ namespace Scripts.UI.GameUISub
             Debug.Log("Initializing UpgradeUI");
             panelController.InitializePanels(this);
             tabController.SwitchTab(UnitType.Pyodu);
+            UpdateGoldText();
+            
+            // 초기화할 때도 스탯 업그레이드 컨테이너 숨기기
+            if (StatUpgradeContainer != null)
+            {
+                StatUpgradeContainer.SetActive(false);
+            }
+        }
+
+        public void InitializeStatUpgrades(UnitType unitType)
+        {
+            ClearStatUpgrades();
+            
+            if (statUpgradeData == null || StatUpgradeContainer == null || upgradeElementPrefab == null)
+            {
+                Debug.LogError($"Required references are missing in UpgradeUI! statUpgradeData: {statUpgradeData}, StatUpgradeContainer: {StatUpgradeContainer}, upgradeElementPrefab: {upgradeElementPrefab}");
+                return;
+            }
+
+            // 스탯 업그레이드 컨테이너 보이기
+            StatUpgradeContainer.SetActive(true);
+            
+            // 현재 선택된 유닛의 데이터 가져오기
+            var selectedPanel = panelController.GetSelectedPanel();
+            if (selectedPanel == null)
+            {
+                Debug.LogError("No unit panel selected!");
+                return;
+            }
+
+            UnitData unitData = selectedPanel.GetUnitData();
+            if (unitData == null)
+            {
+                Debug.LogError("Selected unit data is null!");
+                return;
+            }
+
+            Debug.Log($"Finding upgrades for unit type: {unitType}");
+            var upgrades = statUpgradeData.statUpgrades.FindAll(x => x.UnitType == unitType);
+            Debug.Log($"Found {upgrades.Count} upgrades");
+
+            foreach (var upgrade in upgrades)
+            {
+                if (upgrade == null)
+                {
+                    Debug.LogError("Upgrade info is null!");
+                    continue;
+                }
+
+                Debug.Log($"Creating upgrade element for {upgrade.StatType}");
+                GameObject go = Instantiate(upgradeElementPrefab, StatUpgradeContainer.transform);
+                var element = go.GetComponent<UpgradeElementUI>();
+                
+                if (element != null)
+                {
+                    try
+                    {
+                        // 스탯 타입에 따라 현재 값 가져오기
+                        int currentValue = GetCurrentStatValue(unitData, upgrade.StatType);
+                        
+                        Debug.Log($"Initializing upgrade element - StatType: {upgrade.StatType}, Description: {upgrade.Description}, CurrentValue: {currentValue}, MaxValue: {upgrade.MaxValue}, Cost: {upgrade.UpgradeCost}");
+                        element.Initialize(
+                            upgrade.StatType.ToString(),
+                            upgrade.Description ?? "No Description",
+                            currentValue,
+                            upgrade.MaxValue,
+                            upgrade.UpgradeCost,
+                            () => OnStatUpgraded(unitData, upgrade.StatType)
+                        );
+                        upgradeElements.Add(element);
+                    }
+                    catch (System.Exception e)
+                    {
+                        Debug.LogError($"Error initializing upgrade element: {e.Message}\nStack trace: {e.StackTrace}");
+                        Destroy(go);
+                    }
+                }
+                else
+                {
+                    Debug.LogError("UpgradeElementUI component not found on instantiated prefab!");
+                    Destroy(go);
+                }
+            }
+        }
+
+        private int GetCurrentStatValue(UnitData unitData, StatType statType)
+        {
+            switch (statType)
+            {
+                case StatType.MoveSpeed:
+                    return unitData.moveSpeedCount;
+                case StatType.AttackDamage:
+                    return unitData.attackDamageCount;
+                case StatType.Defense:
+                    return unitData.defenseCount;
+                default:
+                    Debug.LogWarning($"Unknown stat type: {statType}");
+                    return 1;
+            }
+        }
+
+        private void ClearStatUpgrades()
+        {
+            foreach (var element in upgradeElements)
+            {
+                if (element != null)
+                    Destroy(element.gameObject);
+            }
+            upgradeElements.Clear();
+        }
+
+        private void UpdateGoldText()
+        {
+            if (goldText != null && SaveManager.Instance != null)
+            {
+                GameData gameData = SaveManager.Instance.GetGameData();
+                goldText.text = $"{gameData.gold}";
+            }
+        }
+
+        public void ToggleStatUpgrades(bool show)
+        {
+            foreach (var element in upgradeElements)
+            {
+                if (element != null)
+                    element.SetVisible(show);
+            }
         }
 
         public void ShowClassButtons(UnitData unitData, Button upgradeButton)
@@ -84,6 +228,40 @@ namespace Scripts.UI.GameUISub
         private void OnBackButtonClicked()
         {
             OnBackClicked?.Invoke();
+        }
+
+        private void OnStatUpgraded(UnitData unitData, StatType statType)
+        {
+            // 스탯 업그레이드
+            switch (statType)
+            {
+                case StatType.MoveSpeed:
+                    unitData.moveSpeedCount++;
+                    break;
+                case StatType.AttackDamage:
+                    unitData.attackDamageCount++;
+                    break;
+                case StatType.Defense:
+                    unitData.defenseCount++;
+                    break;
+            }
+
+            // 게임 데이터 저장
+            var gameData = SaveManager.Instance.GetGameData();
+            var unit = gameData.ownedUnits.Find(u => u.unitId == unitData.unitId);
+            if (unit != null)
+            {
+                unit.moveSpeedCount = unitData.moveSpeedCount;
+                unit.attackDamageCount = unitData.attackDamageCount;
+                unit.defenseCount = unitData.defenseCount;
+                SaveManager.Instance.SaveGameData(gameData);
+            }
+
+            // 골드 업데이트
+            UpdateGoldText();
+
+            // UI 업데이트
+            panelController.UpdatePanelForUnit(unitData, this);
         }
     }
 }
