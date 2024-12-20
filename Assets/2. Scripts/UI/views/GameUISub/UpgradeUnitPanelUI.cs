@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using _2._Scripts.Unit;
+using System;
 using Scripts.Utils;
 
 namespace Scripts.UI.GameUISub
@@ -23,6 +24,8 @@ namespace Scripts.UI.GameUISub
         private UnitType unitType;
         private UnitData unitData;
         private UpgradeUI upgradeUI;
+        
+        public event Action<UpgradeUnitPanelUI> OnSelected;
         
         private void Awake()
         {
@@ -101,6 +104,9 @@ namespace Scripts.UI.GameUISub
             {
                 panel.SetSelected(panel == this);
             }
+
+            OnSelected?.Invoke(this);
+            upgradeUI.InitializeStatUpgrades(unitType);
         }
 
         public void SetSelected(bool selected)

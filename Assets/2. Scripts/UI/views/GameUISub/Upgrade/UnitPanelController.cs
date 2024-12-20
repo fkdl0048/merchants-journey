@@ -1,16 +1,18 @@
 using System.Collections.Generic;
 using UnityEngine;
-using _2._Scripts.Unit;
 using Scripts.Manager;
 using Scripts.Utils;
+using Scripts.UI.GameUISub;
+using _2._Scripts.Unit;
 
 namespace Scripts.UI.GameUISub.Controllers
 {
     public class UnitPanelController
     {
-        private readonly GameObject upgradeUnitPanelPrefab;
-        private readonly Dictionary<UnitType, GameObject> panelContainers;
-        private readonly Dictionary<UnitType, List<UpgradeUnitPanelUI>> activePanels;
+        private GameObject upgradeUnitPanelPrefab;
+        private Dictionary<UnitType, GameObject> panelContainers;
+        private Dictionary<UnitType, List<UpgradeUnitPanelUI>> activePanels;
+        private UpgradeUnitPanelUI selectedPanel;
 
         public UnitPanelController(GameObject prefab, Dictionary<UnitType, GameObject> containers)
         {
@@ -40,6 +42,37 @@ namespace Scripts.UI.GameUISub.Controllers
             }
         }
 
+        private void CreateUnitPanel(GameObject container, UnitData unitData, UnitType type, UpgradeUI upgradeUI)
+        {
+            var panel = Object.Instantiate(upgradeUnitPanelPrefab, container.transform);
+            var panelUI = panel.GetComponent<UpgradeUnitPanelUI>();
+            
+            if (panelUI != null)
+            {
+                panelUI.Initialize(type, unitData.unitName, unitData, upgradeUI);
+                panelUI.OnSelected += HandlePanelSelected;
+                activePanels[type].Add(panelUI);
+            }
+        }
+
+        private void HandlePanelSelected(UpgradeUnitPanelUI panel)
+        {
+            selectedPanel = panel;
+        }
+
+        public UpgradeUnitPanelUI GetSelectedPanel()
+        {
+            return selectedPanel;
+        }
+
+        public void SelectFirstPanel(UnitType type)
+        {
+            if (activePanels.TryGetValue(type, out var panels) && panels.Count > 0)
+            {
+                panels[0].OnSelectButtonClicked();
+            }
+        }
+
         public void UpdatePanelForUnit(UnitData unitData, UpgradeUI upgradeUI)
         {
             if (!panelContainers.TryGetValue(unitData.unitType, out var container)) return;
@@ -59,26 +92,6 @@ namespace Scripts.UI.GameUISub.Controllers
             }
         }
 
-        public void SelectFirstPanel(UnitType type)
-        {
-            if (activePanels.TryGetValue(type, out var panels) && panels.Count > 0)
-            {
-                panels[0].OnSelectButtonClicked();
-            }
-        }
-
-        private void CreateUnitPanel(GameObject container, UnitData unitData, UnitType type, UpgradeUI upgradeUI)
-        {
-            var panel = Object.Instantiate(upgradeUnitPanelPrefab, container.transform);
-            var panelUI = panel.GetComponent<UpgradeUnitPanelUI>();
-            
-            if (panelUI != null)
-            {
-                panelUI.Initialize(type, unitData.unitName, unitData, upgradeUI);
-                activePanels[type].Add(panelUI);
-            }
-        }
-
         private void ClearAllPanels()
         {
             foreach (var container in panelContainers.Values)
@@ -93,6 +106,7 @@ namespace Scripts.UI.GameUISub.Controllers
             {
                 panels.Clear();
             }
+            selectedPanel = null;
         }
     }
 }

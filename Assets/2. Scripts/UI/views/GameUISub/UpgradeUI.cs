@@ -53,6 +53,12 @@ namespace Scripts.UI.GameUISub
             InitializeControllers();
             SetupClassButtons();
             backButton.onClick.AddListener(OnBackButtonClicked);
+            
+            // 초기에 스탯 업그레이드 컨테이너 숨기기
+            if (StatUpgradeContainer != null)
+            {
+                StatUpgradeContainer.SetActive(false);
+            }
         }
 
         private void InitializeControllers()
@@ -86,6 +92,12 @@ namespace Scripts.UI.GameUISub
             panelController.InitializePanels(this);
             tabController.SwitchTab(UnitType.Pyodu);
             UpdateGoldText();
+            
+            // 초기화할 때도 스탯 업그레이드 컨테이너 숨기기
+            if (StatUpgradeContainer != null)
+            {
+                StatUpgradeContainer.SetActive(false);
+            }
         }
 
         public void InitializeStatUpgrades(UnitType unitType)
@@ -95,6 +107,24 @@ namespace Scripts.UI.GameUISub
             if (statUpgradeData == null || StatUpgradeContainer == null || upgradeElementPrefab == null)
             {
                 Debug.LogError($"Required references are missing in UpgradeUI! statUpgradeData: {statUpgradeData}, StatUpgradeContainer: {StatUpgradeContainer}, upgradeElementPrefab: {upgradeElementPrefab}");
+                return;
+            }
+
+            // 스탯 업그레이드 컨테이너 보이기
+            StatUpgradeContainer.SetActive(true);
+            
+            // 현재 선택된 유닛의 데이터 가져오기
+            var selectedPanel = panelController.GetSelectedPanel();
+            if (selectedPanel == null)
+            {
+                Debug.LogError("No unit panel selected!");
+                return;
+            }
+
+            UnitData unitData = selectedPanel.GetUnitData();
+            if (unitData == null)
+            {
+                Debug.LogError("Selected unit data is null!");
                 return;
             }
 
@@ -118,11 +148,14 @@ namespace Scripts.UI.GameUISub
                 {
                     try
                     {
-                        Debug.Log($"Initializing upgrade element - StatType: {upgrade.StatType}, Description: {upgrade.Description}, MinValue: {upgrade.MinValue}, MaxValue: {upgrade.MaxValue}, Cost: {upgrade.UpgradeCost}");
+                        // 스탯 타입에 따라 현재 값 가져오기
+                        int currentValue = GetCurrentStatValue(unitData, upgrade.StatType);
+                        
+                        Debug.Log($"Initializing upgrade element - StatType: {upgrade.StatType}, Description: {upgrade.Description}, CurrentValue: {currentValue}, MaxValue: {upgrade.MaxValue}, Cost: {upgrade.UpgradeCost}");
                         element.Initialize(
                             upgrade.StatType.ToString(),
                             upgrade.Description ?? "No Description",
-                            upgrade.MinValue,
+                            currentValue,
                             upgrade.MaxValue,
                             upgrade.UpgradeCost,
                             () => UpdateGoldText()
@@ -140,6 +173,22 @@ namespace Scripts.UI.GameUISub
                     Debug.LogError("UpgradeElementUI component not found on instantiated prefab!");
                     Destroy(go);
                 }
+            }
+        }
+
+        private int GetCurrentStatValue(UnitData unitData, StatType statType)
+        {
+            switch (statType)
+            {
+                case StatType.MoveSpeed:
+                    return unitData.moveSpeedCount;
+                case StatType.AttackDamage:
+                    return unitData.attackDamageCount;
+                case StatType.Defense:
+                    return unitData.defenseCount;
+                default:
+                    Debug.LogWarning($"Unknown stat type: {statType}");
+                    return 1;
             }
         }
 
