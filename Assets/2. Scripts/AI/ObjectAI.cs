@@ -17,7 +17,7 @@ namespace AI
     public abstract class ObjectAI : MonoBehaviour
     {
         protected NavMeshAgent agent;
-        protected Cargo cargo;
+        protected Cargo cargo; 
         public bool aiEnable;
 
         [Header("Target Object")]

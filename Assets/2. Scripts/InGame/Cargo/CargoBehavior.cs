@@ -1,6 +1,10 @@
+using AI;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 
@@ -10,9 +14,14 @@ public class CargoBehavior : MonoBehaviour
     [SerializeField] Vector3 boxSize;
     [SerializeField] Vector3 innerBoxSize;
 
+    [SerializeField] List<PlayerAI> playerList;
+
     private void Start()
     {
         StartCoroutine(EnemyDetect());
+        StartCoroutine(FarDistObjectCall());
+        
+        playerList = transform.parent.GetComponentsInChildren<PlayerAI>().ToList();
     }
     private IEnumerator EnemyDetect()
     {
@@ -45,6 +54,24 @@ public class CargoBehavior : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
 
         StartCoroutine(EnemyDetect());
+    }
+    private IEnumerator FarDistObjectCall()
+    {
+        Bounds bounds = new Bounds(transform.position, boxSize);
+        foreach (PlayerAI obj in playerList)
+        {
+            if (obj == null)
+                continue;
+
+            if (!bounds.Contains(obj.transform.position))
+            {
+                obj.ChangeForce(true);
+            }
+        }
+
+        yield return new WaitForSeconds(0.5f);
+
+        StartCoroutine(FarDistObjectCall());
     }
     void OnDrawGizmos()
     {

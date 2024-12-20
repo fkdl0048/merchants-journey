@@ -6,7 +6,7 @@ namespace AI
 {
     public class PlayerAI : ObjectAI
     {
-        private bool isForce = false; //이동 명령이 우선시 됨.
+        [SerializeField] private bool isForce = false; //이동 명령이 우선시 됨.
         public void ChangeForce(bool isForce) => this.isForce = isForce;
         protected override void EncounterBehavior()
         {
