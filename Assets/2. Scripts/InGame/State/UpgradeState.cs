@@ -26,7 +26,7 @@ namespace Scripts.InGame.State
         {
             gameUI.ShowUpgradeUI();
             
-            upgradeUI.Initialized();
+            upgradeUI.Initialize();
             
             upgradeUI.OnBackClicked += HandleBackClicked;
         }

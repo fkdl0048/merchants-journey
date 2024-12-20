@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
-using Scripts.Utils;
 using TMPro;
+using _2._Scripts.Unit;
+using Scripts.Utils;
 
 namespace Scripts.UI.GameUISub
 {
@@ -20,62 +21,84 @@ namespace Scripts.UI.GameUISub
         [SerializeField] private GameObject itemButtonPrefab;
 
         private UnitType unitType;
+        private UnitData unitData;
+        private UpgradeUI upgradeUI;
         
         private void Awake()
         {
             selectButton.onClick.AddListener(OnSelectButtonClicked);
-            // 초기 상태는 비활성화
             selectBackground.SetActive(false);
         }
 
-        public void Initialize(UnitType type, string unitName)
+        public void Initialize(UnitType type, string unitName, UnitData data, UpgradeUI ui)
         {
             unitType = type;
-            if (unitNameText != null)
-            {
-                unitNameText.text = unitName;
-            }
+            unitData = data;
+            upgradeUI = ui;
+            
+            unitNameText.text = unitName;
             CreateButtons();
         }
-        
-        public void SelectButton() => selectButton.onClick.Invoke();
 
+        public void UpdateUnitData(UnitData newData)
+        {
+            unitData = newData;
+            ClearButtons();
+            CreateButtons();
+        }
+
+        private void ClearButtons()
+        {
+            foreach (Transform child in upgradeContainer)
+            {
+                Destroy(child.gameObject);
+            }
+        }
+        
         private void CreateButtons()
         {
-            // 표도는 upgrade, item 버튼 둘 다 생성
+            CreateUpgradeButton();
             if (unitType == UnitType.Pyodu)
             {
-                Instantiate(upgradeButtonPrefab, upgradeContainer);
-                Instantiate(itemButtonPrefab, upgradeContainer);
-            }
-            // 표사는 upgrade 버튼만 생성
-            else if (unitType == UnitType.Pyosa)
-            {
-                Instantiate(upgradeButtonPrefab, upgradeContainer);
+                CreateItemButton();
             }
         }
 
-        private void OnSelectButtonClicked()
+        private void CreateUpgradeButton()
         {
-            // 같은 부모 아래의 모든 UpgradeUnitPanelUI 컴포넌트를 가져옴
-            var allPanels = transform.parent.GetComponentsInChildren<UpgradeUnitPanelUI>();
+            var upgradeButton = Instantiate(upgradeButtonPrefab, upgradeContainer).GetComponent<Button>();
+            var upgradeButtonText = upgradeButton.GetComponentInChildren<TextMeshProUGUI>();
             
-            // 현재 선택된 패널의 인덱스 찾기
-            int selectedIndex = System.Array.IndexOf(allPanels, this);
-            
-            if (selectedIndex >= 0)
+            if (unitData.unitClass == UnitClass.None)
             {
-                // 선택된 패널을 맨 앞으로 이동
-                transform.SetSiblingIndex(0);
-                
-                // 나머지 패널들의 선택 상태 해제
-                foreach (var panel in allPanels)
-                {
-                    if (panel.selectBackground != null)
-                    {
-                        panel.selectBackground.SetActive(panel == this);
-                    }
-                }
+                upgradeButtonText.text = "클래스 선택";
+                upgradeButton.onClick.AddListener(() => upgradeUI.ShowClassButtons(unitData, upgradeButton));
+            }
+            else
+            {
+                upgradeButtonText.text = unitData.unitClass.ToString();
+                upgradeButton.onClick.AddListener(OnUpgradeButtonClicked);
+            }
+        }
+
+        private void CreateItemButton()
+        {
+            Instantiate(itemButtonPrefab, upgradeContainer);
+        }
+
+        private void OnUpgradeButtonClicked()
+        {
+            Debug.Log($"Upgrade clicked for unit with class: {unitData.unitClass}");
+        }
+
+        public void OnSelectButtonClicked()
+        {
+            var allPanels = transform.parent.GetComponentsInChildren<UpgradeUnitPanelUI>();
+            transform.SetSiblingIndex(0);
+            
+            foreach (var panel in allPanels)
+            {
+                panel.SetSelected(panel == this);
             }
         }
 
@@ -85,6 +108,11 @@ namespace Scripts.UI.GameUISub
             {
                 selectBackground.SetActive(selected);
             }
+        }
+
+        public UnitData GetUnitData()
+        {
+            return unitData;
         }
     }
 }

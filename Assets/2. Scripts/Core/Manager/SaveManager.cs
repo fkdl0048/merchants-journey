@@ -29,18 +29,26 @@ namespace Scripts.Manager
             gameData.ownedUnits.Add(new UnitData("unit_3", "강철이", UnitType.Pyosa, UnitClass.None));
             gameData.ownedUnits.Add(new UnitData("unit_4", "표두표두", UnitType.Pyodu, UnitClass.None));
 #else
-            // 빌드에서는 저장된 데이터 로드
-            gameData = LoadData<GameData>(GAME_DATA_KEY);
-            if (gameData == null)
-            {
-                gameData = new GameData();
-                // 초기 유닛 생성
-                gameData.ownedUnits.Add(new UnitData("unit_1", "만득이", UnitType.Pyosa, UnitClass.None));
-                gameData.ownedUnits.Add(new UnitData("unit_2", "두칠이", UnitType.Pyosa, UnitClass.None));
-                gameData.ownedUnits.Add(new UnitData("unit_3", "강철이", UnitType.Pyosa, UnitClass.None));
-                gameData.ownedUnits.Add(new UnitData("unit_4", "표두표두", UnitType.Pyodu, UnitClass.None));
-                SaveGameData(gameData);
-            }
+            // 빌드에서는 저장된 데이터 로드// 에디터에서는 매번 새로운 데이터 생성
+            gameData = new GameData();
+            // 초기 유닛 생성
+            gameData.ownedUnits.Add(new UnitData("unit_1", "만득이", UnitType.Pyosa, UnitClass.None));
+            gameData.ownedUnits.Add(new UnitData("unit_2", "두칠이", UnitType.Pyosa, UnitClass.None));
+            gameData.ownedUnits.Add(new UnitData("unit_3", "강철이", UnitType.Pyosa, UnitClass.None));
+            gameData.ownedUnits.Add(new UnitData("unit_4", "표두표두", UnitType.Pyodu, UnitClass.None));
+
+            // 이어하기 기능
+            // gameData = LoadData<GameData>(GAME_DATA_KEY);
+            // if (gameData == null)
+            // {
+            //     gameData = new GameData();
+            //     // 초기 유닛 생성
+            //     gameData.ownedUnits.Add(new UnitData("unit_1", "만득이", UnitType.Pyosa, UnitClass.None));
+            //     gameData.ownedUnits.Add(new UnitData("unit_2", "두칠이", UnitType.Pyosa, UnitClass.None));
+            //     gameData.ownedUnits.Add(new UnitData("unit_3", "강철이", UnitType.Pyosa, UnitClass.None));
+            //     gameData.ownedUnits.Add(new UnitData("unit_4", "표두표두", UnitType.Pyodu, UnitClass.None));
+            //     SaveGameData(gameData);
+            // }
 #endif
         }
 

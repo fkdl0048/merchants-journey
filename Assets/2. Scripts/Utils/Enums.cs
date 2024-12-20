@@ -31,6 +31,7 @@ namespace Scripts.Utils
     {
         Pyodu,
         Pyosa,
+        Cargo
     }
     
     public enum UnitClass

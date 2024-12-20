@@ -52,7 +52,7 @@ namespace Scripts.UI
         public UnityAction OnMainMenuClick;
         public UnityAction OnNextStageClick;
 
-        private void Awake()
+        protected override void Awake()
         {
             if (canvas.gameObject.activeSelf == false)
             {
