@@ -88,20 +88,53 @@ namespace Scripts.UI.GameUISub
         {
             ClearStatUpgrades();
             
+            if (statUpgradeData == null || StatUpgradeContainer == null || upgradeElementPrefab == null)
+            {
+                Debug.LogError($"Required references are missing in UpgradeUI! statUpgradeData: {statUpgradeData}, StatUpgradeContainer: {StatUpgradeContainer}, upgradeElementPrefab: {upgradeElementPrefab}");
+                return;
+            }
+
+            Debug.Log($"Finding upgrades for unit type: {unitType}");
             var upgrades = statUpgradeData.statUpgrades.FindAll(x => x.UnitType == unitType);
+            Debug.Log($"Found {upgrades.Count} upgrades");
+
             foreach (var upgrade in upgrades)
             {
+                if (upgrade == null)
+                {
+                    Debug.LogError("Upgrade info is null!");
+                    continue;
+                }
+
+                Debug.Log($"Creating upgrade element for {upgrade.StatType}");
                 GameObject go = Instantiate(upgradeElementPrefab, StatUpgradeContainer.transform);
                 var element = go.GetComponent<UpgradeElementUI>();
                 
-                element.Initialize(
-                    upgrade.StatType.ToString(), 
-                    upgrade.Description,
-                    upgrade.InitialValue,
-                    upgrade.MaxValue,
-                    upgrade.UpgradeCost
-                );
-                upgradeElements.Add(element);
+                if (element != null)
+                {
+                    try
+                    {
+                        Debug.Log($"Initializing upgrade element - StatType: {upgrade.StatType}, Description: {upgrade.Description}, MinValue: {upgrade.MinValue}, MaxValue: {upgrade.MaxValue}, Cost: {upgrade.UpgradeCost}");
+                        element.Initialize(
+                            upgrade.StatType.ToString(),
+                            upgrade.Description ?? "No Description",
+                            upgrade.MinValue,
+                            upgrade.MaxValue,
+                            upgrade.UpgradeCost
+                        );
+                        upgradeElements.Add(element);
+                    }
+                    catch (System.Exception e)
+                    {
+                        Debug.LogError($"Error initializing upgrade element: {e.Message}\nStack trace: {e.StackTrace}");
+                        Destroy(go);
+                    }
+                }
+                else
+                {
+                    Debug.LogError("UpgradeElementUI component not found on instantiated prefab!");
+                    Destroy(go);
+                }
             }
         }
 

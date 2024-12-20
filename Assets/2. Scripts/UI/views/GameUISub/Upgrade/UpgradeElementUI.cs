@@ -1,71 +1,179 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 using Scripts.Utils;
+using Scripts.Data;
+using Scripts.Manager;
+using TMPro;
 using System.Collections.Generic;
 
 namespace Scripts.UI.GameUISub
 {
     public class UpgradeElementUI : MonoBehaviour
     {
-        [SerializeField] private TextMeshProUGUI statNameText;
+        [SerializeField] private Button upgradeButton;
+        [SerializeField] private TextMeshProUGUI upgradeText;
         [SerializeField] private TextMeshProUGUI descriptionText;
-        [SerializeField] private Transform costContainer;
-        [SerializeField] private GameObject upgradeCostPrefab;
-        
-        private List<Image> costImages = new List<Image>();
-        private int currentLevel = 1;
-        private int maxLevel = 5;
+        [SerializeField] private GameObject upgradeElementContainer;
+        [SerializeField] private GameObject upgradeElementPrefab;
+
+        [Header("Colors")]
+        [SerializeField] private Color activeColor = Color.yellow;
+        [SerializeField] private Color inactiveColor = Color.gray;
+
+        private int currentValue;
+        private int maxValue;
         private int upgradeCost;
-        private bool isVisible = true;
+        private StatType statType;
+        private SaveManager saveManager;
+        private bool isInitialized = false;
+        private List<Image> upgradeElements = new List<Image>();
 
-        public void Initialize(string statName, string description, int initialLevel, int maxLvl, int cost)
+        private void Awake()
         {
-            statNameText.text = statName;
-            descriptionText.text = description;
-            currentLevel = initialLevel;
-            maxLevel = maxLvl;
-            upgradeCost = cost;
-
-            CreateCostElements();
-            UpdateVisual();
+            saveManager = SaveManager.Instance;
         }
 
-        private void CreateCostElements()
+        public void Initialize(string statName, string description, int initialValue, int maxValue, int upgradeCost)
         {
-            for (int i = 0; i < maxLevel; i++)
+            if (saveManager == null)
             {
-                GameObject costElement = Instantiate(upgradeCostPrefab, costContainer);
-                Image costImage = costElement.GetComponent<Image>();
-                costImages.Add(costImage);
+                Debug.LogError("SaveManager is null in UpgradeElementUI!");
+                return;
             }
-            UpdateVisual();
+
+            this.currentValue = initialValue;
+            this.maxValue = maxValue;
+            this.upgradeCost = upgradeCost;
+            this.statType = (StatType)System.Enum.Parse(typeof(StatType), statName);
+            this.isInitialized = true;
+
+            if (upgradeButton != null)
+            {
+                upgradeButton.onClick.AddListener(OnUpgradeClicked);
+            }
+            else
+            {
+                Debug.LogError("Upgrade button is null in UpgradeElementUI!");
+            }
+
+            CreateUpgradeElements();
+            UpdateUI();
         }
 
-        public void OnUpgrade()
+        private void CreateUpgradeElements()
         {
-            if (currentLevel < maxLevel)
+            if (upgradeElementContainer == null || upgradeElementPrefab == null)
             {
-                currentLevel++;
-                UpdateVisual();
+                Debug.LogError("Upgrade element container or prefab is null!");
+                return;
+            }
+
+            // Clear existing elements
+            foreach (Transform child in upgradeElementContainer.transform)
+            {
+                Destroy(child.gameObject);
+            }
+            upgradeElements.Clear();
+
+            // Create new elements
+            for (int i = 0; i < maxValue; i++)
+            {
+                GameObject element = Instantiate(upgradeElementPrefab, upgradeElementContainer.transform);
+                Image elementImage = element.GetComponent<Image>();
+                if (elementImage != null)
+                {
+                    upgradeElements.Add(elementImage);
+                }
             }
         }
 
-        private void UpdateVisual()
+        private void UpdateUI()
         {
-            for (int i = 0; i < costImages.Count; i++)
+            if (!isInitialized)
             {
-                // 현재 레벨보다 낮거나 같은 경우 활성화된 상태로 표시
-                costImages[i].color = i < currentLevel ? Color.yellow : Color.gray;
+                return;
+            }
+
+            try
+            {
+                if (upgradeText != null)
+                {
+                    upgradeText.text = $"{statType}";
+                }
+                else
+                {
+                    Debug.LogError("Upgrade text is null in UpgradeElementUI!");
+                }
+
+                if (descriptionText != null)
+                {
+                    int currentCost = upgradeCost * (currentValue + 1);
+                    descriptionText.text = $"Cost: {currentCost}";
+                }
+                else
+                {
+                    Debug.LogError("Description text is null in UpgradeElementUI!");
+                }
+
+                // Update upgrade elements colors
+                for (int i = 0; i < upgradeElements.Count; i++)
+                {
+                    if (upgradeElements[i] != null)
+                    {
+                        upgradeElements[i].color = i < currentValue ? activeColor : inactiveColor;
+                    }
+                }
+
+                if (saveManager != null)
+                {
+                    GameData gameData = saveManager.GetGameData();
+                    bool canUpgrade = currentValue < maxValue && gameData.HasEnoughResources(upgradeCost * (currentValue + 1));
+                    
+                    if (upgradeButton != null)
+                    {
+                        upgradeButton.interactable = canUpgrade;
+                    }
+                }
+                else
+                {
+                    Debug.LogError("SaveManager is null when updating UI!");
+                }
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError($"Error in UpdateUI: {e.Message}\nStack trace: {e.StackTrace}");
+            }
+        }
+
+        private void OnUpgradeClicked()
+        {
+            if (!isInitialized || saveManager == null)
+            {
+                return;
+            }
+
+            try
+            {
+                GameData gameData = saveManager.GetGameData();
+                int cost = upgradeCost * (currentValue + 1);
+                
+                if (currentValue < maxValue && gameData.HasEnoughResources(cost))
+                {
+                    gameData.ConsumeResources(cost);
+                    saveManager.SaveGameData(gameData);
+                    currentValue++;
+                    UpdateUI();
+                }
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError($"Error in OnUpgradeClicked: {e.Message}\nStack trace: {e.StackTrace}");
             }
         }
 
         public void SetVisible(bool visible)
         {
-            isVisible = visible;
             gameObject.SetActive(visible);
         }
-
-        public bool IsVisible() => isVisible;
     }
 }
