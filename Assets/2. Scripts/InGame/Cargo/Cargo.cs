@@ -12,9 +12,10 @@ public class Cargo : MonoBehaviour
     [HideInInspector]
     public List<Vector3> pathPoints = new List<Vector3>();
 
-    public float moveSpeed = 2f;
+    public float moveSpeed = 0.3f;
+    public float OriginMoveSpeed = 0.3f;
     public float waitTimeAtPoint = 1f;
-    public int width = 6;  // N tiles
+    public int width = 6;  // N tiles 
     public int height = 6; // M tiles
     public bool autoStart = false;
 
@@ -33,6 +34,8 @@ public class Cargo : MonoBehaviour
     private void Awake()
     {
         UpdatePathPoints();
+
+        OriginMoveSpeed = moveSpeed;
     }
 
     private void UpdatePathPoints()
@@ -72,7 +75,10 @@ public class Cargo : MonoBehaviour
             StartMoving();
         }
     }
-
+    private void Update()
+    {
+        
+    }
     public void StartMoving()
     {
         if (pathPoints.Count > 0)
@@ -140,6 +146,7 @@ public class Cargo : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        //
         if (pathPoints.Count < 2) return;
         
         Gizmos.color = Color.green;
