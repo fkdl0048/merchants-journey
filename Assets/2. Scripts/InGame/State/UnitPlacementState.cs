@@ -14,7 +14,7 @@ namespace Scripts.InGame.State
         private readonly InGameSceneController controller;
         private readonly GameUI gameUI;
         private readonly UnitSystem unitSystem;
-        private readonly StageSystem stageController;
+        private readonly StageSystem stageSystem;
         
         private List<MeshRenderer> highlightedTiles = new List<MeshRenderer>();
         private Color originalTileColor;
@@ -22,12 +22,12 @@ namespace Scripts.InGame.State
 
         private static readonly Color highlightColor = new Color(0.2f, 0.2f, 1f, 0.6f);
 
-        public UnitPlacementState(InGameSceneController controller, GameUI gameUI, UnitSystem unitSystem, StageSystem stageController)
+        public UnitPlacementState(InGameSceneController controller, GameUI gameUI, UnitSystem unitSystem, StageSystem stageSystem)
         {
             this.controller = controller;
             this.gameUI = gameUI;
             this.unitSystem = unitSystem;
-            this.stageController = stageController;
+            this.stageSystem = stageSystem;
         }
 
         public void Enter()
@@ -39,10 +39,10 @@ namespace Scripts.InGame.State
             gameUI.OnUnitPlacementComplete += HandlePlacementComplete;
             
             // 스테이지 로드
-            stageController.LoadStage();
+            //stageSystem.LoadStage();
             
             // 배치 시스템 초기화 및 유닛 배치
-            var cargo = stageController.GetCargo();
+            var cargo = stageSystem.GetCargo();
             if (cargo == null)
             {
                 Debug.LogError("Cargo not found");

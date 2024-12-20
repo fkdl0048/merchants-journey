@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using AI;
+using Scripts.Manager;
 using Scripts.Utils;
 using UnityEngine;
 using UnityEngine.AI;
@@ -36,15 +37,22 @@ namespace Scripts.InGame.System
             if (currentCargo == null || unitPrefabs == null || unitPrefabs.Length == 0)
                 return;
 
-            // 각 유닛 타입별로 최대 3번까지 시도 (버그 때문에 추가)
-            TrySpawnUnitWithRetry(UnitType.Pyosa, 3);
-            TrySpawnUnitWithRetry(UnitType.Archer, 3);
-            TrySpawnUnitWithRetry(UnitType.Warrior, 3);
-
-            // 만약 생성된 유닛이 3개 미만이면 경고
-            if (spawnedUnits.Count < 3)
+            var gameData = SaveManager.Instance.GetGameData();
+            if (gameData == null || gameData.ownedUnits == null)
             {
-                Debug.LogWarning($"[UnitSystem] Failed to spawn all units. Only spawned {spawnedUnits.Count} units.");
+                Debug.LogError("[UnitSystem] GameData or ownedUnits is null");
+                return;
+            }
+
+            foreach (var unitData in gameData.ownedUnits)
+            {
+                TrySpawnUnitWithRetry(unitData.unitType, 3);
+            }
+
+            // 만약 생성된 유닛이 gameData.ownedUnits.Count 미만이면 경고
+            if (spawnedUnits.Count < gameData.ownedUnits.Count)
+            {
+                Debug.LogWarning($"[UnitSystem] Failed to spawn all units. Only spawned {spawnedUnits.Count}/{gameData.ownedUnits.Count} units.");
             }
         }
 

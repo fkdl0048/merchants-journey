@@ -11,7 +11,6 @@ public class Tile : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        Debug.Log("Enter");
         spriteRenderer.enabled = true;
     }
     private void OnMouseExit()

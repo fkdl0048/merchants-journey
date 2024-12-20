@@ -75,6 +75,12 @@ namespace Scripts.InGame.State
                 HighlightPlacementArea(cargo);
             else
                 ResetTileColors();
+            
+            // 개발용 키
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                HandleCargoDestinationReached();
+            }
         }
 
         public void Exit()

@@ -27,6 +27,6 @@ public class BootSceneController : MonoBehaviour
     
     private void LoadTitleScene()
     {
-        SceneManager.LoadScene("Title");
+        SceneManager.LoadScene(Consts.TitleSceneName);
     }
 }

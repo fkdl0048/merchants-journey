@@ -1,4 +1,5 @@
 using Scripts.Manager;
+using Scripts.UI.GameUISub;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -33,6 +34,15 @@ namespace Scripts.UI
         [Header("Next State Button (Test)")]
         [SerializeField] private Button nextStateButton;
         
+        [Header("World Map UI")]
+        [SerializeField] private WorldMapUI worldMapPanel;
+        
+        [Header("PreCombat UI")]
+        [SerializeField] private PreCombatUI preCombatPanel;
+        
+        [Header("Upgrade UI")]
+        [SerializeField] private UpgradeUI upgradePanel;
+        
         [Header("Sound")]
         [SerializeField] private AudioClip buttonSound;
 
@@ -42,7 +52,7 @@ namespace Scripts.UI
         public UnityAction OnMainMenuClick;
         public UnityAction OnNextStageClick;
 
-        private void Awake()
+        protected override void Awake()
         {
             if (canvas.gameObject.activeSelf == false)
             {
@@ -84,6 +94,9 @@ namespace Scripts.UI
             wavePanel.SetActive(false);
             gameClearPanel.SetActive(false);
             gameOverPanel.SetActive(false);
+            worldMapPanel.gameObject.SetActive(false);
+            preCombatPanel.gameObject.SetActive(false);
+            upgradePanel.gameObject.SetActive(false);
         }
 
         // Unit Placement UI Methods
@@ -133,6 +146,45 @@ namespace Scripts.UI
         {
             gameOverPanel.SetActive(false);
         }
+        
+        public void ShowWorldMapUI()
+        {
+            HideAllPanels();
+            worldMapPanel.gameObject.SetActive(true);
+        }
+        
+        public void HideWorldMapUI()
+        {
+            worldMapPanel.gameObject.SetActive(false);
+        }
+        
+        public WorldMapUI GetWorldMapUI() => worldMapPanel;
+        
+        public void ShowPreCombatUI()
+        {
+            HideAllPanels();
+            preCombatPanel.gameObject.SetActive(true);
+        }
+        
+        public void HidePreCombatUI()
+        {
+            preCombatPanel.gameObject.SetActive(false);
+        }
+        
+        public PreCombatUI GetPreCombatUI() => preCombatPanel;
+        
+        public void ShowUpgradeUI()
+        {
+            HideAllPanels();
+            upgradePanel.gameObject.SetActive(true);
+        }
+        
+        public void HideUpgradeUI()
+        {
+            upgradePanel.gameObject.SetActive(false);
+        }
+        
+        public UpgradeUI GetUpgradeUI() => upgradePanel;
         
         private void OnDestroy()
         {
