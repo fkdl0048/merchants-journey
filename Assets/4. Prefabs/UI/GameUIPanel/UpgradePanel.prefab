@@ -232,6 +232,7 @@ MonoBehaviour:
   upgradeElementPrefab: {fileID: 1322117511525846719, guid: 2d41791ce21ebfe419dd76673657c41a, type: 3}
   statUpgradeData: {fileID: 11400000, guid: 3e52a9321a9077049978a1e677af7145, type: 2}
   backButton: {fileID: 5806444251594025009}
+  goldText: {fileID: 1018400932536850508}
   upgradeUnitPanelPrefab: {fileID: 9072118685576238683, guid: 1aceb9e5faa0722488563a09941badcf, type: 3}
 --- !u!1 &480135883069350539
 GameObject:

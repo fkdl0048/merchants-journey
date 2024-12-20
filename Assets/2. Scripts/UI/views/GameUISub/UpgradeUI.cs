@@ -5,7 +5,9 @@ using _2._Scripts.Unit;
 using Scripts.UI.GameUISub.Controllers;
 using System.Collections.Generic;
 using Scripts.Data;
+using Scripts.Manager;
 using Scripts.Utils;
+using TMPro;
 
 namespace Scripts.UI.GameUISub
 {
@@ -33,6 +35,7 @@ namespace Scripts.UI.GameUISub
         
         [Header("Utility")]
         [SerializeField] private Button backButton;
+        [SerializeField] private TextMeshProUGUI goldText;
         
         [Header("Upgrade Unit Panel (Prefab)")]
         [SerializeField] private GameObject upgradeUnitPanelPrefab;
@@ -82,6 +85,7 @@ namespace Scripts.UI.GameUISub
             Debug.Log("Initializing UpgradeUI");
             panelController.InitializePanels(this);
             tabController.SwitchTab(UnitType.Pyodu);
+            UpdateGoldText();
         }
 
         public void InitializeStatUpgrades(UnitType unitType)
@@ -120,7 +124,8 @@ namespace Scripts.UI.GameUISub
                             upgrade.Description ?? "No Description",
                             upgrade.MinValue,
                             upgrade.MaxValue,
-                            upgrade.UpgradeCost
+                            upgrade.UpgradeCost,
+                            () => UpdateGoldText()
                         );
                         upgradeElements.Add(element);
                     }
@@ -146,6 +151,15 @@ namespace Scripts.UI.GameUISub
                     Destroy(element.gameObject);
             }
             upgradeElements.Clear();
+        }
+
+        private void UpdateGoldText()
+        {
+            if (goldText != null && SaveManager.Instance != null)
+            {
+                GameData gameData = SaveManager.Instance.GetGameData();
+                goldText.text = $"{gameData.gold}";
+            }
         }
 
         public void ToggleStatUpgrades(bool show)

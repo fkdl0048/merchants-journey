@@ -5,6 +5,7 @@ using Scripts.Data;
 using Scripts.Manager;
 using TMPro;
 using System.Collections.Generic;
+using System;
 
 namespace Scripts.UI.GameUISub
 {
@@ -27,13 +28,14 @@ namespace Scripts.UI.GameUISub
         private SaveManager saveManager;
         private bool isInitialized = false;
         private List<Image> upgradeElements = new List<Image>();
+        private Action onGoldUpdated;
 
         private void Awake()
         {
             saveManager = SaveManager.Instance;
         }
 
-        public void Initialize(string statName, string description, int initialValue, int maxValue, int upgradeCost)
+        public void Initialize(string statName, string description, int initialValue, int maxValue, int upgradeCost, Action onGoldUpdated)
         {
             if (saveManager == null)
             {
@@ -46,6 +48,7 @@ namespace Scripts.UI.GameUISub
             this.upgradeCost = upgradeCost;
             this.statType = (StatType)System.Enum.Parse(typeof(StatType), statName);
             this.isInitialized = true;
+            this.onGoldUpdated = onGoldUpdated;
 
             if (upgradeButton != null)
             {
@@ -163,6 +166,7 @@ namespace Scripts.UI.GameUISub
                     saveManager.SaveGameData(gameData);
                     currentValue++;
                     UpdateUI();
+                    onGoldUpdated?.Invoke();  // 골드 업데이트 콜백 호출
                 }
             }
             catch (System.Exception e)

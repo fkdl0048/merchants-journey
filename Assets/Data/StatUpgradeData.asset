@@ -34,13 +34,6 @@ MonoBehaviour:
     InitialValue: 1
     UpgradeCost: 120
     Description: Description
-  - UnitType: 0
-    StatType: 3
-    MinValue: 1
-    MaxValue: 5
-    InitialValue: 1
-    UpgradeCost: 200
-    Description: Description
   - UnitType: 1
     StatType: 0
     MinValue: 1
