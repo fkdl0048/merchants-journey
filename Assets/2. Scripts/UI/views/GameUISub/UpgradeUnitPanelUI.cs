@@ -88,7 +88,8 @@ namespace Scripts.UI.GameUISub
 
         private void OnUpgradeButtonClicked()
         {
-            Debug.Log($"Upgrade clicked for unit with class: {unitData.unitClass}");
+            upgradeUI.InitializeStatUpgrades(unitType);
+            upgradeUI.ToggleStatUpgrades(true);
         }
 
         public void OnSelectButtonClicked()
