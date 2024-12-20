@@ -2737,6 +2737,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UpgradeStatPanel
       objectReference: {fileID: 0}
+    - target: {fileID: 3794722489733542188, guid: 9a52c28479d101241bab9f194a413cbe, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3927540389719224449, guid: 9a52c28479d101241bab9f194a413cbe, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2766,6 +2770,22 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7541711321542916445, guid: 9a52c28479d101241bab9f194a413cbe, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7770122684330455869, guid: 9a52c28479d101241bab9f194a413cbe, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7770122684330455869, guid: 9a52c28479d101241bab9f194a413cbe, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7770122684330455869, guid: 9a52c28479d101241bab9f194a413cbe, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7770122684330455869, guid: 9a52c28479d101241bab9f194a413cbe, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
