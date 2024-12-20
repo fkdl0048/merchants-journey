@@ -46,6 +46,13 @@ namespace Scripts.UI.GameUISub.Controllers
             
             SetButtonsInteractable(type);
             SetPanelsActive(type);
+            
+            // 모든 패널의 스탯 업그레이드 UI 숨기기
+            foreach (var panel in panelController.GetAllPanels())
+            {
+                panel.HideStatUpgrade();
+            }
+            
             panelController.SelectFirstPanel(type);
         }
 

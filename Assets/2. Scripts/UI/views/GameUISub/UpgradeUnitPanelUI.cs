@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using _2._Scripts.Unit;
+using System;
 using Scripts.Utils;
 
 namespace Scripts.UI.GameUISub
@@ -23,6 +24,9 @@ namespace Scripts.UI.GameUISub
         private UnitType unitType;
         private UnitData unitData;
         private UpgradeUI upgradeUI;
+        private bool isStatUpgradeVisible = false;
+        
+        public event Action<UpgradeUnitPanelUI> OnSelected;
         
         private void Awake()
         {
@@ -35,6 +39,7 @@ namespace Scripts.UI.GameUISub
             unitType = type;
             unitData = data;
             upgradeUI = ui;
+            isStatUpgradeVisible = false;  // 상태 초기화
             
             unitNameText.text = unitName;
             CreateButtons();
@@ -88,7 +93,17 @@ namespace Scripts.UI.GameUISub
 
         private void OnUpgradeButtonClicked()
         {
-            Debug.Log($"Upgrade clicked for unit with class: {unitData.unitClass}");
+            isStatUpgradeVisible = !isStatUpgradeVisible;
+            
+            if (isStatUpgradeVisible)
+            {
+                upgradeUI.InitializeStatUpgrades(unitType);
+                upgradeUI.ToggleStatUpgrades(true);
+            }
+            else
+            {
+                upgradeUI.ToggleStatUpgrades(false);
+            }
         }
 
         public void OnSelectButtonClicked()
@@ -99,7 +114,19 @@ namespace Scripts.UI.GameUISub
             foreach (var panel in allPanels)
             {
                 panel.SetSelected(panel == this);
+                if (panel != this)
+                {
+                    panel.HideStatUpgrade();
+                }
             }
+
+            OnSelected?.Invoke(this);
+        }
+
+        public void HideStatUpgrade()
+        {
+            isStatUpgradeVisible = false;
+            upgradeUI.ToggleStatUpgrades(false);
         }
 
         public void SetSelected(bool selected)

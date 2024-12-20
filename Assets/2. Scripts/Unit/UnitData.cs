@@ -13,9 +13,9 @@ namespace _2._Scripts.Unit
         
         [Header("Upgrade Stats")]
         public SkillType skillType;
-        public float attackPower;
-        public float defense;
-        public float moveSpeed;
+        public int moveSpeedCount;
+        public int attackDamageCount;
+        public int defenseCount;
 
         public UnitData(string unitId, string unitName, UnitType unitType, UnitClass unitClass)
         {
@@ -23,6 +23,11 @@ namespace _2._Scripts.Unit
             this.unitName = unitName;
             this.unitType = unitType;
             this.unitClass = unitClass;
+            
+            this.skillType = SkillType.None;
+            this.moveSpeedCount = 2;
+            this.attackDamageCount = 1;
+            this.defenseCount = 1;
         }
     }
 }
