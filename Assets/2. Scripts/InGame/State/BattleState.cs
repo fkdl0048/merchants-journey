@@ -69,13 +69,6 @@ namespace Scripts.InGame.State
             else if(Input.GetMouseButtonDown(1))
                 HandleRightClick();
             
-
-            // 색적 로직
-            if (selectedUnit != null)
-                HighlightPlacementArea(cargo);
-            else
-                ResetTileColors();
-            
             // 개발용 키
             if (Input.GetKeyDown(KeyCode.Q))
             {
@@ -84,10 +77,7 @@ namespace Scripts.InGame.State
         }
 
         public void Exit()
-        {
-            // 전투 시스템 정리
-            //BattleSystem.EndWave();
-        
+        {        
             cargo.StopMoving();
             cargo.OnDestinationReached -= HandleCargoDestinationReached;
             
@@ -125,64 +115,7 @@ namespace Scripts.InGame.State
                 return;
 
             unitSystem.MoveUnit(selectedUnit, obj.transform.position, false);
-
             selectedUnit = null;
-        }
-
-        private void HighlightPlacementArea(Cargo cargo)
-        {
-            // 이전에 하이라이트된 타일들 원래 색상으로 복원
-            ResetTileColors();
-
-            Vector3 cargoPosition = cargo.transform.position;
-            Vector2Int cargoTilePos = unitSystem.WorldToTilePosition(cargoPosition);
-
-            // 그리드 시작점 계산
-            int startX = cargoTilePos.x - (cargo.width / 2);
-            int startY = cargoTilePos.y - (cargo.height / 2);
-
-            // N*M 그리드 영역 내의 타일 검사
-            for (int x = 0; x < cargo.width; x++)
-            {
-                for (int y = 0; y < cargo.height; y++)
-                {
-                    Vector2Int tilePos = new Vector2Int(startX + x, startY + y);
-                    Vector3 worldPos = unitSystem.TileToWorldPosition(tilePos);
-
-                    // 타일 검사
-                    Collider[] colliders = Physics.OverlapSphere(worldPos, 0.1f, LayerMask.GetMask("Tile"));
-                    foreach (var collider in colliders)
-                    {
-                        var tile = collider.GetComponent<Tile>();
-                        if (tile != null && tile.isWalkable)
-                        {
-                            var meshRenderer = collider.GetComponent<MeshRenderer>();
-                            if (meshRenderer != null)
-                            {
-                                if (highlightedTiles.Count == 0)
-                                {
-                                    // 첫 번째 타일의 원래 색상 저장
-                                    originalTileColor = meshRenderer.material.color;
-                                }
-                                meshRenderer.material.color = highlightColor / 2;
-                                highlightedTiles.Add(meshRenderer);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        private void ResetTileColors()
-        {
-            foreach (var meshRenderer in highlightedTiles)
-            {
-                if (meshRenderer != null)
-                {
-                    meshRenderer.material.color = originalTileColor;
-                }
-            }
-            highlightedTiles.Clear();
         }
     }
 }

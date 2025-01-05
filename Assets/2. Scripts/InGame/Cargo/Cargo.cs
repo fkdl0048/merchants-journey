@@ -34,10 +34,24 @@ public class Cargo : MonoBehaviour
     private void Awake()
     {
         UpdatePathPoints();
-
+        InitTile();
+        //적군이 스폰이 될 경우, 마차의 이동속도가 감소.
         OriginMoveSpeed = moveSpeed;
     }
+    private void Start()
+    {
+        if (autoStart && pathPoints.Count > 0)
+        {
+            StartMoving();
+        }
+    }
 
+    //처음 cargo가 로드될 때, W, H만큼 타일을 생성함
+    private void InitTile()
+    {
+        
+    }
+    //길 따라가는 스크립트 관련//
     private void UpdatePathPoints()
     {
         pathPoints.Clear();
@@ -68,17 +82,6 @@ public class Cargo : MonoBehaviour
         UpdatePathPoints();
     }
 
-    private void Start()
-    {
-        if (autoStart && pathPoints.Count > 0)
-        {
-            StartMoving();
-        }
-    }
-    private void Update()
-    {
-        
-    }
     public void StartMoving()
     {
         if (pathPoints.Count > 0)
@@ -144,6 +147,7 @@ public class Cargo : MonoBehaviour
         }
     }
 
+    //디버깅
     private void OnDrawGizmos()
     {
         //

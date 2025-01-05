@@ -27,7 +27,7 @@ public class CargoPathEditor : Editor
         widthProp = serializedObject.FindProperty("width");
         heightProp = serializedObject.FindProperty("height");
         autoStartProp = serializedObject.FindProperty("autoStart");
-        
+       
         SceneView.duringSceneGui += OnSceneGUI;
     }
 
@@ -43,13 +43,12 @@ public class CargoPathEditor : Editor
         EditorGUILayout.PropertyField(moveSpeedProp);
         EditorGUILayout.PropertyField(waitTimeAtPointProp);
         
-        EditorGUILayout.LabelField("Placement Grid Settings", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("Placement Grid Settings (홀수 권장)", EditorStyles.boldLabel);
         EditorGUILayout.PropertyField(widthProp, new GUIContent("Grid Width (N)"));
         EditorGUILayout.PropertyField(heightProp, new GUIContent("Grid Height (M)"));
         
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("Path Settings", EditorStyles.boldLabel);
-        
         EditorGUILayout.PropertyField(serializedPathPointsProp);
 
         EditorGUILayout.Space();
@@ -128,7 +127,7 @@ public class CargoPathEditor : Editor
                     current = current.parent;
                 }
 
-                if (tile != null && tile.isWalkable)
+                if (tile != null)
                 {
                     if (e.control)
                     {

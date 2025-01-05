@@ -48,8 +48,9 @@ namespace AI
         public void Setup(Cargo cargo, Vector3 targetPosition, bool aiEnable)
         {
             this.cargo = cargo;
-            ChangeTargetPostion(targetPosition);
             this.aiEnable = aiEnable;
+
+            ChangeTargetPostion(targetPosition);
         }
         public void ChangeTargetPostion(Vector3 targetPosition)
         {
