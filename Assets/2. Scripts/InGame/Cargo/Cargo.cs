@@ -12,6 +12,8 @@ public class Cargo : MonoBehaviour
     [HideInInspector]
     public List<Vector3> pathPoints = new List<Vector3>();
 
+    public float maxHP = 10;
+    public float hp;
     public float moveSpeed = 0.3f;
     public float OriginMoveSpeed = 0.3f;
     public float waitTimeAtPoint = 1f;
@@ -37,6 +39,7 @@ public class Cargo : MonoBehaviour
         InitTile();
         //적군이 스폰이 될 경우, 마차의 이동속도가 감소.
         OriginMoveSpeed = moveSpeed;
+        hp = maxHP;
     }
     private void Start()
     {

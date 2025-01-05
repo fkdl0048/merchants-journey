@@ -2,6 +2,7 @@ using Scripts.InGame.Stage;
 using Scripts.Manager;
 using System.Collections;
 using System.Linq;
+using UnityEditor.Profiling.Memory.Experimental;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -88,18 +89,16 @@ namespace AI
 
         protected abstract void IdleBehavior();
         protected abstract void EncounterBehavior();
-        protected void AttackBehavior()
-        {
-            StartCoroutine(AttackStart());
-        }
-        //테스트 코드입니다.
+
+        // 공격 스크립트 (공격 방식은 데모입니다. 수정해야함)
+        protected abstract void AttackBehavior();
         protected IEnumerator AttackStart()
         {
             //공격시간 대기
             isAttack = true;
             yield return new WaitForSeconds(status.attackSpeed);
             //공격 사운드 재생
-            AudioManager.Instance.PlaySFX(hitSoundClip);
+            //AudioManager.Instance.PlaySFX(hitSoundClip);
             //박스 생성
             Collider[] targets = CheckAttackCollider(status.hitboxRange, targetTag);
             if (targets != null)
@@ -124,6 +123,8 @@ namespace AI
 
             //StartCoroutine(KnockBack(hitterPos, damage));
         }
+        
+        // Effect 스크립트
         private IEnumerator KnockBack(Vector3 hitterPos, float force)
         {
             TryGetComponent<Rigidbody>(out var rig);
@@ -153,6 +154,8 @@ namespace AI
 
             material.SetFloat("_FlashAmount", 0.0f);
         }
+
+        // 탐지 유틸 스크립트
         protected Collider[] CheckAttackCollider(float range, string targetTag)
         {
             if (targetEnemy == null)
@@ -167,6 +170,13 @@ namespace AI
 
             return results;
         }
+        protected Collider[] CheckAttackCollider(float range, string targetTag, string targetTag2)
+        {
+            var obj = CheckAttackCollider(range, targetTag);
+            if(obj == null)
+                return CheckAttackCollider(range, targetTag2);
+            return obj;
+        }
         protected Transform CheckRange(float range, string targetTag)
         {
             Collider[] hitColliders = Physics.OverlapSphere(transform.position, range);
@@ -179,7 +189,13 @@ namespace AI
             }
             return null;
         }
-
+        protected Transform CheckRange(float range, string targetTag, string targetTag2)
+        {
+            var obj = CheckRange(range, targetTag);
+            if(obj == null)
+                return CheckRange(range, targetTag2);
+            return obj;
+        }
         //Debug Code
         private void OnDrawGizmos()
         {

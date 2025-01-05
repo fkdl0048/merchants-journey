@@ -11,6 +11,7 @@ public class CargoPathEditor : Editor
 {
     private Cargo cargo;
     private bool isSettingPath = false;
+    private SerializedProperty maxHPProp;
     private SerializedProperty serializedPathPointsProp;
     private SerializedProperty moveSpeedProp;
     private SerializedProperty waitTimeAtPointProp;
@@ -21,6 +22,7 @@ public class CargoPathEditor : Editor
     private void OnEnable()
     {
         cargo = (Cargo)target;
+        maxHPProp = serializedObject.FindProperty("maxHP");
         serializedPathPointsProp = serializedObject.FindProperty("serializedPathPoints");
         moveSpeedProp = serializedObject.FindProperty("moveSpeed");
         waitTimeAtPointProp = serializedObject.FindProperty("waitTimeAtPoint");
@@ -43,6 +45,9 @@ public class CargoPathEditor : Editor
         EditorGUILayout.PropertyField(moveSpeedProp);
         EditorGUILayout.PropertyField(waitTimeAtPointProp);
         
+        EditorGUILayout.PropertyField(maxHPProp, new GUIContent("HP"));
+        EditorGUILayout.Space();
+
         EditorGUILayout.LabelField("Placement Grid Settings (홀수 권장)", EditorStyles.boldLabel);
         EditorGUILayout.PropertyField(widthProp, new GUIContent("Grid Width (N)"));
         EditorGUILayout.PropertyField(heightProp, new GUIContent("Grid Height (M)"));

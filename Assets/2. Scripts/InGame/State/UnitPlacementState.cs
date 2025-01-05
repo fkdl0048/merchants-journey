@@ -66,6 +66,7 @@ namespace Scripts.InGame.State
         {
             gameUI.OnUnitPlacementComplete -= HandlePlacementComplete;
             selectedUnit = null;
+            unitSystem.EnableHighlightTile(false);
         }
 
         public void Update()

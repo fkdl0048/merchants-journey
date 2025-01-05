@@ -19,9 +19,6 @@ namespace Scripts.InGame.State
     //  private readonly BattleSystem 유닛과 적을 관리하는 클래스 추가되어야 할듯
     
         private Cargo cargo;
-        private Color originalTileColor = Color.white;
-        private Color highlightColor = Color.red;
-        private List<MeshRenderer> highlightedTiles;
         private GameObject selectedUnit;
 
         public BattleState(InGameSceneController controller, GameUI gameUI, UnitSystem unitSystem, StageSystem stageController, ClickSystem clickSystem)
@@ -35,8 +32,6 @@ namespace Scripts.InGame.State
 
         public void Enter()
         {
-            highlightedTiles = new List<MeshRenderer>();
-
             gameUI.ShowWaveUI();
             
             gameUI.OnUnitPlacementComplete += HandleWaveComplete;
@@ -63,11 +58,15 @@ namespace Scripts.InGame.State
             // 유닛 이동 로직
             if (Input.GetMouseButtonDown(0)) // Left click
             {
+                unitSystem.EnableHighlightTile(true);
                 var obj = clickSystem.GetMouseDownGameobject("Unit");
                 selectedUnit = obj;
             }
             else if(Input.GetMouseButtonDown(1))
+            {
                 HandleRightClick();
+                unitSystem.EnableHighlightTile(false);
+            }
             
             // 개발용 키
             if (Input.GetKeyDown(KeyCode.Q))

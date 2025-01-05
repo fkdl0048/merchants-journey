@@ -23,17 +23,20 @@ namespace Scripts.InGame.System
         
         private Cargo currentCargo;
         private List<GameObject> spawnedUnits = new List<GameObject>();
+        private GameObject tileParent;
         private List<Tile> tileList;
 
+        //Init
         public void Initialize(Cargo cargo)
         {
             currentCargo = cargo;
             spawnedUnits.Clear();
 
-            tileList = currentCargo.GetComponentInChildren<CargoTileGenerator>().gameObject
-                .GetComponentsInChildren<Tile>().ToList();
+            tileParent = currentCargo.GetComponentInChildren<CargoTileGenerator>().gameObject;
+            tileList = tileParent.GetComponentsInChildren<Tile>().ToList();
         }
 
+        //유닛 스폰 관련 함수
         public void SpawnInitialUnits()
         {
             //예외 처리.
@@ -93,24 +96,6 @@ namespace Scripts.InGame.System
             spawnedUnits.Add(spawnedUnit);
             return spawnedUnit;
         }
-        public void ClearUnits()
-        {
-            foreach (var unit in spawnedUnits)
-            {
-                if (unit != null)
-                    Destroy(unit);
-            }
-            spawnedUnits.Clear();
-        }
-        public List<GameObject> GetSpawnUnits() => spawnedUnits;
-        private void OnDestroy()
-        {
-            ClearUnits();
-        }
-        public void OnStageChange()
-        {
-            ClearUnits();
-        }
         public bool MoveUnit(GameObject unit, Vector3 targetPosition, bool immediately)
         {
             if (unit == null || currentCargo == null)
@@ -124,6 +109,32 @@ namespace Scripts.InGame.System
             player.ChangeForce(true);
 
             return true;
+        }
+
+        //초기화
+        public void ClearUnits()
+        {
+            foreach (var unit in spawnedUnits)
+            {
+                if (unit != null)
+                    Destroy(unit);
+            }
+            spawnedUnits.Clear();
+        }
+        private void OnDestroy()
+        {
+            ClearUnits();
+        }
+        public void OnStageChange()
+        {
+            ClearUnits();
+        }
+
+        //유틸 스크립트
+        public List<GameObject> GetSpawnUnits() => spawnedUnits;
+        public void EnableHighlightTile(bool enable)
+        {
+            tileParent.SetActive(enable);
         }
     }
 }

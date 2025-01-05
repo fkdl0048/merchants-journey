@@ -46960,6 +46960,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cargo
       objectReference: {fileID: 0}
+    - target: {fileID: 6104395320388610704, guid: ccb3a033ad004ea408e78087cbeda138, type: 3}
+      propertyPath: width
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 9111076865383412170, guid: ccb3a033ad004ea408e78087cbeda138, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1

@@ -52,6 +52,10 @@ namespace AI
                 fsm = FSM.Encounter;
             }
         }
+        protected override void AttackBehavior()
+        {
+            StartCoroutine(AttackStart());
+        }
         private bool IsArrive()
         {
             var target = cargo.transform.position + targetPosition;
