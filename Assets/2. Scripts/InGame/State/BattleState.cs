@@ -4,7 +4,6 @@ using Scripts.InGame.System;
 using Scripts.Interface;
 using Scripts.UI;
 using Scripts.Utils;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Scripts.InGame.State
@@ -38,6 +37,8 @@ namespace Scripts.InGame.State
 
             cargo = stageController.GetCargo();
             cargo.OnDestinationReached += HandleCargoDestinationReached;
+            cargo.OnStartMoving += HandleCargoStartMoving;
+            cargo.OnStopMoving += HandleCargoStopMoving;
             cargo.StartMoving();
 
             //유닛 AI 작동 (우성)
@@ -79,7 +80,9 @@ namespace Scripts.InGame.State
         {        
             cargo.StopMoving();
             cargo.OnDestinationReached -= HandleCargoDestinationReached;
-            
+            cargo.OnStartMoving -= HandleCargoStartMoving;
+            cargo.OnStopMoving -= HandleCargoStopMoving;
+
             // UI 정리
             gameUI.HideWaveUI();
             
@@ -91,19 +94,18 @@ namespace Scripts.InGame.State
         {
             // UI처리 때문에 빼긴 했는데 추가 기획보고 작업 예정
         }
-
         private void HandleCargoDestinationReached()
         {
             controller.ChangeInGameState(InGameState.StageClear);
         }
-
-        private void UnitAIEnable(GameObject[] obj)
+        private void HandleCargoStopMoving(object[] objects)
         {
-            foreach (GameObject ai in obj)
-                ai.GetComponent<ObjectAI>().aiEnable = true;
+            cargo.StopMoving();
         }
-
-
+        private void HandleCargoStartMoving(object[] objects)
+        {
+            cargo.StartMoving();
+        }
         private void HandleRightClick()
         {
             if (selectedUnit == null) 
@@ -115,6 +117,11 @@ namespace Scripts.InGame.State
 
             unitSystem.MoveUnit(selectedUnit, obj.transform.position, false);
             selectedUnit = null;
+        }
+        private void UnitAIEnable(GameObject[] obj)
+        {
+            foreach (GameObject ai in obj)
+                ai.GetComponent<ObjectAI>().aiEnable = true;
         }
     }
 }

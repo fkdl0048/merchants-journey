@@ -132,7 +132,8 @@ namespace Scripts.InGame.State
         private void HandlePlacementComplete()
         {
             controller.ChangeInGameState(InGameState.Wave);
-            EventManager.Instance.TriggerEvent("AIEnableTrigger", null);
+            var cargo = stageSystem.GetCargoBehavior();
+            cargo.isStart = true;
         }
     }
 }

@@ -1,6 +1,4 @@
-using Scripts.Manager;
 using Unity.AI.Navigation;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Scripts.InGame.Stage

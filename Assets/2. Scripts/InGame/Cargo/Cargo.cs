@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Scripts.Utils;
 using System;
+using Scripts.Manager;
 
 public class Cargo : MonoBehaviour
 {
@@ -27,6 +28,8 @@ public class Cargo : MonoBehaviour
     private Coroutine moveCoroutine;
 
     public event Action OnDestinationReached;
+    public event Action<object[]> OnStartMoving;
+    public event Action<object[]> OnStopMoving;
 
     private void OnValidate()
     {
@@ -36,23 +39,10 @@ public class Cargo : MonoBehaviour
     private void Awake()
     {
         UpdatePathPoints();
-        InitTile();
+
         //적군이 스폰이 될 경우, 마차의 이동속도가 감소.
         OriginMoveSpeed = moveSpeed;
         hp = maxHP;
-    }
-    private void Start()
-    {
-        if (autoStart && pathPoints.Count > 0)
-        {
-            StartMoving();
-        }
-    }
-
-    //처음 cargo가 로드될 때, W, H만큼 타일을 생성함
-    private void InitTile()
-    {
-        
     }
     //길 따라가는 스크립트 관련//
     private void UpdatePathPoints()
@@ -84,9 +74,10 @@ public class Cargo : MonoBehaviour
         serializedPathPoints.Clear();
         UpdatePathPoints();
     }
-
     public void StartMoving()
     {
+        if (isMoving == true)
+            return;
         if (pathPoints.Count > 0)
         {
             isMoving = true;
@@ -100,15 +91,26 @@ public class Cargo : MonoBehaviour
             moveCoroutine = StartCoroutine(MoveAlongPath());
         }
     }
-
     public void StopMoving()
     {
+        if (isMoving == false)
+            return;
         isMoving = false;
         if (moveCoroutine != null)
         {
             StopCoroutine(moveCoroutine);
             moveCoroutine = null;
         }
+    }
+    public void RestartMoving()
+    {
+        if (isMoving == true)
+            return;
+        isMoving = true;
+        if (moveCoroutine != null)
+            StopCoroutine(moveCoroutine);
+
+        moveCoroutine = StartCoroutine(MoveAlongPath());
     }
 
     private IEnumerator MoveAlongPath()

@@ -25,7 +25,6 @@ namespace Scripts.InGame.System
         private List<GameObject> spawnedUnits = new List<GameObject>();
         private GameObject tileParent;
         private List<Tile> tileList;
-
         //Init
         public void Initialize(Cargo cargo)
         {
