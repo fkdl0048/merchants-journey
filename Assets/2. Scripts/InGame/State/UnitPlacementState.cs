@@ -6,6 +6,8 @@ using Scripts.Utils;
 using UnityEngine;
 using System.Collections.Generic;
 using Scripts.Manager;
+using AI;
+using System.Linq;
 
 namespace Scripts.InGame.State
 {
@@ -16,11 +18,7 @@ namespace Scripts.InGame.State
         private readonly UnitSystem unitSystem;
         private readonly StageSystem stageSystem;
         
-        private List<MeshRenderer> highlightedTiles = new List<MeshRenderer>();
-        private Color originalTileColor;
         private GameObject selectedUnit;
-
-        private static readonly Color highlightColor = new Color(0.2f, 0.2f, 1f, 0.6f);
 
         public UnitPlacementState(InGameSceneController controller, GameUI gameUI, UnitSystem unitSystem, StageSystem stageSystem)
         {
@@ -59,15 +57,16 @@ namespace Scripts.InGame.State
             }
             
             unitSystem.Initialize(cargo);
-            HighlightPlacementArea(cargo);
             unitSystem.SpawnInitialUnits();
+
+            //HighlightPlacementArea(cargo);
         }
 
         public void Exit()
         {
             gameUI.OnUnitPlacementComplete -= HandlePlacementComplete;
-            ResetTileColors();
             selectedUnit = null;
+            unitSystem.EnableHighlightTile(false);
         }
 
         public void Update()
@@ -85,117 +84,56 @@ namespace Scripts.InGame.State
         private void HandleLeftClick()
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-
-            // 디버그 레이 그리기 (씬 뷰에서만 보임)
-            Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red, 1f);
-            Debug.Log($"Mouse Position: {Input.mousePosition}, Ray Origin: {ray.origin}, Ray Direction: {ray.direction}");
-
-            if (Physics.Raycast(ray, out hit))
-            {
-                Debug.Log($"Hit object: {hit.collider.gameObject.name}, Tag: {hit.collider.tag}, Position: {hit.point}");
-                
-                // 유닛 선택
-                if (hit.collider.CompareTag("Unit"))
-                {
-                    Debug.Log("Unit selected");
-                    selectedUnit = hit.collider.gameObject;
-                }
-            }
-            else
-            {
-                Debug.Log("No hit detected");
-            }
+            RaycastHit[] hitUnit = Physics.RaycastAll(ray)
+                .Where(x => x.collider.CompareTag("Unit")).ToArray();
+            if (hitUnit.Length == 0)
+                return;
+            //광선에 맞은 첫번째 unit을 색적
+            selectedUnit = hitUnit[0].collider.gameObject;
+            Debug.Log(selectedUnit.name);
         }
 
         private void HandleRightClick()
         {
-            if (selectedUnit == null) return;
+            // 선택된 유닛이 없을 경우에
+            if (selectedUnit == null)
+                return;
 
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit))
+            //만약 선택한 곳에 Cargo가 있을 경우에 return
+            bool isHitCargo = Physics.RaycastAll(ray)
+                .Where(x => x.collider.CompareTag("Cargo")).Count() > 0;
+            if (isHitCargo)
+                return;
+
+            RaycastHit hitTile = Physics.RaycastAll(ray)
+                .Where(x => x.collider.CompareTag("Tile")).ToArray()[0];
+            //만약 선택한 곳에 타일이 하나도 없을 경우에 return
+            if (hitTile.collider == null)
             {
-                // 타일 선택하여 유닛 이동
-                var tile = hit.collider.GetComponent<Tile>();
-                if (tile != null && tile.isWalkable)
-                {
-                    if (unitSystem.MoveUnit(selectedUnit, hit.point, true))
-                    {
-                        Debug.Log($"Unit moved to: {hit.point}");
-                        selectedUnit = null; // 선택 해제
-                    }
-                }
-                else
-                {
-                    // 타일이 아닌 곳을 클릭하면 선택 해제
-                    Debug.Log("Unit deselected");
-                    selectedUnit = null;
-                }
+                selectedUnit = null;
+                return;
+            }
+
+            //이동 성공
+            var tile = hitTile.collider.gameObject.GetComponent<Tile>();
+            if (unitSystem.MoveUnit(selectedUnit, tile.transform.position, true))
+            {
+                //타일 hasUnit 이동해줌
+                var player = selectedUnit.GetComponent<PlayerAI>();
+                player.GetComponent<PlayerAI>().myTile.hasUnit = false;
+                player.GetComponent<PlayerAI>().myTile = tile;
+
+                selectedUnit = null; // 선택 해제
             }
         }
 
         private void HandlePlacementComplete()
         {
             controller.ChangeInGameState(InGameState.Wave);
-            EventManager.Instance.TriggerEvent("AIEnableTrigger", null);
-        }
-
-        private void HighlightPlacementArea(Cargo cargo)
-        {
-            // 이전에 하이라이트된 타일들 원래 색상으로 복원
-            ResetTileColors();
-            
-            Vector3 cargoPosition = cargo.transform.position;
-            Vector2Int cargoTilePos = unitSystem.WorldToTilePosition(cargoPosition);
-            
-            // 그리드 시작점 계산
-            int startX = cargoTilePos.x - (cargo.width / 2);
-            int startY = cargoTilePos.y - (cargo.height / 2);
-            
-            // N*M 그리드 영역 내의 타일 검사
-            for (int x = 0; x < cargo.width; x++)
-            {
-                for (int y = 0; y < cargo.height; y++)
-                {
-                    Vector2Int tilePos = new Vector2Int(startX + x, startY + y);
-                    Vector3 worldPos = unitSystem.TileToWorldPosition(tilePos);
-                    
-                    // 타일 검사
-                    Collider[] colliders = Physics.OverlapSphere(worldPos, 0.1f, LayerMask.GetMask("Tile"));
-                    foreach (var collider in colliders)
-                    {
-                        var tile = collider.GetComponent<Tile>();
-                        if (tile != null && tile.isWalkable)
-                        {
-                            var meshRenderer = collider.GetComponent<MeshRenderer>();
-                            if (meshRenderer != null)
-                            {
-                                if (highlightedTiles.Count == 0)
-                                {
-                                    // 첫 번째 타일의 원래 색상 저장
-                                    originalTileColor = meshRenderer.material.color;
-                                }
-                                meshRenderer.material.color = highlightColor;
-                                highlightedTiles.Add(meshRenderer);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        private void ResetTileColors()
-        {
-            foreach (var meshRenderer in highlightedTiles)
-            {
-                if (meshRenderer != null)
-                {
-                    meshRenderer.material.color = originalTileColor;
-                }
-            }
-            highlightedTiles.Clear();
+            var cargo = stageSystem.GetCargoBehavior();
+            cargo.isStart = true;
         }
     }
 }

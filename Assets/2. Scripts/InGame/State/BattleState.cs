@@ -4,7 +4,6 @@ using Scripts.InGame.System;
 using Scripts.Interface;
 using Scripts.UI;
 using Scripts.Utils;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Scripts.InGame.State
@@ -19,9 +18,6 @@ namespace Scripts.InGame.State
     //  private readonly BattleSystem 유닛과 적을 관리하는 클래스 추가되어야 할듯
     
         private Cargo cargo;
-        private Color originalTileColor = Color.white;
-        private Color highlightColor = Color.red;
-        private List<MeshRenderer> highlightedTiles;
         private GameObject selectedUnit;
 
         public BattleState(InGameSceneController controller, GameUI gameUI, UnitSystem unitSystem, StageSystem stageController, ClickSystem clickSystem)
@@ -35,14 +31,14 @@ namespace Scripts.InGame.State
 
         public void Enter()
         {
-            highlightedTiles = new List<MeshRenderer>();
-
             gameUI.ShowWaveUI();
             
             gameUI.OnUnitPlacementComplete += HandleWaveComplete;
 
             cargo = stageController.GetCargo();
             cargo.OnDestinationReached += HandleCargoDestinationReached;
+            cargo.OnStartMoving += HandleCargoStartMoving;
+            cargo.OnStopMoving += HandleCargoStopMoving;
             cargo.StartMoving();
 
             //유닛 AI 작동 (우성)
@@ -63,18 +59,15 @@ namespace Scripts.InGame.State
             // 유닛 이동 로직
             if (Input.GetMouseButtonDown(0)) // Left click
             {
+                unitSystem.EnableHighlightTile(true);
                 var obj = clickSystem.GetMouseDownGameobject("Unit");
                 selectedUnit = obj;
             }
             else if(Input.GetMouseButtonDown(1))
+            {
                 HandleRightClick();
-            
-
-            // 색적 로직
-            if (selectedUnit != null)
-                HighlightPlacementArea(cargo);
-            else
-                ResetTileColors();
+                unitSystem.EnableHighlightTile(false);
+            }
             
             // 개발용 키
             if (Input.GetKeyDown(KeyCode.Q))
@@ -84,13 +77,12 @@ namespace Scripts.InGame.State
         }
 
         public void Exit()
-        {
-            // 전투 시스템 정리
-            //BattleSystem.EndWave();
-        
+        {        
             cargo.StopMoving();
             cargo.OnDestinationReached -= HandleCargoDestinationReached;
-            
+            cargo.OnStartMoving -= HandleCargoStartMoving;
+            cargo.OnStopMoving -= HandleCargoStopMoving;
+
             // UI 정리
             gameUI.HideWaveUI();
             
@@ -102,19 +94,18 @@ namespace Scripts.InGame.State
         {
             // UI처리 때문에 빼긴 했는데 추가 기획보고 작업 예정
         }
-
         private void HandleCargoDestinationReached()
         {
             controller.ChangeInGameState(InGameState.StageClear);
         }
-
-        private void UnitAIEnable(GameObject[] obj)
+        private void HandleCargoStopMoving(object[] objects)
         {
-            foreach (GameObject ai in obj)
-                ai.GetComponent<ObjectAI>().aiEnable = true;
+            cargo.StopMoving();
         }
-
-
+        private void HandleCargoStartMoving(object[] objects)
+        {
+            cargo.StartMoving();
+        }
         private void HandleRightClick()
         {
             if (selectedUnit == null) 
@@ -125,64 +116,12 @@ namespace Scripts.InGame.State
                 return;
 
             unitSystem.MoveUnit(selectedUnit, obj.transform.position, false);
-
             selectedUnit = null;
         }
-
-        private void HighlightPlacementArea(Cargo cargo)
+        private void UnitAIEnable(GameObject[] obj)
         {
-            // 이전에 하이라이트된 타일들 원래 색상으로 복원
-            ResetTileColors();
-
-            Vector3 cargoPosition = cargo.transform.position;
-            Vector2Int cargoTilePos = unitSystem.WorldToTilePosition(cargoPosition);
-
-            // 그리드 시작점 계산
-            int startX = cargoTilePos.x - (cargo.width / 2);
-            int startY = cargoTilePos.y - (cargo.height / 2);
-
-            // N*M 그리드 영역 내의 타일 검사
-            for (int x = 0; x < cargo.width; x++)
-            {
-                for (int y = 0; y < cargo.height; y++)
-                {
-                    Vector2Int tilePos = new Vector2Int(startX + x, startY + y);
-                    Vector3 worldPos = unitSystem.TileToWorldPosition(tilePos);
-
-                    // 타일 검사
-                    Collider[] colliders = Physics.OverlapSphere(worldPos, 0.1f, LayerMask.GetMask("Tile"));
-                    foreach (var collider in colliders)
-                    {
-                        var tile = collider.GetComponent<Tile>();
-                        if (tile != null && tile.isWalkable)
-                        {
-                            var meshRenderer = collider.GetComponent<MeshRenderer>();
-                            if (meshRenderer != null)
-                            {
-                                if (highlightedTiles.Count == 0)
-                                {
-                                    // 첫 번째 타일의 원래 색상 저장
-                                    originalTileColor = meshRenderer.material.color;
-                                }
-                                meshRenderer.material.color = highlightColor / 2;
-                                highlightedTiles.Add(meshRenderer);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        private void ResetTileColors()
-        {
-            foreach (var meshRenderer in highlightedTiles)
-            {
-                if (meshRenderer != null)
-                {
-                    meshRenderer.material.color = originalTileColor;
-                }
-            }
-            highlightedTiles.Clear();
+            foreach (GameObject ai in obj)
+                ai.GetComponent<ObjectAI>().aiEnable = true;
         }
     }
 }

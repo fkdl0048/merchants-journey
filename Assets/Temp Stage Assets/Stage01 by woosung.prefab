@@ -1679,7 +1679,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1757058143942566461
 Transform:
   m_ObjectHideFlags: 0
@@ -4718,7 +4718,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2797206239395842156
 Transform:
   m_ObjectHideFlags: 0
@@ -10564,7 +10564,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8981709668129645665
 Transform:
   m_ObjectHideFlags: 0
@@ -13358,7 +13358,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5092721039315412914
 Transform:
   m_ObjectHideFlags: 0
@@ -23072,7 +23072,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &441028915489900417
 Transform:
   m_ObjectHideFlags: 0
@@ -24053,7 +24053,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3700912204357392282
 Transform:
   m_ObjectHideFlags: 0
@@ -26511,7 +26511,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5425443453828234976
 Transform:
   m_ObjectHideFlags: 0
@@ -46956,25 +46956,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5492386829829935117}
     m_Modifications:
-    - target: {fileID: 4707654760133640633, guid: ccb3a033ad004ea408e78087cbeda138, type: 3}
-      propertyPath: boxSize.x
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 4707654760133640633, guid: ccb3a033ad004ea408e78087cbeda138, type: 3}
-      propertyPath: boxSize.z
-      value: 3
-      objectReference: {fileID: 0}
+    - target: {fileID: 3732091946777694342, guid: ccb3a033ad004ea408e78087cbeda138, type: 3}
+      propertyPath: cargo
+      value: 
+      objectReference: {fileID: 9142362038424389454}
+    - target: {fileID: 3732091946777694342, guid: ccb3a033ad004ea408e78087cbeda138, type: 3}
+      propertyPath: SpawnerGroup
+      value: 
+      objectReference: {fileID: 4280401162991066978}
     - target: {fileID: 5316081193370305362, guid: ccb3a033ad004ea408e78087cbeda138, type: 3}
       propertyPath: m_Name
       value: Cargo
       objectReference: {fileID: 0}
-    - target: {fileID: 6464838629299659362, guid: ccb3a033ad004ea408e78087cbeda138, type: 3}
-      propertyPath: m_IsTrigger
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 9111076865383412170, guid: ccb3a033ad004ea408e78087cbeda138, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 9111076865383412170, guid: ccb3a033ad004ea408e78087cbeda138, type: 3}
       propertyPath: m_LocalPosition.y
@@ -50438,7 +50434,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4284946234687468797, guid: f878ae0fa87e140419638bc25805b2a1, type: 3}
       propertyPath: m_TagString
-      value: Cargo
+      value: EnemyTrigger
       objectReference: {fileID: 0}
     - target: {fileID: 6559118567219929100, guid: f878ae0fa87e140419638bc25805b2a1, type: 3}
       propertyPath: spawners.Array.size
@@ -55418,7 +55414,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4284946234687468797, guid: f878ae0fa87e140419638bc25805b2a1, type: 3}
       propertyPath: m_TagString
-      value: Cargo
+      value: EnemyTrigger
       objectReference: {fileID: 0}
     - target: {fileID: 6559118567219929100, guid: f878ae0fa87e140419638bc25805b2a1, type: 3}
       propertyPath: spawners.Array.size
@@ -70032,7 +70028,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4284946234687468797, guid: f878ae0fa87e140419638bc25805b2a1, type: 3}
       propertyPath: m_TagString
-      value: Cargo
+      value: EnemyTrigger
       objectReference: {fileID: 0}
     - target: {fileID: 6559118567219929100, guid: f878ae0fa87e140419638bc25805b2a1, type: 3}
       propertyPath: spawners.Array.size

@@ -265,8 +265,8 @@ public class GridTileEditor : EditorWindow
         Tile tile = tileObject.GetComponent<Tile>();
         if (tile != null)
         {
-            tile.tileType = currentTileType;
-            tile.isWalkable = currentTileType != TileType.Obstacle && currentTileType != TileType.Unwalkable;
+            //tile.tileType = currentTileType;
+            //tile.isWalkable = currentTileType != TileType.Obstacle && currentTileType != TileType.Unwalkable;
         }
         
         tileObject.name = $"Tile_{currentTileType}_{position.x}_{position.z}";
@@ -291,8 +291,8 @@ public class GridTileEditor : EditorWindow
                     if (tile != null)
                     {
                         Undo.RecordObject(tile, "Update Tile Type");
-                        tile.tileType = currentTileType;
-                        tile.isWalkable = currentTileType != TileType.Obstacle && currentTileType != TileType.Unwalkable;
+                        //tile.tileType = currentTileType;
+                        //tile.isWalkable = currentTileType != TileType.Obstacle && currentTileType != TileType.Unwalkable;
                     }
                     break;
                 }
@@ -313,8 +313,8 @@ public class GridTileEditor : EditorWindow
                     if (tile != null)
                     {
                         Undo.RecordObject(tile, "Update Tile Walkable Status");
-                        tile.isWalkable = false;
-                        tile.tileType = TileType.Unwalkable;
+                        //tile.isWalkable = false;
+                        //tile.tileType = TileType.Unwalkable;
                     }
                 }
             }

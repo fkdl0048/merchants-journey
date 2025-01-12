@@ -8,6 +8,7 @@ TagManager:
   - Unit
   - Cargo
   - Tile
+  - EnemyTrigger
   layers:
   - Default
   - TransparentFX

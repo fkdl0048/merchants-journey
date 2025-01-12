@@ -59,7 +59,10 @@ namespace Scripts.InGame.System
         {
             return currentStageInstance.GetComponentInChildren<Cargo>();
         }
-
+        public CargoBehavior GetCargoBehavior()
+        {
+            return currentStageInstance.GetComponentInChildren<CargoBehavior>();
+        }
         public void LoadStage()
         {
             LoadCurrentStage();

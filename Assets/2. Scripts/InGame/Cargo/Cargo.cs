@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Scripts.Utils;
 using System;
+using Scripts.Manager;
 
 public class Cargo : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class Cargo : MonoBehaviour
     [HideInInspector]
     public List<Vector3> pathPoints = new List<Vector3>();
 
+    public float maxHP = 10;
+    public float hp;
     public float moveSpeed = 0.3f;
     public float OriginMoveSpeed = 0.3f;
     public float waitTimeAtPoint = 1f;
@@ -25,6 +28,8 @@ public class Cargo : MonoBehaviour
     private Coroutine moveCoroutine;
 
     public event Action OnDestinationReached;
+    public event Action<object[]> OnStartMoving;
+    public event Action<object[]> OnStopMoving;
 
     private void OnValidate()
     {
@@ -35,9 +40,11 @@ public class Cargo : MonoBehaviour
     {
         UpdatePathPoints();
 
+        //적군이 스폰이 될 경우, 마차의 이동속도가 감소.
         OriginMoveSpeed = moveSpeed;
+        hp = maxHP;
     }
-
+    //길 따라가는 스크립트 관련//
     private void UpdatePathPoints()
     {
         pathPoints.Clear();
@@ -67,20 +74,10 @@ public class Cargo : MonoBehaviour
         serializedPathPoints.Clear();
         UpdatePathPoints();
     }
-
-    private void Start()
-    {
-        if (autoStart && pathPoints.Count > 0)
-        {
-            StartMoving();
-        }
-    }
-    private void Update()
-    {
-        
-    }
     public void StartMoving()
     {
+        if (isMoving == true)
+            return;
         if (pathPoints.Count > 0)
         {
             isMoving = true;
@@ -94,15 +91,26 @@ public class Cargo : MonoBehaviour
             moveCoroutine = StartCoroutine(MoveAlongPath());
         }
     }
-
     public void StopMoving()
     {
+        if (isMoving == false)
+            return;
         isMoving = false;
         if (moveCoroutine != null)
         {
             StopCoroutine(moveCoroutine);
             moveCoroutine = null;
         }
+    }
+    public void RestartMoving()
+    {
+        if (isMoving == true)
+            return;
+        isMoving = true;
+        if (moveCoroutine != null)
+            StopCoroutine(moveCoroutine);
+
+        moveCoroutine = StartCoroutine(MoveAlongPath());
     }
 
     private IEnumerator MoveAlongPath()
@@ -144,6 +152,7 @@ public class Cargo : MonoBehaviour
         }
     }
 
+    //디버깅
     private void OnDrawGizmos()
     {
         //

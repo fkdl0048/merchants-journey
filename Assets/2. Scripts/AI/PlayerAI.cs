@@ -6,7 +6,13 @@ namespace AI
     public class PlayerAI : ObjectAI
     {
         [SerializeField] private bool isForce = false; //이동 명령이 우선시 됨.
+        public Tile myTile;
         public void ChangeForce(bool isForce) => this.isForce = isForce;
+        public void Setup(Cargo cargo ,Vector3 targetPosition, bool aiEnable, Tile tile)
+        {
+            Setup(cargo, targetPosition, aiEnable);
+            myTile = tile;
+        }
         protected override void EncounterBehavior()
         {
             if (targetEnemy == null || isForce)
@@ -45,6 +51,10 @@ namespace AI
                 targetEnemy = obj;
                 fsm = FSM.Encounter;
             }
+        }
+        protected override void AttackBehavior()
+        {
+            StartCoroutine(AttackStart());
         }
         private bool IsArrive()
         {

@@ -11,6 +11,7 @@ public class CargoPathEditor : Editor
 {
     private Cargo cargo;
     private bool isSettingPath = false;
+    private SerializedProperty maxHPProp;
     private SerializedProperty serializedPathPointsProp;
     private SerializedProperty moveSpeedProp;
     private SerializedProperty waitTimeAtPointProp;
@@ -21,13 +22,14 @@ public class CargoPathEditor : Editor
     private void OnEnable()
     {
         cargo = (Cargo)target;
+        maxHPProp = serializedObject.FindProperty("maxHP");
         serializedPathPointsProp = serializedObject.FindProperty("serializedPathPoints");
         moveSpeedProp = serializedObject.FindProperty("moveSpeed");
         waitTimeAtPointProp = serializedObject.FindProperty("waitTimeAtPoint");
         widthProp = serializedObject.FindProperty("width");
         heightProp = serializedObject.FindProperty("height");
         autoStartProp = serializedObject.FindProperty("autoStart");
-        
+       
         SceneView.duringSceneGui += OnSceneGUI;
     }
 
@@ -43,13 +45,15 @@ public class CargoPathEditor : Editor
         EditorGUILayout.PropertyField(moveSpeedProp);
         EditorGUILayout.PropertyField(waitTimeAtPointProp);
         
-        EditorGUILayout.LabelField("Placement Grid Settings", EditorStyles.boldLabel);
+        EditorGUILayout.PropertyField(maxHPProp, new GUIContent("HP"));
+        EditorGUILayout.Space();
+
+        EditorGUILayout.LabelField("Placement Grid Settings (홀수 권장)", EditorStyles.boldLabel);
         EditorGUILayout.PropertyField(widthProp, new GUIContent("Grid Width (N)"));
         EditorGUILayout.PropertyField(heightProp, new GUIContent("Grid Height (M)"));
         
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("Path Settings", EditorStyles.boldLabel);
-        
         EditorGUILayout.PropertyField(serializedPathPointsProp);
 
         EditorGUILayout.Space();
@@ -128,7 +132,7 @@ public class CargoPathEditor : Editor
                     current = current.parent;
                 }
 
-                if (tile != null && tile.isWalkable)
+                if (tile != null)
                 {
                     if (e.control)
                     {
