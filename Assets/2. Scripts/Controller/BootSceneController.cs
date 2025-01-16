@@ -13,7 +13,7 @@ public class BootSceneController : MonoBehaviour
     void Start()
     {
         InitializeManagers();
-        LoadTitleScene();
+        //LoadTitleScene();
     }
     
     private void InitializeManagers()
