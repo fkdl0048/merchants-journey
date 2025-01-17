@@ -32,6 +32,23 @@ namespace Scripts.InGame.State
             preCombatUI.OnExitClicked += HandleExitClicked;
             
             preCombatUI.Initialized(stageSystem.GetCurrentStageData());
+
+            // 배치 시스템 초기화 및 유닛 배치
+            var cargo = stageSystem.GetCargo();
+            if (cargo == null)
+            {
+                Debug.LogError("Cargo not found");
+                return;
+            }
+
+            // 카메라를 화물 기준 쿼터뷰 위치로 설정
+            if (Camera.main != null)
+            {
+                Vector3 cargoPosition = cargo.transform.position;
+                Vector3 cameraOffset = new Vector3(-30f, 30f, -30f);
+                Camera.main.transform.position = cargoPosition + cameraOffset;
+                Camera.main.transform.rotation = Quaternion.Euler(35f, 45f, 0);
+            }
         }
 
         public void Update()
