@@ -19,7 +19,7 @@ namespace Scripts.InGame.State
     
         private Cargo cargo;
         private GameObject selectedUnit;
-
+        private Tile hoverBeforeTile;
         public BattleState(InGameSceneController controller, GameUI gameUI, UnitSystem unitSystem, StageSystem stageController, ClickSystem clickSystem)
         {
             this.controller = controller;
@@ -55,18 +55,39 @@ namespace Scripts.InGame.State
                 Camera.main.transform.position = cargoPosition + cameraOffset;
                 Camera.main.transform.rotation = Quaternion.Euler(35f, 45f, 0f);
             }
+            // 타일 하이라이트
+            var hoverObj = clickSystem.GetMouseDownGameobject("Tile");
+            if (hoverObj != null)
+            {
+                Tile hoverTile = hoverObj.GetComponent<Tile>();
+                if (hoverBeforeTile != null)
+                    hoverBeforeTile.EnableTileHover(false);
+                if(hoverTile != null)
+                {
+                    hoverBeforeTile = hoverTile;
+                    hoverTile.EnableTileHover(true);
+                }
+            }
 
             // 유닛 이동 로직
             if (Input.GetMouseButtonDown(0)) // Left click
             {
-                unitSystem.EnableHighlightTile(true);
                 var obj = clickSystem.GetMouseDownGameobject("Unit");
-                selectedUnit = obj;
+                if(obj != null)
+                {
+                    // tile highlight effect    
+                    unitSystem.EnableHighlightTile(true);   
+                    selectedUnit = obj;
+                    // outline effect
+                    obj.GetComponent<PlayerAI>()?.ShowOutline(true);
+                }
             }
             else if(Input.GetMouseButtonDown(1))
             {
                 HandleRightClick();
+                
                 unitSystem.EnableHighlightTile(false);
+
             }
             
             // 개발용 키
@@ -75,7 +96,7 @@ namespace Scripts.InGame.State
                 HandleCargoDestinationReached();
             }
         }
-
+        
         public void Exit()
         {        
             cargo.StopMoving();
@@ -116,6 +137,7 @@ namespace Scripts.InGame.State
                 return;
 
             unitSystem.MoveUnit(selectedUnit, obj.transform.position, false);
+            selectedUnit.GetComponent<PlayerAI>()?.ShowOutline(false);
             selectedUnit = null;
         }
         private void UnitAIEnable(GameObject[] obj)

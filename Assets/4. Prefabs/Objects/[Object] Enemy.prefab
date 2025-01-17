@@ -56,7 +56,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ccc63a011d9fa064b93acfb9e932f125, type: 2}
+  - {fileID: 2100000, guid: bd3260e8587b91f4f824edfce62a555e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -108,6 +108,7 @@ MonoBehaviour:
   fsm: 0
   hitSoundClip: {fileID: 8300000, guid: 4500443c0072dba42be5a457b2d07aed, type: 3}
   hittedSoundClip: {fileID: 8300000, guid: c2fed035958ccdd48a5b8df47035b21e, type: 3}
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
   debugModeEnable: 1
   targetEnemy: {fileID: 0}
   pos: {x: 0, y: 0, z: 0}

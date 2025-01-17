@@ -31,9 +31,14 @@ namespace AI
         [SerializeField] protected FSM fsm;
         protected SpriteRenderer spriteRenderer;
 
+        //사운드 스크립트도 수정해야함.
         [Header("Sound Clip")]
         [SerializeField] private AudioClip hitSoundClip;
         [SerializeField] private AudioClip hittedSoundClip;
+
+        // Effect 옵션 
+        [Header("Effect Option")]
+        [SerializeField] private Color outlineColor = Color.white;
 
         [Header("Debug Mode Enable")]
         [SerializeField] private bool debugModeEnable = true;
@@ -52,6 +57,8 @@ namespace AI
             this.aiEnable = aiEnable;
 
             ChangeTargetPostion(targetPosition);
+
+            ShowOutline(false);
         }
         public void ChangeTargetPostion(Vector3 targetPosition)
         {
@@ -195,6 +202,17 @@ namespace AI
             if(obj == null)
                 return CheckRange(range, targetTag2);
             return obj;
+        }
+
+        // 효과 관련 스크립트
+        public void ShowOutline(bool enable)
+        {
+            // outline shader 가져오기
+            var material = GetComponent<SpriteRenderer>().material;
+            if (enable == true)
+                material.SetFloat("_OutlineEnabled", 1);
+            else
+                material.SetFloat("_OutlineEnabled", 0);
         }
         //Debug Code
         private void OnDrawGizmos()

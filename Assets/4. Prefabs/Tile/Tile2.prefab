@@ -98,9 +98,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 255cd92220b39db4e9b29781c7da157c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileType: 0
-  isWalkable: 1
-  spriteRenderer: {fileID: 0}
+  TileEnterColor: {r: 1, g: 0, b: 0, a: 0.85882354}
+  TileExitColor: {r: 1, g: 0, b: 0, a: 0.5647059}
 --- !u!65 &2598825194438771683
 BoxCollider:
   m_ObjectHideFlags: 0

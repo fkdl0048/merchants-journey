@@ -56,7 +56,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7cced356ec3802748bc58a207549c7a0, type: 2}
+  - {fileID: 2100000, guid: bd3260e8587b91f4f824edfce62a555e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -82,7 +82,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.64, y: 0.64}
+  m_Size: {x: 0.83339435, y: 0.9583333}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -178,7 +178,9 @@ MonoBehaviour:
   fsm: 0
   hitSoundClip: {fileID: 8300000, guid: c2fed035958ccdd48a5b8df47035b21e, type: 3}
   hittedSoundClip: {fileID: 8300000, guid: 4500443c0072dba42be5a457b2d07aed, type: 3}
+  outlineColor: {r: 1, g: 0, b: 0, a: 1}
   debugModeEnable: 1
   targetEnemy: {fileID: 0}
   pos: {x: 0, y: 0, z: 0}
   isForce: 0
+  myTile: {fileID: 0}

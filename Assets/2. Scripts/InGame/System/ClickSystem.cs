@@ -1,4 +1,5 @@
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Scripts.InGame.System
@@ -8,12 +9,12 @@ namespace Scripts.InGame.System
         public GameObject GetMouseDownGameobject(string tag)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit[] hit = Physics.RaycastAll(ray);
-
-            var targetObj = hit.Where(x => x.transform.CompareTag(tag));
-            if (targetObj == null)
+            RaycastHit[] hitUnit = Physics.RaycastAll(ray)
+                .Where(x => x.collider.CompareTag(tag)).ToArray();
+            if (hitUnit.Length == 0)
                 return null;
-            return targetObj.ToArray()[0].transform.gameObject;
+            //광선에 맞은 첫번째 unit을 색적
+            return hitUnit[0].collider.gameObject;
         }
     }
 }
