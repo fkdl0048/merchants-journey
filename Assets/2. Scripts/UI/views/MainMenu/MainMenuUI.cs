@@ -40,9 +40,6 @@ namespace Scripts.UI
     
         private void OnStartClick()
         {
-            //AudioManager.Instance.PlaySFX(startButtonSound);
-            //LoadingSceneController.LoadScene(Consts.InGameSceneName);
-            
             gameLoadUI.gameObject.SetActive(true);
             gameLoadUI.Init();
         }

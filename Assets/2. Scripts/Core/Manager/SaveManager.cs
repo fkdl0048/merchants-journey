@@ -21,13 +21,25 @@ namespace Scripts.Manager
         private void LoadGameData()
         {
 #if UNITY_EDITOR
-            // 에디터에서는 매번 새로운 데이터 생성
-            gameData = new GameData();
-            // 초기 유닛 생성
-            gameData.ownedUnits.Add(new UnitData("unit_1", "만득이", UnitType.Pyosa, UnitClass.Sword));
-            gameData.ownedUnits.Add(new UnitData("unit_2", "두칠이", UnitType.Pyosa, UnitClass.None));
-            gameData.ownedUnits.Add(new UnitData("unit_3", "강철이", UnitType.Pyosa, UnitClass.None));
-            gameData.ownedUnits.Add(new UnitData("unit_4", "표두표두", UnitType.Pyodu, UnitClass.None));
+            // // 에디터에서는 매번 새로운 데이터 생성
+            // gameData = new GameData();
+            // // 초기 유닛 생성
+            // gameData.ownedUnits.Add(new UnitData("unit_1", "만득이", UnitType.Pyosa, UnitClass.Sword));
+            // gameData.ownedUnits.Add(new UnitData("unit_2", "두칠이", UnitType.Pyosa, UnitClass.None));
+            // gameData.ownedUnits.Add(new UnitData("unit_3", "강철이", UnitType.Pyosa, UnitClass.None));
+            // gameData.ownedUnits.Add(new UnitData("unit_4", "표두표두", UnitType.Pyodu, UnitClass.None));
+            
+            gameData = LoadData<GameData>(GAME_DATA_KEY);
+            if (gameData == null)
+            {
+                gameData = new GameData();
+                // 초기 유닛 생성
+                gameData.ownedUnits.Add(new UnitData("unit_1", "만득이", UnitType.Pyosa, UnitClass.None));
+                gameData.ownedUnits.Add(new UnitData("unit_2", "두칠이", UnitType.Pyosa, UnitClass.None));
+                gameData.ownedUnits.Add(new UnitData("unit_3", "강철이", UnitType.Pyosa, UnitClass.None));
+                gameData.ownedUnits.Add(new UnitData("unit_4", "표두표두", UnitType.Pyodu, UnitClass.None));
+                SaveGameData(gameData);
+            }
 #else
             // 빌드에서는 저장된 데이터 로드// 에디터에서는 매번 새로운 데이터 생성
             gameData = new GameData();
@@ -38,17 +50,7 @@ namespace Scripts.Manager
             gameData.ownedUnits.Add(new UnitData("unit_4", "표두표두", UnitType.Pyodu, UnitClass.None));
 
             // 이어하기 기능
-            // gameData = LoadData<GameData>(GAME_DATA_KEY);
-            // if (gameData == null)
-            // {
-            //     gameData = new GameData();
-            //     // 초기 유닛 생성
-            //     gameData.ownedUnits.Add(new UnitData("unit_1", "만득이", UnitType.Pyosa, UnitClass.None));
-            //     gameData.ownedUnits.Add(new UnitData("unit_2", "두칠이", UnitType.Pyosa, UnitClass.None));
-            //     gameData.ownedUnits.Add(new UnitData("unit_3", "강철이", UnitType.Pyosa, UnitClass.None));
-            //     gameData.ownedUnits.Add(new UnitData("unit_4", "표두표두", UnitType.Pyodu, UnitClass.None));
-            //     SaveGameData(gameData);
-            // }
+
 #endif
         }
 
@@ -68,6 +70,31 @@ namespace Scripts.Manager
             // 에디터에서는 저장하지 않음 => 빌드만 테스트를 위해 사용
             SaveData(GAME_DATA_KEY, data);
 #endif
+        }
+
+        public bool HasSavedGame(int slotIndex)
+        {
+            string key = $"{GAME_DATA_KEY}_{slotIndex}";
+            return PlayerPrefs.HasKey(key);
+        }
+
+        public GameData LoadGameDataBySlot(int slotIndex)
+        {
+            string key = $"{GAME_DATA_KEY}_{slotIndex}";
+            return LoadData<GameData>(key);
+        }
+
+        public void SaveGameDataToSlot(int slotIndex)
+        {
+            string key = $"{GAME_DATA_KEY}_{slotIndex}";
+            SaveData(key, gameData);
+        }
+
+        public void DeleteGameDataFromSlot(int slotIndex)
+        {
+            string key = $"{GAME_DATA_KEY}_{slotIndex}";
+            PlayerPrefs.DeleteKey(key);
+            PlayerPrefs.Save();
         }
 
         public T LoadData<T>(string key) where T : new()
