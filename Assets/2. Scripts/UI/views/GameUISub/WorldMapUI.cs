@@ -18,6 +18,7 @@ public class WorldMapUI : MonoBehaviour
     [SerializeField] private Button[] IslandButtons;  // 섬 버튼들의 배열
     [SerializeField] private Camera mainCamera;  // 메인 카메라 참조
     [SerializeField] private float cameraMoveSpeed = 1f;  // 카메라 이동 속도
+    [SerializeField] private RectTransform worldMapContent;  // 월드맵 전체를 담고 있는 ScrollRect의 content
 
     public UnityAction<int> OnIslandSelected;  // 섬이 선택되었을 때 이벤트
     public UnityAction<int> OnNextStageButtonClicked;
@@ -115,24 +116,36 @@ public class WorldMapUI : MonoBehaviour
 
     private void MoveCamera(Vector3 targetPosition)
     {
-        if (mainCamera == null)
+        if (worldMapContent == null)
         {
-            mainCamera = Camera.main;
-            if (mainCamera == null)
-            {
-                Debug.LogError("Main camera not found!");
-                return;
-            }
+            Debug.LogError("World Map Content가 설정되지 않았습니다!");
+            return;
         }
-        
-        Debug.Log("????????");
 
-        // 카메라의 현재 z 위치 유지
-        Vector3 newPosition = new Vector3(targetPosition.x, targetPosition.y, mainCamera.transform.position.z);
+        // 선택된 버튼의 RectTransform 가져오기
+        RectTransform buttonRect = IslandButtons[currentSelectedIsland].GetComponent<RectTransform>();
         
-        // DOTween을 사용하여 부드러운 카메라 이동
-        mainCamera.transform.DOMove(newPosition, cameraMoveSpeed)
-            .SetEase(Ease.InOutQuad);  // 부드러운 이동을 위한 이징
+        // 버튼의 월드 위치 구하기
+        Vector3 buttonWorldPos = buttonRect.TransformPoint(Vector3.zero);
+        
+        // ScrollRect의 viewport 중심점 구하기
+        RectTransform viewport = worldMapContent.parent as RectTransform;
+        if (viewport == null)
+        {
+            Debug.LogError("Viewport를 찾을 수 없습니다!");
+            return;
+        }
+        Vector3 viewportCenter = viewport.TransformPoint(viewport.rect.center);
+        
+        // 버튼과 viewport 중심점 간의 차이 계산
+        Vector3 offset = buttonWorldPos - viewportCenter;
+        
+        // 현재 content의 anchoredPosition에서 offset만큼 이동
+        Vector2 targetAnchoredPos = worldMapContent.anchoredPosition - (Vector2)worldMapContent.InverseTransformVector(offset);
+        
+        // DOTween을 사용하여 부드럽게 스크롤
+        worldMapContent.DOAnchorPos(targetAnchoredPos, cameraMoveSpeed)
+            .SetEase(Ease.InOutQuad);
     }
 
     private void SetIslandButtonState(int index, bool selected)
