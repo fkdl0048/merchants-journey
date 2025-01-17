@@ -48,7 +48,7 @@ public class GameLoadSlot : MonoBehaviour
         loadButton.onClick.AddListener(() =>
         {
             var loadedData = SaveManager.Instance.LoadGameDataBySlot(slotIndex);
-            SaveManager.Instance.SaveGameData(loadedData);
+            SaveManager.Instance.SaveGameData(loadedData);  // 현재 게임 데이터로 설정
             LoadingSceneController.LoadScene(Consts.InGameSceneName);
         });
         
@@ -63,13 +63,15 @@ public class GameLoadSlot : MonoBehaviour
     private void InitNewGame()
     {
         newGameButton.gameObject.SetActive(true);
+        loadButton.gameObject.SetActive(false);
+        deleteButton.gameObject.SetActive(false);
         
         gamePlayInfoText.text = "신규 게임";
         
         newGameButton.onClick.RemoveAllListeners();
         newGameButton.onClick.AddListener(() =>
         {
-            SaveManager.Instance.SaveGameDataToSlot(slotIndex);
+            SaveManager.Instance.CreateAndSaveNewGame(slotIndex);
             LoadingSceneController.LoadScene(Consts.InGameSceneName);
         });
     }
