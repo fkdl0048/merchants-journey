@@ -78,6 +78,7 @@ namespace Scripts.InGame.State
                 var obj = clickSystem.GetMouseDownGameobject("Unit");
                 if(obj != null)
                 {
+                    TimeManager.Instance.SetTimeScale(0.125f);
                     // tile highlight effect    
                     unitSystem.EnableHighlightTile(true);   
                     selectedUnit = obj;
@@ -88,7 +89,10 @@ namespace Scripts.InGame.State
             else if(Input.GetMouseButtonDown(1))
             {
                 if(HandleRightClick())
+                {
                     unitSystem.EnableHighlightTile(false);
+                    TimeManager.Instance.ResumeGame();
+                }
             }
             
             // 개발용 키
