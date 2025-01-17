@@ -8,6 +8,7 @@ namespace Scripts.Manager
         private AudioSource sfxSource;
         private float bgmVolume = 1f;
         private float sfxVolume = 1f;
+        private string currentBGMPath;
     
         protected override void Awake()
         {
@@ -35,6 +36,21 @@ namespace Scripts.Manager
             bgmSource.volume = bgmVolume;
             sfxSource.volume = sfxVolume;
         }
+
+        public void PlayBGM(string path)
+        {
+            if (currentBGMPath == path && bgmSource.isPlaying) return;
+            
+            AudioClip clip = Resources.Load<AudioClip>(path);
+            if (clip == null)
+            {
+                Debug.LogWarning($"BGM not found at path: {path}");
+                return;
+            }
+
+            currentBGMPath = path;
+            PlayBGM(clip);
+        }
         
         public void PlayBGM(AudioClip clip)
         {
@@ -43,6 +59,18 @@ namespace Scripts.Manager
             bgmSource.clip = clip;
             bgmSource.volume = bgmVolume;
             bgmSource.Play();
+        }
+
+        public void PlaySFX(string path)
+        {
+            AudioClip clip = Resources.Load<AudioClip>(path);
+            if (clip == null)
+            {
+                Debug.LogWarning($"SFX not found at path: {path}");
+                return;
+            }
+            
+            PlaySFX(clip);
         }
         
         public void PlaySFX(AudioClip clip)
@@ -81,6 +109,11 @@ namespace Scripts.Manager
         public void ResumeBGM()
         {
             bgmSource.UnPause();
+        }
+
+        public string GetCurrentBGMPath()
+        {
+            return currentBGMPath;
         }
     }
 }

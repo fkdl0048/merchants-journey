@@ -26,6 +26,8 @@ public class BootSceneController : MonoBehaviour
         var savedData = SaveManager.Instance.LoadData<GameSettings>("GameSettings");
         AudioManager.Instance.SetBGMVolume(savedData.bgmVolume);
         AudioManager.Instance.SetSFXVolume(savedData.sfxVolume);
+        
+        AudioManager.Instance.PlayBGM("Audio/BGM/Title");
     }
     
     private void LoadTitleScene()

@@ -46,8 +46,16 @@ public class GameLoadSlot : MonoBehaviour
         TimeSpan timeSinceLastSave = DateTime.Now - gameData.lastSaveTime;
         string daysAgo = timeSinceLastSave.Days > 0 ? $"{timeSinceLastSave.Days}일 전" : "오늘";
         
-        TimeSpan playTimeSpan = TimeSpan.FromSeconds(gameData.playTime);
-        string playTimeStr = $"{playTimeSpan.Hours:D2}:{playTimeSpan.Minutes:D2}:{playTimeSpan.Seconds:D2}";
+        string playTimeStr;
+        try 
+        {
+            TimeSpan playTimeSpan = TimeSpan.FromSeconds(Math.Min(gameData.playTime, TimeSpan.MaxValue.TotalSeconds));
+            playTimeStr = $"{playTimeSpan.Hours:D2}:{playTimeSpan.Minutes:D2}:{playTimeSpan.Seconds:D2}";
+        }
+        catch (Exception)
+        {
+            playTimeStr = "99:59:59"; // 최대값으로 표시
+        }
         
         gamePlayInfoText.text = $"플레이 타임: {playTimeStr} {daysAgo}";
         
