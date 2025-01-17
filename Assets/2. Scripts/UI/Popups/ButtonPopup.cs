@@ -24,6 +24,7 @@ public class ButtonPopup : PopupBase
         yesButton.onClick.RemoveAllListeners();
         yesButton.onClick.AddListener(() => 
         {
+            AudioManager.Instance.PlaySFX("Audio/SFX/Button");
             onYesCallback?.Invoke();
             ClosePopup();
         });
@@ -31,6 +32,7 @@ public class ButtonPopup : PopupBase
         noButton.onClick.RemoveAllListeners();
         noButton.onClick.AddListener(() => 
         {
+            AudioManager.Instance.PlaySFX("Audio/SFX/Button");
             onNoCallback?.Invoke();
             ClosePopup();
         });

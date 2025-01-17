@@ -42,16 +42,22 @@ namespace Scripts.UI
         {
             gameLoadUI.gameObject.SetActive(true);
             gameLoadUI.Init();
+            
+            AudioManager.Instance.PlaySFX("Audio/SFX/Button");
         }
     
         private void OnOptionsClick()
         {
             OptionsPopup.Show();
+            
+            AudioManager.Instance.PlaySFX("Audio/SFX/Button");
         }
 
         private void OnCreditsClick()
         { 
             // credits UI
+            
+            AudioManager.Instance.PlaySFX("Audio/SFX/Button");
         }        
     
         private void OnQuitClick()
