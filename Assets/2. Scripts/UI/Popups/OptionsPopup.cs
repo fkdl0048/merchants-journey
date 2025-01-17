@@ -7,10 +7,11 @@ namespace Scripts.UI
     public class OptionsPopup : PopupBase
     {
         [Header("Audio Controls")]
-        [Header("UI References")]
-        [SerializeField] private RectTransform backgroundPanel;
         [SerializeField] private Slider bgmSlider;
         [SerializeField] private Slider sfxSlider;
+        
+        [Header("UI References")]
+        [SerializeField] private RectTransform backgroundPanel;
     
         protected override void Initialize()
         {
@@ -59,6 +60,11 @@ namespace Scripts.UI
         {
             bgmSlider?.onValueChanged.RemoveAllListeners();
             sfxSlider?.onValueChanged.RemoveAllListeners();
+        }
+
+        public static OptionsPopup Show()
+        {
+            return UIManager.Instance.ShowPopup<OptionsPopup>("UI/Popups/OptionsPopup");
         }
     }
 }

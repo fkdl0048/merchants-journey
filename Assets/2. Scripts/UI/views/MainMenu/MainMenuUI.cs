@@ -46,7 +46,7 @@ namespace Scripts.UI
     
         private void OnOptionsClick()
         {
-            UIManager.Instance.ShowPopup<OptionsPopup>("UI/Popups/OptionsPopup");
+            OptionsPopup.Show();
         }
 
         private void OnCreditsClick()
