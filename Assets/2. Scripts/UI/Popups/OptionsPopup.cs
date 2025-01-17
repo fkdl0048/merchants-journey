@@ -6,9 +6,6 @@ namespace Scripts.UI
 {
     public class OptionsPopup : PopupBase
     {
-        [Header("Audio Controls")]
-        [SerializeField] private Slider bgmSlider;
-        [SerializeField] private Slider sfxSlider;
         
         [Header("UI References")]
         [SerializeField] private RectTransform backgroundPanel;
@@ -26,13 +23,8 @@ namespace Scripts.UI
     
         private void SetupSliders()
         {
-            // 현재 설정값 로드
-            bgmSlider.value = PlayerPrefs.GetFloat("BGMVolume", 1f);
-            sfxSlider.value = PlayerPrefs.GetFloat("SFXVolume", 1f);
         
             // 이벤트 설정
-            bgmSlider.onValueChanged.AddListener(OnBGMVolumeChanged);
-            sfxSlider.onValueChanged.AddListener(OnSFXVolumeChanged);
         }
     
         private void OnBGMVolumeChanged(float value)
@@ -49,17 +41,23 @@ namespace Scripts.UI
             PlayerPrefs.Save();
         }
     
-        protected override void OnClose()
+        private void OnEnable()
+        {
+            Time.timeScale = 0f; // 게임 일시정지
+        }
+
+        public override void OnClose()
         {
             // 팝업을 닫기 전에 설정 저장
             PlayerPrefs.Save();
+            Time.timeScale = 1f; // 게임 재개
             base.OnClose();
+            Destroy(gameObject); // 팝업 객체 제거
         }
 
         private void OnDestroy()
         {
-            bgmSlider?.onValueChanged.RemoveAllListeners();
-            sfxSlider?.onValueChanged.RemoveAllListeners();
+            
         }
 
         public static OptionsPopup Show()
