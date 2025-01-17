@@ -56,7 +56,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 7cced356ec3802748bc58a207549c7a0, type: 2}
+  - {fileID: 2100000, guid: bd3260e8587b91f4f824edfce62a555e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -100,13 +100,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71d300ddd6d82d64baea3934928b883f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
+  aiEnable: 0
+  targetPosition: {x: 0, y: 0, z: 0}
   targetTag: Unit
   status: {fileID: 11400000, guid: cc5be834c5b14e149898940625521f94, type: 2}
   currentHP: 0
   fsm: 0
   hitSoundClip: {fileID: 8300000, guid: 4500443c0072dba42be5a457b2d07aed, type: 3}
   hittedSoundClip: {fileID: 8300000, guid: c2fed035958ccdd48a5b8df47035b21e, type: 3}
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
   debugModeEnable: 1
   targetEnemy: {fileID: 0}
   pos: {x: 0, y: 0, z: 0}
