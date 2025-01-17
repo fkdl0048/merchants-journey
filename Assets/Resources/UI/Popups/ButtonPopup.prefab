@@ -146,7 +146,7 @@ GameObject:
   - component: {fileID: 8221842585258099065}
   - component: {fileID: 7943263691232500181}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: ButtonBodyText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -226,8 +226,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28
-  m_fontSizeBase: 28
+  m_fontSize: 26
+  m_fontSizeBase: 26
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -280,6 +280,8 @@ GameObject:
   - component: {fileID: 2050968375503018084}
   - component: {fileID: 8332530595946320618}
   - component: {fileID: 4876359542346618563}
+  - component: {fileID: 3311505245065805823}
+  - component: {fileID: 2416665501242480635}
   m_Layer: 5
   m_Name: NoButton
   m_TagString: Untagged
@@ -389,6 +391,65 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &3311505245065805823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1776473206593355924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2416665501242480635}
+          m_TargetAssemblyTypeName: FontColorChanger, Assembly-CSharp
+          m_MethodName: ChangeColorToHover
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2416665501242480635}
+          m_TargetAssemblyTypeName: FontColorChanger, Assembly-CSharp
+          m_MethodName: ChangeColorToOriginal
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!114 &2416665501242480635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1776473206593355924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9075ddfc2ad228a4f8344197c77faed5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 6432704447511937049}
+  hoverColor: {r: 0.57254905, g: 0.1882353, b: 0.15686275, a: 1}
 --- !u!1 &5610638816699701324
 GameObject:
   m_ObjectHideFlags: 0
@@ -401,6 +462,8 @@ GameObject:
   - component: {fileID: 737429794444307534}
   - component: {fileID: 1386901883825642930}
   - component: {fileID: 2220948275698580792}
+  - component: {fileID: 5957137219899993891}
+  - component: {fileID: 6029048026217729359}
   m_Layer: 5
   m_Name: YesButton
   m_TagString: Untagged
@@ -510,6 +573,65 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &5957137219899993891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5610638816699701324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 6029048026217729359}
+          m_TargetAssemblyTypeName: FontColorChanger, Assembly-CSharp
+          m_MethodName: ChangeColorToHover
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 6029048026217729359}
+          m_TargetAssemblyTypeName: FontColorChanger, Assembly-CSharp
+          m_MethodName: ChangeColorToOriginal
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!114 &6029048026217729359
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5610638816699701324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9075ddfc2ad228a4f8344197c77faed5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 2721441980650659908}
+  hoverColor: {r: 0.57254905, g: 0.1882353, b: 0.15686275, a: 1}
 --- !u!1 &7227889763241233543
 GameObject:
   m_ObjectHideFlags: 0
@@ -680,7 +802,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -40}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6616952592458268668
