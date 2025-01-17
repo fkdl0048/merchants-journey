@@ -26,6 +26,8 @@ namespace Scripts.Controller
         
         private Dictionary<InGameState, IInGameState> states;
         private IInGameState currentState;
+        private OptionsPopup optionsPopup;
+        private bool isOptionsPopupOpen = false;
 
         private void Awake()
         {
@@ -97,6 +99,29 @@ namespace Scripts.Controller
         private void Update()
         {
             currentState?.Update();
+            
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                ToggleOptionsPopup();
+            }
+        }
+
+        private void ToggleOptionsPopup()
+        {
+            if (isOptionsPopupOpen)
+            {
+                if (optionsPopup != null)
+                {
+                    optionsPopup.OnClose();
+                    optionsPopup = null;
+                }
+                isOptionsPopupOpen = false;
+            }
+            else
+            {
+                optionsPopup = OptionsPopup.Show();
+                isOptionsPopupOpen = true;
+            }
         }
 
         private void OnDestroy()

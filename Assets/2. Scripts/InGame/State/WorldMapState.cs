@@ -2,6 +2,7 @@ using System;
 using Scripts.Controller;
 using Scripts.InGame.System;
 using Scripts.Interface;
+using Scripts.Manager;
 using Scripts.UI;
 using Scripts.Utils;
 
@@ -30,6 +31,8 @@ namespace Scripts.InGame.State
 
             worldMapUI.OnNextStageButtonClicked += HandleNextStageButtonClicked;
             worldMapUI.OnUpgradeButtonClicked += HandleUpgradeButtonClicked;
+            
+            AudioManager.Instance.StopBGM();
         }
 
         public void Update()
@@ -47,6 +50,7 @@ namespace Scripts.InGame.State
         {
             stageSystem.CurrentStageNumber = index + 1;
             controller.ChangeInGameState(InGameState.PreCombat);
+            //LoadingSceneController.LoadScene();
         }
         
         private void HandleUpgradeButtonClicked()

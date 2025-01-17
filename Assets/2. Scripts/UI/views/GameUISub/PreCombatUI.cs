@@ -1,4 +1,7 @@
 using System;
+using Scripts.Data;
+using Scripts.Manager;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -15,6 +18,17 @@ namespace Scripts.UI.GameUISub
         [SerializeField] private Button ExitButton;
         [SerializeField] private Button startStageButton;
         
+        [Header("UI Elements")]
+        [SerializeField] private TextMeshProUGUI FamilyNameText;
+        [SerializeField] private TextMeshProUGUI ClientNameText;
+        [SerializeField] private TextMeshProUGUI RequestDescriptionText;
+        [SerializeField] private TextMeshProUGUI TerrainInfoText;
+        [SerializeField] private TextMeshProUGUI DangerFactionText;
+        [SerializeField] private TextMeshProUGUI DepartureText;
+        [SerializeField] private TextMeshProUGUI DestinationText;
+        [SerializeField] private TextMeshProUGUI CargoTypeText;
+        [SerializeField] private TextMeshProUGUI RewardCurrencyText;
+        
         public UnityAction OnStageButtonClicked;
         public UnityAction OnExitClicked;
 
@@ -26,14 +40,24 @@ namespace Scripts.UI.GameUISub
             startStageButton.onClick.AddListener(OnStartStageButtonClicked);
             ExitButton.onClick.AddListener(OnExitButtonClicked);
             
-            Initialized();
+            //Initialized();
         }
         
         // 호출 초기화
-        public void Initialized()
+        public void Initialized(StageData stageData)
         {
             requestUI.SetActive(true);
             preCombatUI.SetActive(false);
+            
+            FamilyNameText.text = stageData.FamilyName;
+            ClientNameText.text = stageData.ClientName;
+            RequestDescriptionText.text = stageData.RequestDescription;
+            TerrainInfoText.text = stageData.TerrainInfo;
+            DangerFactionText.text = stageData.DangerFaction;
+            DepartureText.text = stageData.Departure;
+            DestinationText.text = stageData.Destination;
+            CargoTypeText.text = stageData.CargoType;
+            RewardCurrencyText.text = stageData.RewardCurrency.ToString();
             
             // requestUI 초기화 (데이터 불러오기)
             // state정보에 따라서..
@@ -44,6 +68,8 @@ namespace Scripts.UI.GameUISub
         {
             requestUI.SetActive(false);
             preCombatUI.SetActive(true);
+            
+            AudioManager.Instance.PlaySFX("Audio/SFX/Button");
         }
         
         // 이전 버튼 클릭
@@ -51,17 +77,23 @@ namespace Scripts.UI.GameUISub
         {
             requestUI.SetActive(true);
             preCombatUI.SetActive(false);
+            
+            AudioManager.Instance.PlaySFX("Audio/SFX/Button");
         }
         
         // 스테이지 시작 버튼 클릭
         private void OnStartStageButtonClicked()
         {
             OnStageButtonClicked?.Invoke();
+            
+            AudioManager.Instance.PlaySFX("Audio/SFX/Button");
         }
         
         private void OnExitButtonClicked()
         {
             OnExitClicked?.Invoke();
+            
+            AudioManager.Instance.PlaySFX("Audio/SFX/Button");
         }
     }
 }

@@ -1452,8 +1452,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uBB34 \uB9BC \uB3C4"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: ec5e2c985f6ee8d4da9f7d2ed11c7653, type: 2}
-  m_sharedMaterial: {fileID: 3083474805323904891, guid: ec5e2c985f6ee8d4da9f7d2ed11c7653, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 164f562f627bf444ab65eb75ccfafa0e, type: 2}
+  m_sharedMaterial: {fileID: -4181396814385138945, guid: 164f562f627bf444ab65eb75ccfafa0e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1513,7 +1513,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 5, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

@@ -23,7 +23,7 @@ namespace Scripts.UI
                 closeButton.onClick.AddListener(OnClose);
         }
         
-        protected virtual void OnClose()
+        public virtual void OnClose()
         {
             UIManager.Instance.ClosePopup(this);
         }
