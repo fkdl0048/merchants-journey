@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Scripts.Controller;
@@ -42,7 +43,13 @@ public class GameLoadSlot : MonoBehaviour
         newGameButton.gameObject.SetActive(false);
         
         var gameData = SaveManager.Instance.LoadGameDataBySlot(slotIndex);
-        gamePlayInfoText.text = $"Stage {gameData.currentStage}\nGold: {gameData.gold}";
+        TimeSpan timeSinceLastSave = DateTime.Now - gameData.lastSaveTime;
+        string daysAgo = timeSinceLastSave.Days > 0 ? $"{timeSinceLastSave.Days}일 전" : "오늘";
+        
+        TimeSpan playTimeSpan = TimeSpan.FromSeconds(gameData.playTime);
+        string playTimeStr = $"{playTimeSpan.Hours:D2}:{playTimeSpan.Minutes:D2}:{playTimeSpan.Seconds:D2}";
+        
+        gamePlayInfoText.text = $"플레이 타임: {playTimeStr} {daysAgo}";
         
         loadButton.onClick.RemoveAllListeners();
         loadButton.onClick.AddListener(() =>

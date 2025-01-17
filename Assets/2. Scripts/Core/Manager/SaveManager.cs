@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using _2._Scripts.Unit;
 using UnityEngine;
@@ -11,6 +12,7 @@ namespace Scripts.Manager
         private const string GAME_DATA_KEY = "GameData";
         private GameData gameData;
         private int currentSlot = -1;  // 현재 사용 중인 슬롯 (-1은 슬롯이 선택되지 않은 상태)
+        private DateTime sessionStartTime;  // 현재 게임 세션의 시작 시간
         
         // stage 정보를 가져오기 위한 프로퍼티
         public int CurrentStage => gameData?.currentStage ?? 1;
@@ -28,7 +30,9 @@ namespace Scripts.Manager
             {
                 currentStage = 1,
                 gold = 1000,
-                ownedUnits = new List<UnitData>()
+                ownedUnits = new List<UnitData>(),
+                playTime = 0f,
+                lastSaveTime = DateTime.Now
             };
             
             newGameData.ownedUnits.Add(new UnitData("unit_1", "만득이", UnitType.Pyosa, UnitClass.None));
@@ -48,12 +52,23 @@ namespace Scripts.Manager
                     gameData = CreateNewGameData();
                     SaveGameDataToSlot(currentSlot, gameData);
                 }
+                sessionStartTime = DateTime.Now;  // 게임 로드시 세션 시작 시간 기록
             }
             else
             {
                 gameData = CreateNewGameData();
             }
             Debug.Log($"LoadGameData - Current Stage: {gameData.currentStage}, Slot: {currentSlot}");
+        }
+
+        private void UpdatePlayTime()
+        {
+            if (gameData != null)
+            {
+                TimeSpan sessionDuration = DateTime.Now - sessionStartTime;
+                gameData.playTime += (float)sessionDuration.TotalSeconds;
+                sessionStartTime = DateTime.Now;  // 시간 업데이트 후 세션 시작 시간 리셋
+            }
         }
 
         public GameData GetGameData()
@@ -87,10 +102,13 @@ namespace Scripts.Manager
             return LoadData<GameData>(key);
         }
 
-        public void SaveGameDataToSlot(int slotIndex, GameData data)
+        public void SaveGameDataToSlot(int slot, GameData data)
         {
-            string key = $"{GAME_DATA_KEY}_{slotIndex}";
-            SaveData(key, data);
+            UpdatePlayTime();  // 저장하기 전에 플레이 타임 업데이트
+            data.lastSaveTime = DateTime.Now;  // 저장 시간 업데이트
+            string json = JsonUtility.ToJson(data);
+            PlayerPrefs.SetString($"{GAME_DATA_KEY}_{slot}", json);
+            PlayerPrefs.Save();
         }
 
         public void CreateAndSaveNewGame(int slotIndex)
