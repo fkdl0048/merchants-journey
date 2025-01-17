@@ -4,6 +4,7 @@ using Scripts.Interface;
 using Scripts.UI;
 using Scripts.UI.GameUISub;
 using Scripts.Utils;
+using UnityEngine;
 
 namespace Scripts.InGame.State
 {
@@ -25,13 +26,12 @@ namespace Scripts.InGame.State
         public void Enter()
         {
             gameUI.ShowPreCombatUI();
+            stageSystem.LoadStage();
             
             preCombatUI.OnStageButtonClicked += HandleStageButtonClicked;
             preCombatUI.OnExitClicked += HandleExitClicked;
             
-            preCombatUI.Initialized();
-            
-            stageSystem.LoadStage();
+            preCombatUI.Initialized(stageSystem.GetCurrentStageData());
         }
 
         public void Update()
