@@ -77,6 +77,7 @@ public class WorldMapUI : MonoBehaviour
         {
             if (currentSelectedIsland != -1)
             {
+                AudioManager.Instance.PlaySFX("Audio/SFX/Button");
                 Debug.Log($"Moving to island {currentSelectedIsland}");
                 OnNextStageButtonClicked?.Invoke(currentSelectedIsland);
             }

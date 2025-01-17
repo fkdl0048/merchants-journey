@@ -1,5 +1,6 @@
 using System;
 using Scripts.Data;
+using Scripts.Manager;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -67,6 +68,8 @@ namespace Scripts.UI.GameUISub
         {
             requestUI.SetActive(false);
             preCombatUI.SetActive(true);
+            
+            AudioManager.Instance.PlaySFX("Audio/SFX/Button");
         }
         
         // 이전 버튼 클릭
@@ -74,17 +77,23 @@ namespace Scripts.UI.GameUISub
         {
             requestUI.SetActive(true);
             preCombatUI.SetActive(false);
+            
+            AudioManager.Instance.PlaySFX("Audio/SFX/Button");
         }
         
         // 스테이지 시작 버튼 클릭
         private void OnStartStageButtonClicked()
         {
             OnStageButtonClicked?.Invoke();
+            
+            AudioManager.Instance.PlaySFX("Audio/SFX/Button");
         }
         
         private void OnExitButtonClicked()
         {
             OnExitClicked?.Invoke();
+            
+            AudioManager.Instance.PlaySFX("Audio/SFX/Button");
         }
     }
 }

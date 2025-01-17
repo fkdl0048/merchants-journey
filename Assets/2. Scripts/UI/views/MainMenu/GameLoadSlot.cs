@@ -76,6 +76,8 @@ public class GameLoadSlot : MonoBehaviour
                     InitNewGame();
                 });
         });
+        
+        AudioManager.Instance.PlaySFX("Audio/SFX/Button");
     }
 
     private void InitNewGame()
@@ -92,5 +94,7 @@ public class GameLoadSlot : MonoBehaviour
             SaveManager.Instance.CreateAndSaveNewGame(slotIndex);
             LoadingSceneController.LoadScene(Consts.InGameSceneName);
         });
+        
+        AudioManager.Instance.PlaySFX("Audio/SFX/Button");
     }
 }

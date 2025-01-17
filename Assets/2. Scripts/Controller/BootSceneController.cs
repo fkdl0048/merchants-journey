@@ -33,5 +33,7 @@ public class BootSceneController : MonoBehaviour
     private void LoadTitleScene()
     {
         SceneManager.LoadScene(Consts.TitleSceneName);
+        
+        AudioManager.Instance.PlaySFX("Audio/SFX/Button");
     }
 }
