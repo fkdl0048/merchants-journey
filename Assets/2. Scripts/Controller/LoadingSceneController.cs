@@ -21,7 +21,7 @@ namespace Scripts.Controller
         private void Start()
         {
             SetRandomTip();
-            StartCoroutine(LoadingTextAnimation());
+            //StartCoroutine(LoadingTextAnimation());
             StartCoroutine(LoadSceneAsync());
         }
 
