@@ -1,4 +1,5 @@
 using System;
+using DG.Tweening;
 using Scripts.Manager;
 using UnityEngine;
 using UnityEngine.Events;
@@ -15,6 +16,8 @@ public class WorldMapUI : MonoBehaviour
     [SerializeField] private Button UpgradesButton;
     [SerializeField] private Button NextStageButton;
     [SerializeField] private Button[] IslandButtons;  // 섬 버튼들의 배열
+    [SerializeField] private Camera mainCamera;  // 메인 카메라 참조
+    [SerializeField] private float cameraMoveSpeed = 1f;  // 카메라 이동 속도
 
     public UnityAction<int> OnIslandSelected;  // 섬이 선택되었을 때 이벤트
     public UnityAction<int> OnNextStageButtonClicked;
@@ -104,7 +107,32 @@ public class WorldMapUI : MonoBehaviour
         SetIslandButtonState(currentSelectedIsland, true);
         NextStageButton.interactable = true;  // Next Stage 버튼 활성화
         
+        // 선택된 섬으로 카메라 이동
+        MoveCamera(IslandButtons[index].transform.position);
+        
         OnIslandSelected?.Invoke(currentSelectedIsland);
+    }
+
+    private void MoveCamera(Vector3 targetPosition)
+    {
+        if (mainCamera == null)
+        {
+            mainCamera = Camera.main;
+            if (mainCamera == null)
+            {
+                Debug.LogError("Main camera not found!");
+                return;
+            }
+        }
+        
+        Debug.Log("????????");
+
+        // 카메라의 현재 z 위치 유지
+        Vector3 newPosition = new Vector3(targetPosition.x, targetPosition.y, mainCamera.transform.position.z);
+        
+        // DOTween을 사용하여 부드러운 카메라 이동
+        mainCamera.transform.DOMove(newPosition, cameraMoveSpeed)
+            .SetEase(Ease.InOutQuad);  // 부드러운 이동을 위한 이징
     }
 
     private void SetIslandButtonState(int index, bool selected)
