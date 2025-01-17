@@ -47,8 +47,7 @@ public class GameLoadSlot : MonoBehaviour
         loadButton.onClick.RemoveAllListeners();
         loadButton.onClick.AddListener(() =>
         {
-            var loadedData = SaveManager.Instance.LoadGameDataBySlot(slotIndex);
-            SaveManager.Instance.SaveGameData(loadedData);  // 현재 게임 데이터로 설정
+            SaveManager.Instance.LoadGameFromSlot(slotIndex);  // LoadGameFromSlot 메서드 사용
             LoadingSceneController.LoadScene(Consts.InGameSceneName);
         });
         
