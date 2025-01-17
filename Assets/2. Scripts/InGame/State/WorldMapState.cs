@@ -47,6 +47,7 @@ namespace Scripts.InGame.State
         {
             stageSystem.CurrentStageNumber = index + 1;
             controller.ChangeInGameState(InGameState.PreCombat);
+            //LoadingSceneController.LoadScene();
         }
         
         private void HandleUpgradeButtonClicked()

@@ -12,5 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cf3817640787b64c8da313468710651, type: 3}
   m_Name: Stage1Data
   m_EditorClassIdentifier: 
+  Stage: 01
+  FamilyName: "\uACF5\uB3D9\uD30C"
+  ClientName: "\uC885\uB9AC\uD615"
+  RequestDescription: "\uACF5\uB3D9\uD30C\uC758 \uC601\uB2E8 \uC81C\uC870\uC5D0 \uC4F0\uC77C
+    \uC57D\uC7AC\uB97C \uC6B4\uC1A1\uD574 \uC8FC\uC2DC\uAE38 \uBC14\uB77C\uC624.
+    \uC774\uB294 \uBB38\uD30C\uC758 \uC0BC\uB300\uC81C\uC790\uB4E4\uC744 \uC704\uD55C
+    \uC7AC\uB8CC\uC774\uB2C8, \uAC00\uB294 \uAE38\uC774 \uD5D8\uB09C\uD560\uC9C0\uB77C\uB3C4
+    \uBB34\uC0AC\uD788 \uB3C4\uB2EC\uD574\uC57C \uD558\uC624. \uC131\uACF5\uD558\uC2E0\uB2E4\uBA74
+    \uC758\uB8B0\uC5D0 \uAC78\uB9DE\uC740 \uBCF4\uB2F5\uC744 \uB4DC\uB9AC\uACA0\uC18C."
+  TerrainInfo: "\uAE30\uB828\uC0B0\uB9E5"
+  DangerFaction: "\uB179\uB9BC"
+  Departure: "\uB2E8\uC6D4\uC0C1\uB2E8"
+  Destination: "\uACF5\uB3D9\uD30C"
+  CargoType: "\uC601\uB2E8 \uC81C\uC870\uC6A9 \uC57D\uC7AC"
+  RewardCurrency: 20
   stageNumber: 1
   stagePrefab: {fileID: 8054178234325071792, guid: c5dc97fd9255b6a41a8caf4688c820d6, type: 3}
