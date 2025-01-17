@@ -61,8 +61,12 @@ public class GameLoadSlot : MonoBehaviour
         deleteButton.onClick.RemoveAllListeners();
         deleteButton.onClick.AddListener(() =>
         {
-            SaveManager.Instance.DeleteGameDataFromSlot(slotIndex);
-            InitNewGame();
+            ButtonPopup.Show("저장된 게임을 삭제하시겠습니까?",
+                () =>
+                {
+                    SaveManager.Instance.DeleteGameDataFromSlot(slotIndex);
+                    InitNewGame();
+                });
         });
     }
 

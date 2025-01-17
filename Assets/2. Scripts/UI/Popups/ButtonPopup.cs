@@ -1,9 +1,11 @@
+using Scripts.UI;
+using Scripts.Manager;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Events;
 
-public class ButtonPopup : MonoBehaviour
+public class ButtonPopup : PopupBase
 {
     [SerializeField] private TextMeshProUGUI titleText;
     [SerializeField] private Button yesButton;
@@ -36,15 +38,16 @@ public class ButtonPopup : MonoBehaviour
 
     private void ClosePopup()
     {
-        Destroy(gameObject);
+        UIManager.Instance.ClosePopup(this);
     }
 
     public static ButtonPopup Show(string title, UnityAction yesCallback, UnityAction noCallback = null)
     {
-        // Popup prefab should be located in Resources/Prefabs/UI/Popups/ButtonPopup
-        var prefab = Resources.Load<ButtonPopup>("UI/Popups/ButtonPopup");
-        var instance = Instantiate(prefab);
-        instance.Initialize(title, yesCallback, noCallback);
-        return instance;
+        var popup = UIManager.Instance.ShowPopup<ButtonPopup>("UI/Popups/ButtonPopup");
+        if (popup != null)
+        {
+            popup.Initialize(title, yesCallback, noCallback);
+        }
+        return popup;
     }
 }
