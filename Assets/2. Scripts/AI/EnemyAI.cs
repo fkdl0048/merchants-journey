@@ -46,6 +46,10 @@ namespace AI
         {
             StartCoroutine(AttackStart());
         }
+        protected override void DestoryBehavior()
+        {
+            Destroy(gameObject);
+        }
 
         new IEnumerator AttackStart()
         {
@@ -80,5 +84,6 @@ namespace AI
             isAttack = false;
             fsm = FSM.Encounter;
         }
+
     }
 }

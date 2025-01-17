@@ -39,6 +39,7 @@ namespace AI
         // Effect 옵션 
         [Header("Effect Option")]
         [SerializeField] private Color outlineColor = Color.white;
+        [SerializeField] private Color hoverOutlineColor = Color.white;
 
         [Header("Debug Mode Enable")]
         [SerializeField] private bool debugModeEnable = true;
@@ -89,13 +90,14 @@ namespace AI
                         AttackBehavior();
                     break;
                 case FSM.Dead:
-                    Destroy(gameObject);
+                    DestoryBehavior();
                     break;
             }
         }
 
         protected abstract void IdleBehavior();
         protected abstract void EncounterBehavior();
+        protected abstract void DestoryBehavior();
 
         // 공격 스크립트 (공격 방식은 데모입니다. 수정해야함)
         protected abstract void AttackBehavior();
@@ -128,7 +130,7 @@ namespace AI
             if(currentHP <= 0)
                 fsm = FSM.Dead;
 
-            //StartCoroutine(KnockBack(hitterPos, damage));
+            StartCoroutine(KnockBack(hitterPos, damage));
         }
         
         // Effect 스크립트
@@ -155,11 +157,11 @@ namespace AI
             if (material == null)
                 yield return null;
 
-            material.SetFloat("_FlashAmount", 1.0f);
+            material.SetColor("_Color", Color.red);
 
             yield return new WaitForSeconds(0.5f);
 
-            material.SetFloat("_FlashAmount", 0.0f);
+            material.SetColor("_Color", Color.white);
         }
 
         // 탐지 유틸 스크립트
@@ -210,9 +212,9 @@ namespace AI
             // outline shader 가져오기
             var material = GetComponent<SpriteRenderer>().material;
             if (enable == true)
-                material.SetFloat("_OutlineEnabled", 1);
+                material.SetColor("_SolidOutline", hoverOutlineColor);
             else
-                material.SetFloat("_OutlineEnabled", 0);
+                material.SetColor("_SolidOutline", outlineColor);
         }
         //Debug Code
         private void OnDrawGizmos()

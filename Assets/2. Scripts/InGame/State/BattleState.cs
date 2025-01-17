@@ -72,6 +72,9 @@ namespace Scripts.InGame.State
             // 유닛 이동 로직
             if (Input.GetMouseButtonDown(0)) // Left click
             {
+                if(selectedUnit != null)
+                    selectedUnit.GetComponent<PlayerAI>().ShowOutline(false);
+
                 var obj = clickSystem.GetMouseDownGameobject("Unit");
                 if(obj != null)
                 {
@@ -84,10 +87,8 @@ namespace Scripts.InGame.State
             }
             else if(Input.GetMouseButtonDown(1))
             {
-                HandleRightClick();
-                
-                unitSystem.EnableHighlightTile(false);
-
+                if(HandleRightClick())
+                    unitSystem.EnableHighlightTile(false);
             }
             
             // 개발용 키
@@ -127,18 +128,26 @@ namespace Scripts.InGame.State
         {
             cargo.StartMoving();
         }
-        private void HandleRightClick()
+        private bool HandleRightClick()
         {
             if (selectedUnit == null) 
-                return;
+                return false;
 
             var obj = clickSystem.GetMouseDownGameobject("Tile");
             if (obj == null)
-                return;
-
+                return false;
+            
+            // 타일 소유권 체인지
+            Tile tile = obj.GetComponent<Tile>();
+            if (tile.hasUnit)
+                return false;
+            tile.hasUnit = true;
             unitSystem.MoveUnit(selectedUnit, obj.transform.position, false);
+            selectedUnit.GetComponent<PlayerAI>().myTile.hasUnit = false;
+            selectedUnit.GetComponent<PlayerAI>().myTile = tile;
             selectedUnit.GetComponent<PlayerAI>()?.ShowOutline(false);
             selectedUnit = null;
+            return true;
         }
         private void UnitAIEnable(GameObject[] obj)
         {
