@@ -25,4 +25,4 @@ MonoBehaviour:
   CargoType: "\uC601\uB2E8 \uC81C\uC870\uC6A9 \uC57D\uC7AC"
   RewardCurrency: 20
   stageNumber: 1
-  stagePrefab: {fileID: 8054178234325071792, guid: c5dc97fd9255b6a41a8caf4688c820d6, type: 3}
+  stagePrefab: {fileID: 8054178234325071792, guid: f9ce5c4cf9a74ca42a31e4575abb8a82, type: 3}
