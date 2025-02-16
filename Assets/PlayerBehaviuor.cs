@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class PlayerBehaviuor : MonoBehaviour
 {
-    [Header("Move Setting")]
+    [Header("Move Settings")]
     [SerializeField] float moveSpeed;
     float speedX, speedY;
+
+    [Header("Key Settings")]
+    [SerializeField] KeyCode dashKey;
 
     private Rigidbody2D rigd;
 
@@ -14,15 +17,18 @@ public class PlayerBehaviuor : MonoBehaviour
     {
         rigd = GetComponent<Rigidbody2D>();
     }
-    private void MoveBehaviour()
+    private void MoveBehaviour(float speed)
     {
-        speedX = Input.GetAxisRaw("Horizontal") * moveSpeed;
-        speedY = Input.GetAxisRaw("Vertical") * moveSpeed;
+        speedX = Input.GetAxisRaw("Horizontal") * speed;
+        speedY = Input.GetAxisRaw("Vertical") * speed;
 
         rigd.velocity = new Vector2(speedX * Time.deltaTime, speedY * Time.deltaTime);
     }
     private void Update()
     {
-        MoveBehaviour();
+        MoveBehaviour(moveSpeed);
+        //dash
+        if (Input.GetKeyDown(dashKey))
+            MoveBehaviour(moveSpeed * 100);
     }
 }
