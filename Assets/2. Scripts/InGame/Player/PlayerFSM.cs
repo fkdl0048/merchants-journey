@@ -12,6 +12,7 @@ namespace PlayerScript
 
         private PlayerMovement playerMovement;
         private PlayerAnimationController animationController;
+        private PlayerAttackBehaviour attackBehaviour;
 
         [SerializeField] float speed = 100;
         [SerializeField] float Runspeed = 2;
@@ -22,6 +23,7 @@ namespace PlayerScript
         {
             playerMovement = GetComponent<PlayerMovement>();
             animationController = GetComponent<PlayerAnimationController>();
+            attackBehaviour = GetComponent<PlayerAttackBehaviour>();
 
             state = new PlayerWalkState(playerMovement, animationController, speed, Runspeed, Dashspeed);
         }
@@ -43,7 +45,7 @@ namespace PlayerScript
                 case PlayerSignal.RunSignal:
                     break;
                 case PlayerSignal.AttackSignal:
-                    state = new PlayerAttackState(animationController);
+                    state = new PlayerAttackState(animationController, attackBehaviour);
                     break;
                 case PlayerSignal.AttackEndSignal:
                     state = new PlayerWalkState(playerMovement, animationController, speed, Runspeed, Dashspeed);

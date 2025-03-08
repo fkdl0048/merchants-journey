@@ -17,6 +17,7 @@ namespace PlayerScript
         private void Start()
         {
             rigd = GetComponent<Rigidbody2D>();
+            rigd.isKinematic = true;
         }
         public void MoveBehaviour(float speedX, float speedY, float speed)
         {

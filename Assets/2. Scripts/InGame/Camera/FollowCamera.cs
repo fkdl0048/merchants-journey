@@ -11,6 +11,6 @@ public class FollowCamera : MonoBehaviour
         transform.DOMove(new Vector3(
             target.transform.position.x,
             target.transform.position.y,
-            transform.position.z), 1.5f);
+            transform.position.z), 0.125f);
     }
 }

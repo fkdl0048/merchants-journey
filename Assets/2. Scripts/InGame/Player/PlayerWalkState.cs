@@ -55,36 +55,40 @@ namespace CPlayerState
 
             //attack
             if (Input.GetMouseButtonDown(0))
+            {
+                playerAnimationController.EnableAnimation(walkStr, false);
+                playerAnimationController.EnableAnimation(runStr, false);
+
                 return PlayerSignal.AttackSignal;
+            }
 
             //idle
             if (speedX == 0 && speedY == 0)
             {
                 playerAnimationController.EnableAnimation(walkStr, false);
                 playerAnimationController.EnableAnimation(runStr, false);
-                return PlayerSignal.IdleSignal;
+                playerMovement.MoveBehaviour(0, 0, speed);
             }
             else
             {
                 if (Input.GetKeyDown(dashKey)) //대쉬
                 {
                     playerMovement.MoveBehaviour(speedX, speedY, speed * speedDash);
-                    return PlayerSignal.RunSignal;
                 }
                 else if (Input.GetKey(runKey)) //달리기
                 {
                     playerAnimationController.EnableAnimation(runStr, true);
                     playerMovement.MoveBehaviour(speedX, speedY, speed * speedRun);
-                    return PlayerSignal.RunSignal;
                 }
-                else //걷기
+                else
                 {
                     playerMovement.MoveBehaviour(speedX, speedY, speed);
                     playerAnimationController.EnableAnimation(walkStr, true);
                     playerAnimationController.EnableAnimation(runStr, false);
-                    return PlayerSignal.WalkSignal;
                 }
             }
+
+            return PlayerSignal.None;
         }
     }
 }
